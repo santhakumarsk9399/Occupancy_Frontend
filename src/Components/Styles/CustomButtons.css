@@ -16,3 +16,7 @@
   height: 32px;
   font-size: 14px;
 }
+.custom-close-button.filtersbtn
+{
+  margin-right: 30px;
+}

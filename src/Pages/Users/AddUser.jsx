@@ -1,9 +1,49 @@
 import React from "react";
-import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import {
+  Modal,
+  Button,
+  Form,
+  Row,
+  Col,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import MultiSelectDropdown from "../CommonComponents/MultiSelectDropDown";
 import SingleSelectDropdown from "../CommonComponents/SingleSelectDropdown";
+import "../../Components/Styles/UsersPage.css";
+/**
+ * Reusable tiny info icon that shows a tooltip on hover.
+ */
+const InfoTooltip = ({ id, children }) => (
+  <OverlayTrigger
+    placement="top"
+    overlay={<Tooltip id={id}>{children}</Tooltip>}
+    delay={{ show: 150, hide: 100 }}
+  >
+    <span
+      role="img"
+      aria-label="info"
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        marginLeft: 4,
+        width: 14,
+        height: 14,
+        borderRadius: "50%",
+        border: "1px solid #6c757d",
+        fontSize: 10,
+        lineHeight: 1,
+        cursor: "help",
+        userSelect: "none",
+      }}
+    >
+      i
+    </span>
+  </OverlayTrigger>
+);
 
 const UserFormModal = ({
   show,
@@ -18,22 +58,17 @@ const UserFormModal = ({
 
   const RequiredIcon = () => <span style={{ color: "red" }}> *</span>;
 
-  // Get user type options based on current role
-  const getUsertypeOptions = (role) => {
-    switch (role) {
-      case "Admin":
-        return [
-          { label: "Operator", value: "Operator" },
-          { label: "Viewer", value: "Viewer" },
-        ];
-      case "Operator":
-        return [{ label: "Viewer", value: "Viewer" }];
-      default:
-        return [];
-    }
-  };
-
-  const usertypeOptions = getUsertypeOptions(role);
+  let userTypes;
+  if (role === "Admin") {
+    userTypes = [
+      { label: "Operator", value: "Operator" },
+      { label: "Viewer", value: "Viewer" },
+    ];
+  } else if (role === "Operator") {
+    userTypes = [{ label: "Viewer", value: "Viewer" }];
+  } else {
+    userTypes = [];
+  }
 
   const safeMappedZones = Array.isArray(userdata?.mappedZones)
     ? userdata.mappedZones
@@ -45,55 +80,107 @@ const UserFormModal = ({
     password: editingUser?.password || "",
     confirmPassword: editingUser?.password || "",
     usertype:
-      editingUser?.usertype ||
-      (usertypeOptions.length >= 1 ? usertypeOptions[0].value : ""),
+      editingUser?.usertype || (userTypes.length > 0 ? userTypes[0].value : ""),
     selectedZones:
-      safeMappedZones.map((z) => ({
-        label: z.zonename,
-        value: z.SL,
-      })) || [],
+      safeMappedZones.map((z) => ({ label: z.zonename, value: z.SL })) || [],
     useraddress: editingUser?.address || "",
-    receiveHealthMail: editingUser?.receiveHealthMail || false,
-    userblock: editingUser?.userblock || false,
+    receiveHealthMail:
+      editingUser?.healthMail === true || editingUser?.healthMail === "true",
+    userblock:
+      editingUser?.userBlock === true || editingUser?.userBlock === "true",
   });
+
+  // Regex: at least one letter, one number, one special char; total length 6-20.
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,20}$/;
 
   const validationSchema = Yup.object().shape({
     username: Yup.string()
-      .min(3, "Minimum 3 characters is required")
-      .max(20, "Maximum 20 characters only!")
-      .required("User name is required"),
-    useremailid: Yup.string()
-      .required("Email is required")
-      .test("valid-emails", "Invalid email format(s)", (value) => {
-        if (!value) return false;
-        const emails = value.split(";").map((e) => e.trim());
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emails.every((email) => emailRegex.test(email));
-      }),
+      .matches(/^\S+$/, "Username cannot contain spaces")
+      .min(3, "Username must be at least 3 characters")
+      .max(20, "Username cannot exceed 20 characters")
+      .required("Username is required"),
+
+useremailid: Yup.string()
+  .required("Email is required")
+  .test(
+    "no-spaces",
+    "Spaces are not allowed",
+    (value) => {
+      if (!value) return false;
+      return !/\s/.test(value); // ❌ Rejects any whitespace character
+    }
+  )
+  .test(
+    "valid-emails",
+    "Enter valid email addresses separated by semicolons",
+    (value) => {
+      if (!value) return false;
+
+      const emails = value.split(";").map((e) => e.trim()).filter(Boolean);
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      return (
+        emails.length > 0 &&
+        emails.every((email) => emailRegex.test(email))
+      );
+    }
+  )
+  .test(
+    "no-duplicates",
+    "Duplicate emails are not allowed",
+    (value) => {
+      if (!value) return true;
+
+      const emails = value
+        .split(";")
+        .map((e) => e.trim().toLowerCase())
+        .filter(Boolean);
+
+      const unique = new Set(emails);
+      return emails.length === unique.size;
+    }
+  ),
+
     password: Yup.string()
-      .min(6, "Minimum 6 characters")
-      .max(20, "Password length 6 to 20 only!")
+      .matches(
+        passwordRegex,
+        "Use 6–20 characters with a letter, number, and symbol."
+      )
+      .matches(/^\S+$/, "Password cannot contain spaces")
       .required("Password is required"),
+
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("password")], "Passwords must match")
       .required("Confirm Password is required"),
-    usertype:
-      usertypeOptions.length > 0
-        ? Yup.string().required("User Type is required")
-        : Yup.string(),
+
     selectedZones: Yup.array().min(1, "Select at least one zone"),
+
+    useraddress: Yup.string().max(100, "Address can be at most 100 characters"),
   });
 
   return (
-    <Modal show={show} onHide={handleClose} centered backdrop="static">
+    <Modal
+      show={show}
+      onHide={handleClose}
+      centered
+      backdrop="static"
+      size="md"
+      dialogClassName="custom-user-modal"
+    >
       <Formik
         initialValues={getInitialValues()}
         validationSchema={validationSchema}
         enableReinitialize={true}
         onSubmit={async (values, { resetForm }) => {
-          await onSave(values); // ✅ Await the save
-          resetForm(); // ✅ Reset only after save
-          handleClose(); // ✅ Close modal after save
+          // Sanitize a couple of fields before submit
+          const payload = {
+            ...values,
+            username: values.username.trim(),
+            useraddress: values.useraddress?.trim() || "",
+          };
+          await onSave(payload);
+          resetForm();
+          handleClose();
         }}
       >
         {({
@@ -111,11 +198,20 @@ const UserFormModal = ({
                 {editingUser ? "Edit User" : "Add User"}
               </Modal.Title>
             </Modal.Header>
+
             <Modal.Body>
               <Row>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col} className="mb-3 user">
                   <Form.Label>
-                    User <RequiredIcon />
+                    User Name
+                    <RequiredIcon />
+                    <InfoTooltip id="tt-username">
+                      <div>
+                        {" "}
+                        • Username should contain 3 to 20 characters
+                        <br />• It should not accept spaces
+                      </div>
+                    </InfoTooltip>
                   </Form.Label>
                   <Form.Control
                     name="username"
@@ -123,15 +219,22 @@ const UserFormModal = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                     isInvalid={touched.username && !!errors.username}
-                    disabled={!!editingUser} 
+                    disabled={!!editingUser}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.username}
                   </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group as={Col} className="mb-3">
+
+                <Form.Group as={Col} className="mb-3 user">
                   <Form.Label>
                     Email <RequiredIcon />
+                    <InfoTooltip id="tt-email">
+                      <div>
+                        • Enter one or more emails
+                        <br />• Separate multiple emails with a semicolon (;)
+                      </div>
+                    </InfoTooltip>
                   </Form.Label>
                   <Form.Control
                     name="useremailid"
@@ -147,13 +250,22 @@ const UserFormModal = ({
               </Row>
 
               <Row>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col} className="mb-3 user">
                   <Form.Label>
                     Password <RequiredIcon />
+                    <InfoTooltip id="tt-password">
+                      <div>
+                        • It must be 6–20 characters
+                        <br />• It should contains atleast one aplhanumeric and
+                        special characters
+                        <br />• It should not accept spaces
+                      </div>
+                    </InfoTooltip>
                   </Form.Label>
                   <Form.Control
                     type="password"
                     name="password"
+                    autoComplete="new-password"
                     value={values.password}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -163,13 +275,18 @@ const UserFormModal = ({
                     {errors.password}
                   </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group as={Col} className="mb-3">
+
+                <Form.Group as={Col} className="mb-3 user">
                   <Form.Label>
                     Confirm Password <RequiredIcon />
+                    <InfoTooltip id="tt-confirm">
+                      <div>• Must match with the Password</div>
+                    </InfoTooltip>
                   </Form.Label>
                   <Form.Control
                     type="password"
                     name="confirmPassword"
+                    autoComplete="new-password"
                     value={values.confirmPassword}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -184,33 +301,35 @@ const UserFormModal = ({
               </Row>
 
               <Row>
-                {usertypeOptions.length > 0 && (
-                  <Form.Group as={Col} className="mb-3">
-                    <Form.Label>User Type</Form.Label>
-                    <SingleSelectDropdown
-                      options={usertypeOptions}
-                      value={
-                        usertypeOptions.find(
-                          (opt) => opt.value === values.usertype
-                        ) || null
-                      }
-                      onChange={(selected) =>
-                        setFieldValue("usertype", selected?.value || "")
-                      }
-                      isInvalid={touched.usertype && !!errors.usertype}
-                    />
-                    {touched.usertype && errors.usertype && (
-                      <div className="invalid-feedback d-block">
-                        {errors.usertype}
-                      </div>
-                    )}
-                  </Form.Group>
-                )}
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col} className="mb-3 user">
+                  <Form.Label>User Type</Form.Label>
+                  <SingleSelectDropdown
+                    options={userTypes}
+                    value={
+                      userTypes.find((opt) => opt.value === values.usertype) ||
+                      null
+                    }
+                    onChange={(selected) =>
+                      setFieldValue("usertype", selected?.value || "")
+                    }
+                    isInvalid={touched.usertype && !!errors.usertype}
+                  />
+                  {touched.usertype && errors.usertype && (
+                    <div className="invalid-feedback d-block">
+                      {errors.usertype}
+                    </div>
+                  )}
+                </Form.Group>
+
+                <Form.Group as={Col} className="mb-3 user">
                   <Form.Label>
                     Zones <RequiredIcon />
+                    {/* <InfoTooltip id="tt-zones">
+                      <div>• Select at least one zone</div>
+                    </InfoTooltip> */}
                   </Form.Label>
                   <MultiSelectDropdown
+                    className="multi-select-container"
                     options={Zones}
                     value={values.selectedZones}
                     placeholder="Select Zones"
@@ -226,24 +345,36 @@ const UserFormModal = ({
                 </Form.Group>
               </Row>
 
-              <Form.Group className="mb-3">
-                <Form.Label>Address</Form.Label>
+              <Form.Group className="mb-1 user">
+                <Form.Label>
+                  Address
+                  {/* <InfoTooltip id="tt-address">
+                    <div>• Up to 100 characters</div>
+                  </InfoTooltip> */}
+                </Form.Label>
                 <Form.Control
                   as="textarea"
                   rows={2}
                   name="useraddress"
+                  maxLength={100}
                   value={values.useraddress}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   isInvalid={touched.useraddress && !!errors.useraddress}
                 />
+                <div className="d-flex justify-content-between mt-1">
+                  <small className="text-muted"></small>
+                  <small className="text-muted">
+                    {values.useraddress?.length || 0}/100
+                  </small>
+                </div>
                 <Form.Control.Feedback type="invalid">
                   {errors.useraddress}
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Row>
-                <Form.Group as={Col} className="mb-3">
+              <Row className="mt-2">
+                <Form.Group as={Col} className="mb-3 user">
                   <Form.Check
                     type="checkbox"
                     name="receiveHealthMail"
@@ -255,18 +386,21 @@ const UserFormModal = ({
                   />
                 </Form.Group>
                 {editingUser && (
-                  <Form.Group as={Col} className="mb-3">
+                  <Form.Group as={Col} className="mb-3 user">
                     <Form.Check
                       type="checkbox"
                       name="userblock"
                       label="User Block"
-                      checked={values.userblock}
-                      onChange={handleChange}
+                      checked={!!values.userblock}
+                      onChange={(e) =>
+                        setFieldValue("userblock", e.target.checked)
+                      }
                     />
                   </Form.Group>
                 )}
               </Row>
             </Modal.Body>
+
             <Modal.Footer className="d-flex flex-column align-items-center">
               <div className="d-flex gap-2">
                 <Button
@@ -282,8 +416,7 @@ const UserFormModal = ({
                   disabled={isSaving}
                 >
                   {isSaving ? (
-                    <> {editingUser ? "Updating..." :"Saving..."}
-                    </>
+                    <>{editingUser ? "Updating..." : "Saving..."}</>
                   ) : editingUser ? (
                     "Update"
                   ) : (

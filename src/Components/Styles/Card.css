@@ -1,10 +1,10 @@
 .custom-card {
-  background-color: #fff;
+  /* background-color: #ffffff !important; */
   /* border: 1px solid #dee2e6; */
   border-radius: 12px;
-  padding: 1rem;
+  padding: 10px;
   /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); */
-  box-shadow: 0px 0px 3px 3px rgba(0,0,0,0.03);
+  /* box-shadow: 0px 0px 3px 3px rgba(0,0,0,0.03); */
   margin-bottom: 1rem;
 }
 
@@ -21,9 +21,9 @@
 }
 
 .custom-card-md {
-  padding: 1rem;
+  padding: 5px;
 }
 
 .custom-card-lg {
-  padding: 2rem;
+  padding: 10px;
 }

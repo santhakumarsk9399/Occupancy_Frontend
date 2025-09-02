@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { Modal, Tab, Nav } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
 import "./ServiceAreaModal.css";
@@ -49,6 +49,13 @@ const ServiceAreaModal = ({
   const effectiveExit = zone?.serviceAreaExit ?? exitList;
   const [active, setActive] = useState("entry");
   const [q, setQ] = useState("");
+  // Always default to Entry tab on open
+  useEffect(() => {
+    if (show) {
+      setActive("entry");
+      setQ("");
+    }
+  }, [show]);
 
   const rawEntry = useMemo(() => normalizeList(effectiveEntry), [effectiveEntry]);
   const rawExit = useMemo(() => normalizeList(effectiveExit), [effectiveExit]);
@@ -63,7 +70,7 @@ const ServiceAreaModal = ({
   );
 
   return (
-    <Modal show={show} onHide={onClose} centered backdrop="static" size="xl">
+    <Modal show={show} onHide={onClose} centered backdrop="static" size="lg">
       <div className="sa-modal">
         <div className="sa-header">
           <div className="sa-zone">Zone Name: <strong>{effectiveZoneName}</strong></div>

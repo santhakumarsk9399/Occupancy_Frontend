@@ -42,8 +42,7 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     logout();
-    // navigate('/login');
-    window.location.href = "/login";
+    navigate('/login');
   };
 
   return (
@@ -90,7 +89,7 @@ const Sidebar = () => {
 
       <div className="sidebar-panel">
         <h2 className="panel-title">
-          Occupancy
+          Occupancy 2.0
           {/* <span className="version-tag">2.0</span> */}
         </h2>
         <p className="panel-subtitle">{sidebarConfig[activeSection]?.label}</p>

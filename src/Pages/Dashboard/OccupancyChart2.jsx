@@ -7,187 +7,120 @@ import {
   Tooltip,
   ResponsiveContainer,
   LabelList,
-  Legend,
   CartesianGrid,
 } from "recharts";
+
 import "../../Components/Styles/LiveChart.css";
 import Icon from "../CommonComponents/icon";
 import lowIcon from "../../Components/Assets/dashboard/LowZone_icon.png";
 import medIcon from "../../Components/Assets/dashboard/MediumZone_icon.png";
 import highIcon from "../../Components/Assets/dashboard/HighZone_icon.png";
 import enlargeIcon from "../../Components/Assets/dashboard/EnlargeIcon.png";
-const getColorByValue = (value) => {
-  if (value <= 500) return "#28a745"; // Green
-  if (value <= 800) return "#ffc107"; // Yellow
-  return "#dc3545"; // Red
+import SmoothTooltip from "../CommonComponents/ToolTip";
+
+// ✅ Get color based on status string
+const getColorByStatus = (status) => {
+  switch (status?.toLowerCase()) {
+    case "low":
+      return "#25B27A"; // Green
+    case "medium":
+      return "#FFB700"; // Yellow
+    case "high":
+      return "#F35F5F"; // Red
+    default:
+      return "#999"; // Fallback color
+  }
 };
 
-const getTypeByValue = (value) => {
-  if (value <= 500) return "Low";
-  if (value <= 800) return "Medium";
-  return "High";
+// ✅ Normalize status for chart type
+const getTypeFromStatus = (status) => {
+  const normalized = status?.toLowerCase();
+  if (
+    normalized === "low" ||
+    normalized === "medium" ||
+    normalized === "high"
+  ) {
+    return status;
+  }
+  return "Low"; // Default fallback
 };
 
-const LiveOccupancyChart2 = ({ data }) => {
+// Base (unmemoized) implementation
+const LiveOccupancyChart2Base = ({ data }) => {
   const [showModal, setShowModal] = useState(false);
-
-  // Close on ESC + lock body scroll while modal is open
-  useEffect(() => {
-    const onKey = (e) => e.key === "Escape" && setShowModal(false);
-    if (showModal) {
-      document.addEventListener("keydown", onKey);
-      document.body.style.overflow = "hidden";
-    }
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [showModal]);
 
   const categorizedData = useMemo(
     () =>
       (data || []).map((item) => ({
         ...item,
-        type: getTypeByValue(item.Occupancy),
-        fill: getColorByValue(item.Occupancy),
+        type: getTypeFromStatus(item.Status),
+        fill: getColorByStatus(item.Status),
       })),
     [data]
   );
 
-  const counts = useMemo(() => {
-    return {
-      Low: categorizedData.filter((d) => d.type === "Low").length,
-      Medium: categorizedData.filter((d) => d.type === "Medium").length,
-      High: categorizedData.filter((d) => d.type === "High").length,
-    };
-  }, [categorizedData]);
+  const counts = useMemo(
+    () => ({
+      Low: categorizedData.filter((d) => d.type.toLowerCase() === "low").length,
+      Medium: categorizedData.filter((d) => d.type.toLowerCase() === "medium")
+        .length,
+      High: categorizedData.filter((d) => d.type.toLowerCase() === "high")
+        .length,
+    }),
+    [categorizedData]
+  );
 
-  const [visibleTypes, setVisibleTypes] = useState({
+  // ✅ Legend states are independent for page & modal
+  const [visibleTypesPage, setVisibleTypesPage] = useState({
+    Low: true,
+    Medium: true,
+    High: true,
+  });
+  const [visibleTypesModal, setVisibleTypesModal] = useState({
     Low: true,
     Medium: true,
     High: true,
   });
 
-  const filteredData = useMemo(
-    () => categorizedData.filter((item) => visibleTypes[item.type]),
-    [categorizedData, visibleTypes]
+  const filteredDataPage = useMemo(
+    () => categorizedData.filter((item) => visibleTypesPage[item.type]),
+    [categorizedData, visibleTypesPage]
   );
 
-  const handleLegendClick = (type) => {
-    setVisibleTypes((prev) => ({
-      ...prev,
-      [type]: !prev[type],
-    }));
-  };
-
-  // Unique zone types for legend
-  const availableTypes = useMemo(
-    () => [...new Set(categorizedData.map((item) => item.type))],
-    [categorizedData]
+  const filteredDataModal = useMemo(
+    () => categorizedData.filter((item) => visibleTypesModal[item.type]),
+    [categorizedData, visibleTypesModal]
   );
 
-  // Reusable chart markup (used in card + modal)
-  const ChartMarkup = ({ height }) => (
+  const ChartMarkup = ({ height, data }) => (
     <ResponsiveContainer width="100%" height={height}>
       <BarChart
         className="custom-bar-chart"
-        data={filteredData}
-        margin={{ top: 30, right: 30, bottom: 50, left: 20 }}
+        data={data}
+        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
       >
         <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
         <XAxis
           dataKey="ZoneName"
-          interval={0} // show all labels
-          angle={0} // rotate labels for better fit
-          textAnchor="end" // align rotated labels
-          height={80} // extra height for rotated labels
-         
+          height={80}
           tick={{ fontSize: 12 }}
           label={{
             value: "ZONES",
             position: "insideBottom",
-            offset: 50,
+            offset: 30,
             fontSize: 14,
-            // fill: "#333",
-             offset: 30
           }}
         />
         <YAxis
-          label={{
-            value: "COUNTS",
-            angle: -90,
-            position: "insideLeft",
-          }}
+          label={{ value: "COUNTS", angle: -90, position: "insideLeft" }}
         />
-        <Tooltip
-          cursor={false}
-          content={({ active, payload }) => {
-            // Only show tooltip if we're directly on a bar
-            if (
-              active &&
-              payload &&
-              payload.length &&
-              payload[0].value !== undefined &&
-              payload[0].value !== null
-            ) {
-              const d = payload[0].payload;
-              return (
-                <div
-                  style={{
-                    background: "#fff",
-                    border: "1px solid #ccc",
-                    padding: "8px",
-                    borderRadius: "6px",
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-                    fontSize: "14px",
-                  }}
-                >
-                  <p>
-                    <strong>In :</strong> {d.Incount}
-                  </p>
-                  <p>
-                    <strong>Out :</strong> {d.Outcount}
-                  </p>
-                  <p>
-                    <strong>Occupancy :</strong> {d.Occupancy}
-                  </p>
-                </div>
-              );
-            }
-            return null; // no tooltip on empty space
-          }}
-        />
-
-        <Legend
-          verticalAlign="bottom"
-          content={() => (
-            <div className="checkbox-legend">
-              {availableTypes.map((type) => (
-                <label key={type} className="legend-checkbox">
-                  <input
-                    type="checkbox"
-                    checked={!!visibleTypes[type]}
-                    onChange={() => handleLegendClick(type)}
-                  />
-                  <span
-                    style={{
-                      color:
-                        type === "Low"
-                          ? "#25B27A"
-                          : type === "Medium"
-                          ? "#FFB700"
-                          : "#F35F5F",
-                    }}
-                  >
-                    {type} Occupied
-                  </span>
-                </label>
-              ))}
-            </div>
-          )}
-        />
-
-        <Bar dataKey="Occupancy" radius={[4, 4, 0, 0]} barSize={70}>
+        <Tooltip content={<SmoothTooltip />} cursor={false} />
+        <Bar
+          dataKey="Occupancy"
+          radius={[4, 4, 0, 0]}
+          barSize={70}
+          isAnimationActive={false} /* prevent full redraw animation */
+        >
           <LabelList
             dataKey="Occupancy"
             position="top"
@@ -203,74 +136,95 @@ const LiveOccupancyChart2 = ({ data }) => {
     <div className="live-chart-wrapper">
       <div className="topSections">
         <div className="chart-summary">
-          {counts.Low > 0 && (
-            <span className="legend-item">
-              <span className="dash_zone_icon">
-                <Icon img={lowIcon} Img_width="20px" Img_height="20px" />
-              </span>
-              {counts.Low} 
-              <p className="OccupiedZoneLabel_color">Low Occupied Zones</p>
-            </span>
-          )}
-          {counts.Medium > 0 && (
-            <span className="legend-item">
-              <span className="dash_zone_icon">
-                <Icon img={medIcon} Img_width="20px" Img_height="20px" />
-              </span>
-              {counts.Medium}
-                <p className="OccupiedZoneLabel_color">Medium Occupied Zones</p>
-            </span>
-          )}
-          {counts.High > 0 && (
-            <span className="legend-item">
-              <span className="dash_zone_icon">
-                <Icon img={highIcon} Img_width="20px" Img_height="20px" />
-              </span>
-              {counts.High} 
-                <p className="OccupiedZoneLabel_color">High Occupied Zones</p>
-             
-            </span>
-          )}
+          <span className="legend-item">
+            <Icon img={lowIcon} Img_width="20px" Img_height="20px" />{" "}
+            {counts.Low}
+            <p className="OccupiedZoneLabel_color">Low Occupied Zones</p>
+          </span>
+          <span className="legend-item">
+            <Icon img={medIcon} Img_width="20px" Img_height="20px" />{" "}
+            {counts.Medium}
+            <p className="OccupiedZoneLabel_color">Medium Occupied Zones</p>
+          </span>
+          <span className="legend-item">
+            <Icon img={highIcon} Img_width="20px" Img_height="20px" />{" "}
+            {counts.High}
+            <p className="OccupiedZoneLabel_color">High Occupied Zones</p>
+          </span>
         </div>
 
         <div className="enlargeicon">
-          <button
-            onClick={() => setShowModal(true)}
-            className="enlarge_icon"
-            aria-label="Enlarge chart"
-            title="Enlarge"
-          >
+          <button onClick={() => setShowModal(true)} className="enlarge_icon">
             <Icon img={enlargeIcon} Img_width="20px" Img_height="20px" />
           </button>
         </div>
       </div>
-      {/* Regular (card) chart */}
-      <ChartMarkup height={520} />
 
-      {/* Enlarged Modal */}
+      {/* ✅ Chart First */}
+      <ChartMarkup height={550} data={filteredDataPage} />
+
+      {/* ✅ Legend comes BELOW chart */}
+      <div className="checkbox-legend below-chart">
+        {["Low", "Medium", "High"].map((type) => (
+          <label key={type} className="legend-checkbox">
+            <input
+              type="checkbox"
+              className={`legend-checkbox-input ${type.toLowerCase()}`}
+              checked={!!visibleTypesPage[type]}
+              onChange={() =>
+                setVisibleTypesPage((prev) => ({
+                  ...prev,
+                  [type]: !prev[type],
+                }))
+              }
+            />
+            <span className="legend-label">{type} Occupied</span>
+          </label>
+        ))}
+      </div>
+      <div className="update-text">
+        <p className="update-text_sub">Note : Counts are updated every 15 seconds</p>
+      </div>
+      {/* Full-screen Modal */}
       {showModal && (
         <div
           className="chart-modal-overlay"
-          onClick={(e) => {
-            if (e.target.classList.contains("chart-modal-overlay")) {
-              setShowModal(false);
-            }
-          }}
+          // onClick={(e) => {
+          //   if (e.target.classList.contains("chart-modal-overlay")) setShowModal(false);
+          // }}
+          onClick={(e) => e.stopPropagation()}
         >
-          <div className="chart-modal" role="dialog" aria-modal="true">
+          <div className="chart-modal">
             <div className="modal-header">
               <h3 className="modal-title">Live Occupancy</h3>
               <button
                 className="modal-close-btn"
                 onClick={() => setShowModal(false)}
-                aria-label="Close"
-                title="Close"
               >
                 ✕
               </button>
             </div>
             <div className="modal-body">
-              <ChartMarkup height="100%" />
+              <ChartMarkup height={550} data={filteredDataModal} />
+
+              <div className="checkbox-legend below-chart">
+                {["Low", "Medium", "High"].map((type) => (
+                  <label key={type} className="legend-checkbox">
+                    <input
+                      type="checkbox"
+                      className={`legend-checkbox-input ${type.toLowerCase()}`}
+                      checked={!!visibleTypesModal[type]}
+                      onChange={() =>
+                        setVisibleTypesModal((prev) => ({
+                          ...prev,
+                          [type]: !prev[type],
+                        }))
+                      }
+                    />
+                    <span className="legend-label">{type} Occupied</span>
+                  </label>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -278,5 +232,28 @@ const LiveOccupancyChart2 = ({ data }) => {
     </div>
   );
 };
+
+// Custom comparator: avoid re-render if zone list & key metrics unchanged
+const areEqual = (prevProps, nextProps) => {
+  const a = prevProps.data || [];
+  const b = nextProps.data || [];
+  if (a === b) return true;
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    const pa = a[i];
+    const pb = b[i];
+    // Compare stable identifiers & displayed metrics
+    if (
+      pa.ZoneName !== pb.ZoneName ||
+      pa.Occupancy !== pb.Occupancy ||
+      pa.Status !== pb.Status
+    ) {
+      return false;
+    }
+  }
+  return true; // no meaningful change
+};
+
+const LiveOccupancyChart2 = React.memo(LiveOccupancyChart2Base, areEqual);
 
 export default LiveOccupancyChart2;

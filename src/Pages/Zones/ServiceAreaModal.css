@@ -8,8 +8,8 @@
 .sa-content { background:#fff; padding: 8px 0 16px; }
 
 .sa-topline { display:flex; align-items:center; justify-content: space-between; margin-bottom: 12px; }
-.sa-section-title { font-weight: 600; }
-.sa-count { font-weight: 700; }
+.sa-section-title { font-weight: 500; }
+.sa-count { font-weight: 500; }
 
 .sa-search { position: relative; width: 320px; }
 .sa-search input { width: 100%; padding: 8px 12px 8px 34px; border: 1px solid #e5e7eb; border-radius: 8px; }
@@ -22,3 +22,16 @@
 .sa-row { padding: 12px 14px; border-bottom: 1px solid #f2f4f7; }
 .sa-row:last-child { border-bottom: none; }
 .sa-empty { padding: 20px; text-align: center; color: #9ca3af; }
+
+/* Styled continue question */
+.sa-continue-question { 
+	margin-top: 24px;
+	margin-bottom: 4px;
+	font-size: 22px;
+	font-weight: 700;
+	text-align: center;
+	color: #111827;
+}
+.sa-header {
+	padding-bottom: 0;
+}

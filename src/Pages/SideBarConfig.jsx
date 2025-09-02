@@ -46,13 +46,13 @@ export const sidebarConfig = {
         iconActive: Historical_active,
         iconInActive: Historical_Inactive,
       },
-      {
-        path: "/predictions",
-        label: "Predictions",
-        roles: ["Admin","Operator","Viewer"],
-        iconActive: Predictions_active,
-        iconInActive: Predictions_Inactive,
-      },
+      // {
+      //   path: "/predictions",
+      //   label: "Predictions",
+      //   roles: ["Admin","Operator","Viewer"],
+      //   iconActive: Predictions_active,
+      //   iconInActive: Predictions_Inactive,
+      // },
     ],
   },
   settings: {

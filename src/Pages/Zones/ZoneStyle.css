@@ -1,0 +1,89 @@
+.Zone_Section {
+    padding:  25px;
+}
+
+.Zone_Section .frcmPU {
+    border:0;
+}
+.Zone_Section .rdt_Table {
+    border: 1px solid rgba(0, 0, 0, .12);
+    border-bottom: 0;
+}
+.Zone_Section .cyUAch:hover {
+    color: #181D27;
+    background-color: #E9EFFA;
+    outline-color: rgba(0, 0, 0, .06);
+    border-bottom-color: rgba(0, 0, 0, .06);
+}
+.Zone_Section .frcmPU {
+    color: #535862;
+}
+.Zone_Section .eBVvRK {
+    font-size: 14px ;
+    color:#181D27;
+}
+.Zone_Section .frcmPU {
+    color: #535862;
+}
+.btn-primary {
+  background-color: #E9EFFA;
+  border-color: #2162CD; 
+  color:#2162CD;
+  padding: 7px 16px;
+  border-radius:  8px;
+  font-style: normal;
+  font-weight: 400;  
+
+}
+.btn-primary:hover, .btn-primary:focus {
+  background-color: #2162CD;
+  border-color: #2162CD;
+  color: #fff;
+  box-shadow: none;
+}
+
+.btn-primary:disabled{
+  background-color: #F6F7FC;
+  border-color: #F6F7FC;
+  color:#B3B5BD;
+}
+.btn-primary:disabled {
+ opacity: 1;
+ font-weight: 400; 
+}
+.search-container {  
+    margin: 0;
+}
+
+.zone-form .modal-content {
+    padding: 10px;
+}
+.zone-form h6 {
+    color:#17181E;
+}
+.zone-form label.form-label {
+    color: #404252;
+    font-size: 14px;
+    font-weight: 300;
+    font-family: 'Inter', sans-serif;
+
+}
+
+.thresper-input.input-group>.form-control {
+    border-radius: 8px!important;
+}
+
+.thresper-input .input-group-text {
+    color: #17181E;
+    font-weight: 600;
+    background: transparent;
+}
+.msd__actionrow .msd__action {
+    font-weight: 600;
+}
+.delete-zone-mdl {
+   padding: 10px 10px 15px;
+}
+.delete-zone-mdl .delete-zone-body {
+    margin: 0;
+}

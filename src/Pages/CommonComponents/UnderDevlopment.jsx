@@ -32,7 +32,7 @@ const UnderDevelopment = () => {
   }, []);
 
   return (
-    <Container fluid className="under-development d-flex justify-content-center align-items-center text-center">
+    <Container fluid className="under-development d-flex justify-content-center align-items-center text-center" >
       <Row>
         <Col>
           <FaTools size={80} className="icon-spin text-warning mb-4" />

@@ -5,6 +5,7 @@ import logoicon from "../../Components/Assets/Occ_icon.png";
 import Clogo from "../../Components/Assets/cl2.png";
 import firefoxlogo from "../../Components/Assets/Firefoxlogo.svg";
 import chromelogo from "../../Components/Assets/chromelogo.svg";
+import melogo from "../../Components/Assets/me-logo.svg";
 import axios from "axios";
 import { useAuth } from "../../Context/ContextProvider";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -47,11 +48,11 @@ const VerifyUser = async (e) => {
     const Result = await axios.post(`${API_URL}/auth/login`, values);
  console.log(Result)
     if (Result?.data?.success) {
-      let user = Result.data.user.username;
-      let vid = Result.data.user.vid;
-      let role = Result.data.user.role || "";
+      let user = Result?.data?.user?.username||"";
+      let vid = Result?.data?.user?.vid||"";
+      let role = Result.data?.user?.role || "";
       let token = Result?.data?.token?.token;
-
+       console.log(user)
       sessionStorage.setItem("token", token);
       sessionStorage.setItem("role", role);
       sessionStorage.setItem("username", user);
@@ -124,7 +125,7 @@ const onChangeHandler = (e) => {
         <div className="login_Container">
           {/* Your login form components go here */}
           <div className="OccupancyHeader">
-            <img src={logoicon} />
+            <img src={logoicon} width="225px" />
           </div>
           <form
             onSubmit={(e) => {
@@ -190,7 +191,7 @@ const onChangeHandler = (e) => {
           <div className="LC_Section">
             <div className="LogcopyrightSec">
               <p className="cplabel">Copyright © 2025 All Rights Reserved by</p>
-              <img src={Clogo} width="43px" height="13px" className="c_logo" />
+              <img src={Clogo} width="90px" height="27px" className="c_logo" />
             </div>
             <div className="LogoSec">
               <p className="splabel">Supported Browsers</p>
@@ -203,6 +204,12 @@ const onChangeHandler = (e) => {
                 />
                 <img
                   src={chromelogo}
+                  width="12px"
+                  height="12px"
+                  className="c_logo"
+                />
+                <img
+                  src={melogo}
                   width="12px"
                   height="12px"
                   className="c_logo"

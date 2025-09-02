@@ -7,18 +7,18 @@ import "../../Components/Styles/CustomButtons.css";
 
 const DeleteZoneModal = ({ show, onClose, zone, onDelete }) => {
   return (
-  <Modal show={show} onHide={onClose} centered backdrop="static" size="md">
+  <Modal show={show} onHide={onClose} centered backdrop="static" size="md" className="delete-zone-mdl">
       <Modal.Header closeButton>
         <Modal.Title>Delete Zone</Modal.Title>
       </Modal.Header>
 
       <Modal.Body className="text-center delete-zone-body">
         <Image src={trashImage} alt="Trash Bin" className="delete-zone-image mb-3" />
-        <h5 className="mt-2">Do you want to delete this Zone{zone?.zoneName ? ` "${zone.zoneName}"` : ""}?</h5>
+        <h5 className="mt-2">Do you want to delete {zone?.zoneName ? ` "${zone.zoneName}"` : ""} Zone?</h5>
       </Modal.Body>
 
       <Modal.Footer className="justify-content-center">
-        <Button className="btn-soft-outline" variant="light" onClick={onClose}>
+        <Button className="btn btn-primary btn-sm" variant="light" onClick={onClose}>
           Cancel
         </Button>
         <Button

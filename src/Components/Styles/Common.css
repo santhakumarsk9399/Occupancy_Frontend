@@ -1,0 +1,198 @@
+.modal-content .modal-header {
+    padding: 15px;
+}
+.modal-footer {
+    border-top: none;
+}
+/* Cancel Button */
+.btn-cancel {
+  background-color: #ffffff;      /* White background */
+  color: #1a73e8;                /* Blue text */
+  border: 1px solid #1a73e8;     /* Blue border */
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.btn-cancel:hover,
+.btn-cancel:active,
+.btn-cancel:focus {
+  background-color: #ffffff !important;      /* White background */
+  color: #1a73e8 !important;                /* Blue text */
+  border: 1px solid #1a73e8 !important;     /* Blue border */
+  padding: 8px 16px !important;
+  border-radius: 6px !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Apply Button */
+.btn-apply {
+  background-color: #1a73e8;     /* Blue background */
+  color: #ffffff;                /* White text */
+  border: 1px solid #1a73e8;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-apply:hover,
+.btn-apply:active,
+.btn-apply:focus {
+  background-color: #1a73e8;     /* Blue background */
+  color: #ffffff;                /* White text */
+  border: 1px solid #1a73e8;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* .nav-tabs .nav-link.active {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #0d6efd;
+  font-weight: bold;
+} */
+ 
+.tabsec .nav-tabs .nav-link.active {
+    background-color: #E9EFFA;
+    border: none;
+    margin: 7.5px;
+    border-radius: 10px;
+    color: #2162cd;
+    font-size: 14px;
+}
+.tabsec .nav-tabs .nav-link
+{
+  background-color: #ffffff;
+  border: none;
+  margin: 7.5px;
+  border-radius: 10px;
+  color: #404252;
+  font-size: 14px;  
+  border: 0;
+  box-shadow: none;
+  padding: 10px 16px;
+  background: #F6F7FC;
+}
+.tabsec .nav-tabs {
+    padding: 15px;
+}
+.bg-white.border.p-3.tab-content {
+    border: none !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08) !important;
+    border-radius: 10px !important;
+    padding: 0px !important;
+}
+.tabsec.nav.nav-tabs {
+    border: none !important;
+
+  }.tabsec_dash .nav-tabs .nav-link {
+    /*font-weight: 200 !important;*/
+}
+
+
+/* Header Nav Link 29/08  */
+
+.tabsec_dash .nav-tabs .nav-link {
+  box-shadow: none;
+}
+.tabsec_dash .nav-tabs .nav-link {
+    box-shadow: none;
+    font-family: 'Inter', sans-serif;
+    padding: 0.65rem 1.25rem;
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0 12.5px 12.5px 0;
+}
+.tabsec_dash .nav-tabs {
+  margin: 5px 0 5px;
+}
+.Dash_TopSection {
+    padding: 25px;
+    margin-top: 10px;
+}
+
+
+
+/* Dash */
+.tabsec_dash .nav-tabs .nav-link
+{
+  background-color: #ffffff;
+  border: none;
+  margin: 7.5px;
+  border-radius: 10px;
+  color: #404252;
+  font-size: 14px;
+  border: 0;
+  box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+  padding: 10px 16px;
+  background: #FFF;
+}
+.tabsec_dash .nav-tabs .nav-link.active {
+    background-color: #E9EFFA;
+    border: none;
+    margin: 7.5px;
+    border-radius: 10px;
+    color: #2162cd;
+    font-size: 14px;
+    border: 1px solid #2162CD;
+    box-shadow: none;
+}
+.tabsec_dash .nav-tabs {
+    border: 0;
+}
+
+
+/**/
+
+/* Dash */
+.sa-tabs .nav-tabs .nav-link
+{
+  background-color: #ffffff;
+  border: none;
+  margin: 7.5px 15px 7.5px 0;
+  border-radius: 10px;
+  color: #404252;
+  font-size: 14px;
+  border: 0;
+  box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+  padding: 8px 16px;
+  background: #FFF;
+}
+.sa-tabs .nav-tabs .nav-link.active {
+    background-color: #E9EFFA;
+    border: none;
+    margin: 7.5px 15px 7.5px 0;
+    border-radius: 10px;
+    color: #2162cd;
+    font-size: 14px;
+    border: 1px solid #2162CD;
+    box-shadow: none;
+}
+.sa-tabs .nav-tabs {
+    border: 0;
+}
+
+.btn.btn-danger, .modal-footer .delete{
+    background-color: #D8564B;
+    border:1px solid #D8564B;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+
+.btn.btn-danger:hover, .modal-footer .delete:hover {
+  color:#EE5548;
+  background:rgba(216, 86, 75, 0.2);
+  border:1px solid #D8564B;
+
+}

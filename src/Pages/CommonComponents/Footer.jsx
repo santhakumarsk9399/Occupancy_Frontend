@@ -28,7 +28,7 @@ const Footer = () => {
     <footer className="footer bg-light text-muted  d-flex justify-content-between align-items-center">
        <div className="footer-time">{timeString}</div>
        <div className="footer-copy">Copyright © 2025 All Rights Reserved 
-        <img src={footerlogo} alt="footerlogo" className="footer_logo" width={132} height={40} /></div>
+        <img src={footerlogo} alt="footerlogo" className="footer_logo" width={131} height={38} /></div>
      </footer>
 </>
   );

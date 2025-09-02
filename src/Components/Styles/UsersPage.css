@@ -3,7 +3,7 @@
 }
 .UserTable_TopSection {
     margin:5px;
-    padding: 5px;
+    padding: 17.5px;
 }
 /* Table css */
 .rdt_TableHeadRow
@@ -20,6 +20,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 5px;
 }
 .mb-3.form_section {
     margin: 10px;
@@ -48,7 +49,7 @@ label.form-label {
     background: #f6f7fc;
 }
  .tabsec {
-    padding: 20px;
+    padding:1px;
     background: white;
     margin: 5px 30px 10px 30px;
     box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 
@@ -59,12 +60,12 @@ label.form-label {
 }
 .tabsec_dash
 {
-    padding: 20px;
-    background: white;
+    padding: 10px;
+    /* background: white; */
     margin: 5px 30px 10px 30px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    /* box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08); */
     border-radius: 12px;
-    margin-top: 30px;
+    margin-top: 10px;
 }
 .d-flex.p-3.rounded.mb-3.profilesec {
     margin: 5px 10px 5px 20px;
@@ -192,7 +193,7 @@ p.View_userdata {
 }
 .UserTable_Section .eBVvRK {
     font-size: 14px ;
-    color:#181D27;
+    color:#404252;
 }
 .UserTable_Section .frcmPU {
     color: #535862;
@@ -275,3 +276,63 @@ p.View_userdata {
 .mb-3.receivehealth.col {
     margin-top: 8%;
 }
+.custom-user-modal {
+  max-width: 600px; 
+}
+.mb-3.user {
+    padding: 10px 20px 0px 20px;
+}
+.mb-1.user {
+    padding: 10px 10px 0px 10px;
+}
+.user-edit-modal {
+  max-width: 600px; 
+}
+.mb-1.useredit
+ {
+    padding: 10px 10px 0px 10px;
+}
+p.View_userdata {
+    font-weight: 300;
+    width: 50ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 16px;
+    color: black;
+}
+.btn {
+    font-size: 14px;
+}
+
+.gxvszF {
+ color:#17181E;
+}
+
+.flex-grow-1.viewerSection {
+    padding: 5px 15px;
+}
+
+.tabsec_Viewuser .sc-bRKDuR.dZdOzu.rdt_Table {
+    margin-top: 10px;
+}
+.btn-primary.actv {
+    background: #2162CD;
+    color:#FFF;
+}
+.form-control {
+	border-radius: 8px;
+	height: 36px;
+}
+
+.top-tab-head {
+    margin: 25px 30px 10px;
+    border-radius: 10px;
+    color: #2162cd;
+    font-size: 14px;
+    border: 1px solid #2162CD;
+    box-shadow: none;
+    padding: 10px 16px;
+    background: #FFF;
+    display: inline-block;
+    background-color: #E9EFFA;
+ }

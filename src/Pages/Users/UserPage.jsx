@@ -14,13 +14,15 @@ import userprofileimage from "../../Components/Assets/users/profile_image.png";
 import Loader from "../CommonComponents/Loader";
 import { showError, showInfo, showSuccess } from "../CommonComponents/Toaster";
 import EditProfile from "./EditProfile";
+
 const UserPage = () => {
   // State declarations
   const [showModal, setShowModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showView, setShowView] = useState(false);
-  const [query, setQuery] = useState("");
+  const [zoneQuery, setZoneQuery] = useState(""); // ✅ separate zone search
+  const [userQuery, setUserQuery] = useState(""); // ✅ separate user search
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [users, setUsers] = useState(null);
   const [editUser, seteditUser] = useState(null);
@@ -30,6 +32,7 @@ const UserPage = () => {
   const [getUserProfile, setUserProfile] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+
   const API_URL = import.meta.env.VITE_API_URL;
   const token = sessionStorage.getItem("token");
   const vid = sessionStorage.getItem("vid");
@@ -86,7 +89,6 @@ const UserPage = () => {
       setUserProfile(profiledata.data);
       setZoneOptions(formattedZones);
       setUsers(userRes.data?.users);
-      console.log(profiledata)
     } catch (err) {
       console.log(err);
     } finally {
@@ -162,11 +164,11 @@ const UserPage = () => {
     fetchUsers();
   };
 
-   const EditUserProfile=()=>{
-    setShowProfileModal(true)
-   }
+  const EditUserProfile = () => {
+    setShowProfileModal(true);
+  };
 
-   // Add and Update data using api call
+  // Add and Update data using api call
   const handleAddOrUpdate = async (formData) => {
     setIsSaving(true);
     const payload = {
@@ -176,12 +178,16 @@ const UserPage = () => {
       useremailid: formData?.useremailid,
       usertype: formData?.usertype,
       useraddress: formData?.useraddress,
-      healthmail: formData?.receiveHealthMail,
-      userblock: formData?.userblock,
+      healthmail: Number(formData?.receiveHealthMail),
+      userblock: Number(formData?.userblock),
       zonename: formData?.selectedZones.map((zone) => zone.label).join(","),
-      selected: editUser ? "Update" : "Insert",
+      selected:
+        formData?.userblock === true
+          ? "UpdateBlock"
+          : editUser
+          ? "Update"
+          : "Insert",
     };
-    console.log(payload)
     try {
       const response = await axios.post(
         `${API_URL}/settings/users/createOrUpdateUser`,
@@ -190,23 +196,35 @@ const UserPage = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log(response);
+      console.log(response?.data?.message, "response");
       fetchUsers();
-      showSuccess(
-        editUser ? "User Updated Successfully!!!" : "User Added Successfully!!!"
-      );
-      setShowModal(false);
+      if (response?.data?.success === "true") {
+        showSuccess(response?.data?.message || "User saved successfully.");
+        fetchUsers();
+        setShowModal(false);
+      } else if (!response) {
+        showError("Failed to save user.");
+        setShowModal(true);
+      } else {
+        showSuccess(response?.data?.message || "User Updated successfully.");
+        fetchUsers();
+        setShowModal(false);
+      }
       seteditUser(null);
     } catch (error) {
       console.log(error);
-      showError("Failed to save user. Please try again.");
+      showError(
+        error
+          ? error?.response?.data?.message
+          : "Failed to save user. Please try again."
+      );
     } finally {
       setIsSaving(false);
     }
   };
- const UpdateProfile = async(formData)=>{
-  // console.log(formData)
-   setIsSaving(true);
+
+  const UpdateProfile = async (formData) => {
+    setIsSaving(true);
     const payload = {
       username: formData?.username,
       mainusername: MainUsername,
@@ -216,8 +234,7 @@ const UserPage = () => {
       useraddress: formData?.useraddress,
       healthmail: formData?.receiveHealthMail,
       userblock: false,
-      // zonename: formData?.selectedZones.map((zone) => zone.label).join(","),
-      selected: "UpdateUser" 
+      selected: "UpdateUser",
     };
 
     try {
@@ -228,46 +245,73 @@ const UserPage = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log(response);
-      fetchUsers();
-      showSuccess( "User Profile Updated Successfully!!!");
-      setShowModal(false);
+      if (response?.data?.success === "true") {
+        showSuccess("User Profile Updated successfully.");
+        fetchUsers();
+        setShowModal(false);
+      } else if (!response) {
+        showError("Failed to Updated User Profile.");
+        setShowModal(true);
+      } else {
+        showSuccess("User Profile Updated successfully.");
+        fetchUsers();
+        setShowModal(false);
+      }
       setUserProfile(null);
     } catch (error) {
       console.log(error);
-      showError("Failed to save user. Please try again.");
+      showError(
+        error
+          ? error?.response?.data?.message
+          : "Failed to update user profile. Please try again."
+      );
     } finally {
       setIsSaving(false);
     }
+  };
 
- }
+  // ✅ Separate filters for zones and users
+  const filteredProducts =
+    users != null
+      ? users.filter((user) =>
+          user.username.toLowerCase().includes(userQuery.toLowerCase())
+        )
+      : [];
+
+  const filteredZones = Array.isArray(getUserProfile?.allZones)
+    ? getUserProfile.allZones.filter((zone) =>
+        zone.zonename?.toLowerCase().includes(zoneQuery.toLowerCase())
+      )
+    : [];
+
   // Table columns
   const columns = [
     { name: "SL", selector: (row) => row.sl, width: "100px" },
     { name: "USER NAME", selector: (row) => row.username },
     { name: "USER TYPE", selector: (row) => row.usertype },
-    { name: "EMAIL", selector: (row) => row.useremailid },
+    {
+      name: "EMAIL",
+      selector: (row) => row.useremailid,
+      cell: (row) => (
+        <div
+          style={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            maxWidth: "400px",
+          }}
+          title={row.useremailid}
+        >
+          {row.useremailid}
+        </div>
+      ),
+    },
   ];
 
   const Zonecolumns = [
     { name: "SL", selector: (row) => row.sl, width: "100px" },
     { name: "ZONE NAME", selector: (row) => row.zonename },
   ];
-
-  // Filtering for search
-  const filteredProducts =
-    users != null
-      ? users.filter((user) =>
-          user.username.toLowerCase().includes(query.toLowerCase())
-        )
-      : [];
-
-  const filteredZones = Array.isArray(getUserProfile?.allZones)
-    ? getUserProfile.allZones.filter((zone) =>
-        zone.zonename?.toLowerCase().includes(query.toLowerCase())
-      )
-    : [];
-
   // Custom DataTable styles
   const customStyles = {
     headCells: {
@@ -333,13 +377,13 @@ const UserPage = () => {
               <p className="user_usertype mb-2">
                 {getUserProfile.user[0].usertype}
               </p>
-              <p className="user_useraddress">
-                {getUserProfile.user[0].useraddress}
-              </p>
-              <Button variant="primary" onClick={EditUserProfile}>Edit Profile</Button>
+              <p className="View_userdata">{getUserProfile.user[0].address}</p>
+              <Button variant="primary" onClick={EditUserProfile}>
+                Edit Profile
+              </Button>
             </div>
           ) : (
-            <p>Loading user profile...</p>
+            <Loader />
           )}
         </div>
 
@@ -349,12 +393,17 @@ const UserPage = () => {
               <Nav.Item>
                 <Nav.Link eventKey="zones">All Zone(s)</Nav.Link>
               </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="users">All User(s)</Nav.Link>
-              </Nav.Item>
+
+              {/* hide All Users tab for Viewer */}
+              {role !== "Viewer" && (
+                <Nav.Item>
+                  <Nav.Link eventKey="users">All User(s)</Nav.Link>
+                </Nav.Item>
+              )}
             </Nav>
 
             <Tab.Content className="bg-white border p-3 pt-2">
+              {/* Zones Tab */}
               <Tab.Pane eventKey="zones">
                 <div className="UserTable_TopSection" ref={tableWrapperRef}>
                   <div className="UserTable_Section">
@@ -362,7 +411,7 @@ const UserPage = () => {
                       <div className="searchbarsec flex-grow-1">
                         <SearchBar
                           placeholder="Search Zones..."
-                          onSearch={setQuery}
+                          onSearch={setZoneQuery}
                         />
                       </div>
                     </div>
@@ -385,19 +434,20 @@ const UserPage = () => {
                 </div>
               </Tab.Pane>
 
-              <Tab.Pane eventKey="users">
-                <div className="UserTable_TopSection" ref={tableWrapperRef}>
-                  <div className="UserTable_Section">
-                    <div className="searchandBtSection">
-                      <div className="searchbarsec">
-                        <SearchBar
-                          placeholder="Search Users..."
-                          onSearch={setQuery}
-                        />
-                      </div>
-                      <div className="buttonsSections">
-                        <div className="p-4 pt-1">
-                          {role !== "Viewer" && (
+              {/* Users Tab */}
+              {role !== "Viewer" && (
+                <Tab.Pane eventKey="users">
+                  <div className="UserTable_TopSection" ref={tableWrapperRef}>
+                    <div className="UserTable_Section">
+                      <div className="searchandBtSection">
+                        <div className="searchbarsec">
+                          <SearchBar
+                            placeholder="Search Users..."
+                            onSearch={setUserQuery}
+                          />
+                        </div>
+                        <div className="buttonsSections">
+                          <div className="p-0">
                             <>
                               <Buttons
                                 text="View"
@@ -435,58 +485,58 @@ const UserPage = () => {
                                 icon={<FaPlus />}
                               />
                             </>
-                          )}
-                          <UserFormModal
-                            show={showModal}
-                            handleClose={() => setShowModal(false)}
-                            onSave={handleAddOrUpdate}
-                            editingUser={editUser}
-                            Zones={zoneOptions}
-                            userdata={userZones}
-                            isSaving={isSaving}
-                          />
-
-                          <DeleteUserModal
-                            show={showDeleteModal}
-                            handleClose={() => setShowDeleteModal(false)}
-                            user={selectedUser}
-                            onDelete={handleDelete}
-                          />
-                          <ViewUser
-                            show={showView}
-                            handleClose={() => setShowView(false)}
-                            user={selectedUser}
-                            zones={userZones}
-                          />
-                          <EditProfile 
-                           show={showProfileModal}
-                           handleClose={() => setShowProfileModal(false)}
-                           onSave={UpdateProfile}
-                           selectedMainuser={getUserProfile}
-                           isSaving={isSaving}
+                            <UserFormModal
+                              show={showModal}
+                              handleClose={() => setShowModal(false)}
+                              onSave={handleAddOrUpdate}
+                              editingUser={editUser}
+                              Zones={zoneOptions}
+                              userdata={userZones}
+                              isSaving={isSaving}
                             />
+
+                            <DeleteUserModal
+                              show={showDeleteModal}
+                              handleClose={() => setShowDeleteModal(false)}
+                              user={selectedUser}
+                              onDelete={handleDelete}
+                            />
+                            <ViewUser
+                              show={showView}
+                              handleClose={() => setShowView(false)}
+                              user={selectedUser}
+                              zones={userZones}
+                            />
+                            <EditProfile
+                              show={showProfileModal}
+                              handleClose={() => setShowProfileModal(false)}
+                              onSave={UpdateProfile}
+                              selectedMainuser={getUserProfile}
+                              isSaving={isSaving}
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div style={{ maxHeight: "400px", overflowY: "scroll" }}>
-                      <DataTable
-                        columns={columns}
-                        data={filteredProducts}
-                        onRowClicked={(row) => setSelectedRowId(row.sl)}
-                        highlightOnHover
-                        pointerOnHover
-                        selectableRowsHighlight
-                        conditionalRowStyles={conditionalRowStyles}
-                        pagination
-                        paginationPerPage={5}
-                        paginationRowsPerPageOptions={[5, 10, 15]}
-                        responsive
-                        customStyles={customStyles}
-                      />
+                      <div style={{ maxHeight: "400px", overflowY: "scroll" }}>
+                        <DataTable
+                          columns={columns}
+                          data={filteredProducts}
+                          onRowClicked={(row) => setSelectedRowId(row.sl)}
+                          highlightOnHover
+                          pointerOnHover
+                          selectableRowsHighlight
+                          conditionalRowStyles={conditionalRowStyles}
+                          pagination
+                          paginationPerPage={5}
+                          paginationRowsPerPageOptions={[5, 10, 15]}
+                          responsive
+                          customStyles={customStyles}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Tab.Pane>
+                </Tab.Pane>
+              )}
             </Tab.Content>
           </Tab.Container>
         </div>

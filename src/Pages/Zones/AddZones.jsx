@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Modal, Button, Form, Row, Col, InputGroup, Tab, Nav } from "react-bootstrap";
+import { Modal, Button, Form, Row, Col, InputGroup, Tab, Nav, OverlayTrigger, Tooltip } from "react-bootstrap";
+import "./ZoneForm.css";
 import { FaSearch } from "react-icons/fa";
 import "./ServiceAreaModal.css";
 import { Formik, Form as FormikForm } from "formik";
@@ -13,6 +14,31 @@ import "../../Components/Styles/CustomButtons.css";
 const API_BASE = import.meta.env.VITE_API_URL || "http://delbi2dev.deloptanalytics.com:3000";
 const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZones }) => {
   const RequiredIcon = () => <span style={{ color: "red" }}> *</span>;
+  // Reusable info tooltip icon (same style as Users module)
+  const InfoTooltip = ({ id, children }) => (
+    <OverlayTrigger placement="top" overlay={<Tooltip id={id}>{children}</Tooltip>} delay={{ show: 150, hide: 100 }}>
+      <span
+        role="img"
+        aria-label="info"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          marginLeft: 4,
+          width: 14,
+          height: 14,
+          borderRadius: "50%",
+          border: "1px solid #6c757d",
+          fontSize: 10,
+          lineHeight: 1,
+          cursor: "help",
+          userSelect: "none",
+        }}
+      >
+        i
+      </span>
+    </OverlayTrigger>
+  );
 
   const [entryOptions, setEntryOptions] = useState([]); // [{label, value}]
   const [exitOptions, setExitOptions] = useState([]);
@@ -23,6 +49,13 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
   const [pendingAction, setPendingAction] = useState(null); // { type: 'create'|'edit', payload, values, helpers }
   const [vActive, setVActive] = useState("entry");
   const [vQ, setVQ] = useState("");
+  // Always default to Entry tab when validation modal opens
+  useEffect(() => {
+    if (showValidationModal) {
+      setVActive("entry");
+      setVQ("");
+    }
+  }, [showValidationModal]);
 
   // Client-side check: fetch existing zones and test for a name collision (case-insensitive)
   const zoneNameExists = async (name) => {
@@ -138,7 +171,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
         }
       } catch (err) {
     console.error("Failed to load service area options:", err);
-  if (!cancelled) toast.error(err?.message || "Failed to load service areas", { position: "top-center" });
+  if (!cancelled) toast.error(err?.message || "Failed to load service areas", { position: "top-right" });
       } finally {
         if (!cancelled) setLoadingOptions(false);
       }
@@ -245,7 +278,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
         }
       } catch (err) {
   console.error("Failed to load zone details:", err);
-  if (!cancelled) toast.error(err?.message || "Failed to load zone details", { position: "top-center" });
+  if (!cancelled) toast.error(err?.message || "Failed to load zone details", { position: "top-right" });
         // Still set defaults based on editingZone
         if (!cancelled) setInitialValuesState(buildInitial(editingZone));
       } finally {
@@ -267,14 +300,17 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
   const initialValues = initialValuesState;
 
   const validationSchema = Yup.object().shape({
-    zoneName: Yup.string().required("Zone Name is required"),
+    zoneName: Yup.string()
+      .max(75, "Max 75 characters")
+      .matches(/^[^\s]+$/, "No spaces allowed")
+      .required("Zone Name is required"),
     country: Yup.string().required("Country is required"),
     city: Yup.string().required("City is required"),
     threshold: Yup.number()
       .typeError("Threshold must be a number")
       .required("Threshold is required")
-  .min(0, "Must be greater than or equal to 0")
-  .max(100, "Must be less than or equal to 100"),
+      .min(1, "Must be between 1 and 100")
+      .max(100, "Must be between 1 and 100"),
     capacity: Yup.number()
       .typeError("Capacity must be a number")
       .required("Capacity is required")
@@ -285,7 +321,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
 
   return (
   <>
-    <Modal show={show} onHide={handleClose} centered backdrop="static" size="lg">
+    <Modal show={show} onHide={handleClose} centered backdrop="static" size="lg" className="zone-form">
       <Formik
         key={show ? (editingZone?.zoneName || "add") : "hidden"}
         initialValues={initialValues}
@@ -357,7 +393,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
           } catch (err) {
             // validation failed but let user proceed if they want; show toast and continue
             console.error("Validation API failed:", err);
-            toast.error(err?.message || "Validation check failed", { position: "top-center" });
+            toast.error(err?.message || "Validation check failed", { position: "top-right" });
           }
 
           // no mapping detected or validation errored: proceed with original create/edit flow
@@ -369,7 +405,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
               if (nameChanged) {
                 const exists = await zoneNameExists(values.zoneName);
                 if (exists) {
-                  toast.error("Zone name already exists", { position: "top-center" });
+                  toast.error("Zone name already exists", { position: "top-right" });
                   setSubmitting(false);
                   return;
                 }
@@ -402,7 +438,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
               // Normalize message and treat any 'exist' text as an error (API sometimes returns success: true with a message)
               const serverMsg = String(data?.message || data?.Message || data?.msg || "");
               if (serverMsg && /exist/i.test(serverMsg)) {
-                toast.error(serverMsg || "Zone already exists", { position: "top-center" });
+                toast.error(serverMsg || "Zone already exists", { position: "top-right" });
                 setSubmitting(false);
                 return;
               }
@@ -410,7 +446,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
                 const msg = data?.message || `Failed to update zone (${res.status})`;
                 throw new Error(msg);
               }
-              toast.success(data?.message || "Zone updated successfully", { position: "top-center" });
+              toast.success(data?.message || "Zone updated successfully", { position: "top-right" });
               onSave({
                 zoneName: values.zoneName,
                 country: values.country,
@@ -425,7 +461,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
               handleClose();
               return;
             } catch (err) {
-              toast.error(err?.message || "Failed to update zone", { position: "top-center" });
+              toast.error(err?.message || "Failed to update zone", { position: "top-right" });
               setSubmitting(false);
               return;
             }
@@ -436,7 +472,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
             // Prevent creating if zone name already exists
             const exists = await zoneNameExists(values.zoneName);
             if (exists) {
-              toast.error("Zone name already exists", { position: "top-center" });
+              toast.error("Zone name already exists", { position: "top-right" });
               setSubmitting(false);
               return;
             }
@@ -467,7 +503,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
             // Normalize message and treat any 'exist' text as an error
             const serverMsg = String(data?.message || data?.Message || data?.msg || "");
             if (serverMsg && /exist/i.test(serverMsg)) {
-              toast.error(serverMsg || "Zone already exists", { position: "top-center" });
+              toast.error(serverMsg || "Zone already exists", { position: "top-right" });
               setSubmitting(false);
               return;
             }
@@ -475,7 +511,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
               const msg = data?.message || `Failed to add zone (${res.status})`;
               throw new Error(msg);
             }
-            toast.success(data?.message || "Zone created successfully", { position: "top-center" });
+            toast.success(data?.message || "Zone created successfully", { position: "top-right" });
             // Optimistic add in parent list
             onSave({
               zoneName: values.zoneName,
@@ -490,7 +526,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
             resetForm();
             handleClose();
           } catch (err) {
-            toast.error(err?.message || "Failed to save zone", { position: "top-center" });
+            toast.error(err?.message || "Failed to save zone", { position: "top-right" });
           } finally {
             setSubmitting(false);
           }
@@ -515,18 +551,39 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
                 <div className="m-3 text-muted">Loading zone details...</div>
               )}
               {/* Details */}
-              <h6 className="text-muted fw-semibold mb-2">Details</h6>
+              <h6 className=" ">Details</h6>
               <Row>
-                <Form.Group as={Col} className="m-3">
+                <Form.Group as={Col} className="mb-3">
                   <Form.Label>
                     Zone Name <RequiredIcon />
+                    <InfoTooltip id="tt-zone-name">
+                      <div>
+                        • Zone name should contain maximum 75 characters. 
+                        <br />• It should not accept spaces.
+                      </div>
+                    </InfoTooltip>
                   </Form.Label>
                   <Form.Control
                     name="zoneName"
                     value={values.zoneName}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
+                    maxLength={75}
+                    onChange={(e) => {
+                      // Strip all whitespace characters and enforce 75 char limit
+                      const cleaned = e.target.value.replace(/\s+/g, "").slice(0, 75);
+                      e.target.value = cleaned;
+                      handleChange(e);
+                    }}
+                    onBlur={(e) => {
+                      // Final sanitize on blur
+                      const cleaned = (e.target.value || "").replace(/\s+/g, "").slice(0, 75);
+                      if (cleaned !== e.target.value) {
+                        e.target.value = cleaned;
+                        handleChange(e);
+                      }
+                      handleBlur(e);
+                    }}
                     isInvalid={touched.zoneName && !!errors.zoneName}
+                    style={{ wordBreak: 'break-word' }}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.zoneName}
@@ -535,9 +592,9 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
               </Row>
 
               {/* Address */}
-              <h6 className="text-muted fw-semibold mb-2">Address</h6>
+              <h6 className=" ">Address</h6>
               <Row>
-                <Form.Group as={Col} className="m-3">
+                <Form.Group as={Col} className="mb-3">
                   <Form.Label>
                     Country <RequiredIcon />
                   </Form.Label>
@@ -552,7 +609,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
                     {errors.country}
                   </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group as={Col} className="m-3">
+                <Form.Group as={Col} className="mb-3">
                   <Form.Label>
                     City <RequiredIcon />
                   </Form.Label>
@@ -569,20 +626,44 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
                 </Form.Group>
               </Row>
               {/* Threshold */}
-              <h6 className="text-muted fw-semibold mb-2">Threshold</h6>
+              <h6 className=" ">Threshold</h6>
               <Row>
-                <Form.Group as={Col} className="m-3">
+                <Form.Group as={Col} className="mb-3">
                   <Form.Label>
                     Threshold <RequiredIcon />
+                    <InfoTooltip id="tt-threshold">
+                      <div>
+                        • Allowed range 1 - 100
+                        {/* <br />• No spinner controls */}
+                      </div>
+                    </InfoTooltip>
                   </Form.Label>
-                  <InputGroup>
+                  <InputGroup className="thresper-input">
                     <Form.Control
                       name="threshold"
                       type="number"
+                      min={1}
                       max={100}
                       value={values.threshold}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
+                      onChange={(e) => {
+                        let v = e.target.value.replace(/[^0-9]/g, '');
+                        if (v) {
+                          let num = Math.min(100, Math.max(1, Number(v)));
+                          e.target.value = String(num);
+                        }
+                        handleChange(e);
+                      }}
+                      onBlur={(e) => {
+                        let num = Number(e.target.value);
+                        if (Number.isNaN(num) || num < 1) num = 1;
+                        if (num > 100) num = 100;
+                        if (String(num) !== e.target.value) {
+                          e.target.value = String(num);
+                          handleChange(e);
+                        }
+                        handleBlur(e);
+                      }}
+                      className="no-spinner"
                       isInvalid={touched.threshold && !!errors.threshold}
                     />
                     <InputGroup.Text>%</InputGroup.Text>
@@ -591,16 +672,39 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
                     </Form.Control.Feedback>
                   </InputGroup>
                 </Form.Group>
-                <Form.Group as={Col} className="m-3">
+                <Form.Group as={Col} className="mb-3">
                   <Form.Label>
                     Capacity <RequiredIcon />
+                    <InfoTooltip id="tt-capacity">
+                      <div>
+                        • Must be a number &gt;= 0
+                        {/* <br />• Spinner hidden */}
+                      </div>
+                    </InfoTooltip>
                   </Form.Label>
                   <Form.Control
                     name="capacity"
                     type="number"
+                    min={0}
                     value={values.capacity}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
+                    onChange={(e) => {
+                      let v = e.target.value.replace(/[^0-9]/g, '');
+                      if (v) {
+                        let num = Math.max(0, Number(v));
+                        e.target.value = String(num);
+                      }
+                      handleChange(e);
+                    }}
+                    onBlur={(e) => {
+                      let num = Number(e.target.value);
+                      if (Number.isNaN(num) || num < 0) num = 0;
+                      if (String(num) !== e.target.value) {
+                        e.target.value = String(num);
+                        handleChange(e);
+                      }
+                      handleBlur(e);
+                    }}
+                    className="no-spinner"
                     isInvalid={touched.capacity && !!errors.capacity}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -609,9 +713,9 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
                 </Form.Group>
               </Row>
               {/* Service Area */}
-              <h6 className="text-muted fw-semibold mb-2">Service Area</h6>
+              <h6 className=" ">Service Area</h6>
               <Row>
-                <Form.Group as={Col} className="m-3">
+                <Form.Group as={Col} className="mb-3">
                   <Form.Label>
                     Service Area Entry <RequiredIcon />
                   </Form.Label>
@@ -624,7 +728,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
                     error={errors.serviceAreaEntry}
                   />
                 </Form.Group>
-                <Form.Group as={Col} className="m-3">
+                <Form.Group as={Col} className="mb-3">
                   <Form.Label>
                     Service Area Exit <RequiredIcon />
                   </Form.Label>
@@ -639,7 +743,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
                 </Form.Group>
               </Row>
 
-              <Form.Group className="m-3">
+              <Form.Group className="mb-3">
                 <Form.Label>Remarks</Form.Label>
                 <Form.Control
                   as="textarea"
@@ -653,13 +757,13 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
             </Modal.Body>
             <Modal.Footer className="d-flex justify-content-center">
               <Button
-                className="custom-close-button"
+                className="btn btn-primary btn-sm"
                 variant="secondary"
                 onClick={handleClose}
               >
                 Cancel
               </Button>
-              <Button className="custom-save-button" type="submit" variant="primary" disabled={isSubmitting}>
+              <Button className="btn btn-primary btn-sm actv" type="submit" variant="primary" disabled={isSubmitting}>
                 Save
               </Button>
             </Modal.Footer>
@@ -671,7 +775,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
     <Modal show={showValidationModal} onHide={() => { setShowValidationModal(false); setPendingAction(null); }} centered backdrop="static" size="xl">
       <div className="sa-modal">
         <div className="sa-header">
-          <div className="sa-zone">Confirm Mapped Service Areas</div>
+          <div className="sa-zone">The line(s) are mapped with the another zone</div>
           <button className="sa-close" aria-label="Close" onClick={() => { setShowValidationModal(false); setPendingAction(null); }}>×</button>
         </div>
 
@@ -726,6 +830,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
             </Tab.Content>
           </Tab.Container>
         </div>
+  <div className="sa-continue-question">Do you want to continue?</div>
 
         <div className="reset-footer" style={{ display: 'flex', justifyContent: 'center', gap: 12, marginTop: 16 }}>
           <Button className="btn-soft-outline" variant="secondary" onClick={() => { setShowValidationModal(false); setPendingAction(null); }}>
@@ -747,7 +852,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
                 if (nameChanged) {
                   const exists = await zoneNameExists(values.zoneName);
                   if (exists) {
-                    toast.error("Zone name already exists", { position: "top-center" });
+                    toast.error("Zone name already exists", { position: "top-right" });
                     return;
                   }
                 }
@@ -778,7 +883,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
                 const data = await res.json().catch(() => ({}));
                 const serverMsg = String(data?.message || data?.Message || data?.msg || "");
                 if (serverMsg && /exist/i.test(serverMsg)) {
-                  toast.error(serverMsg || "Zone already exists", { position: "top-center" });
+                  toast.error(serverMsg || "Zone already exists", { position: "top-right" });
                   helpers.setSubmitting(false);
                   return;
                 }
@@ -786,7 +891,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
                   const msg = data?.message || `Failed to update zone (${res.status})`;
                   throw new Error(msg);
                 }
-                toast.success(data?.message || "Zone updated successfully", { position: "top-center" });
+                toast.success(data?.message || "Zone updated successfully", { position: "top-right" });
                 onSave({
                   zoneName: values.zoneName,
                   country: values.country,
@@ -808,7 +913,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
                 // For create, block if name already exists
                 const exists = await zoneNameExists(values.zoneName);
                 if (exists) {
-                  toast.error("Zone name already exists", { position: "top-center" });
+                  toast.error("Zone name already exists", { position: "top-right" });
                   return;
                 }
                 helpers.setSubmitting(true);
@@ -837,7 +942,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
                 const data = await res.json().catch(() => ({}));
                 const serverMsg = String(data?.message || data?.Message || data?.msg || "");
                 if (serverMsg && /exist/i.test(serverMsg)) {
-                  toast.error(serverMsg || "Zone already exists", { position: "top-center" });
+                  toast.error(serverMsg || "Zone already exists", { position: "top-right" });
                   helpers.setSubmitting(false);
                   return;
                 }
@@ -845,7 +950,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
                   const msg = data?.message || `Failed to add zone (${res.status})`;
                   throw new Error(msg);
                 }
-                toast.success(data?.message || "Zone created successfully", { position: "top-center" });
+                toast.success(data?.message || "Zone created successfully", { position: "top-right" });
                 onSave({
                   zoneName: values.zoneName,
                   country: values.country,
@@ -863,7 +968,7 @@ const ZoneFormModal = ({ show, handleClose, onSave, editingZone, zones: parentZo
                 return;
               }
             } catch (err) {
-              toast.error(err?.message || "Failed to perform action", { position: "top-center" });
+              toast.error(err?.message || "Failed to perform action", { position: "top-right" });
               if (act?.helpers?.setSubmitting) act.helpers.setSubmitting(false);
             }
           }}>

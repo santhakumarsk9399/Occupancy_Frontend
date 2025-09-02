@@ -1,0 +1,42 @@
+.custom-tooltip {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 14px 16px;
+  border: 1px solid #d8d8d8;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  color: #333;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  opacity: 0;
+  transform: translateY(8px);
+  z-index: 1000;
+}
+
+.fade-in-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-out-tooltip {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.tooltip-line {
+  margin-bottom: 6px;
+  white-space: nowrap;
+  font-weight: 500;
+  color: #333;
+}
+
+.tooltip-line:last-child {
+  margin-bottom: 0;
+}
+
+.tooltip-count {
+  color: #111; /* darker for better contrast */
+  font-weight: 700;
+  margin-left: 4px;
+}

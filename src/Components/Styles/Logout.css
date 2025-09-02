@@ -4,8 +4,25 @@
   object-fit: contain;
 }
 .custom-modal .modal-dialog {
-  max-width: 300px; /* set width */
+  max-width: 400px; /* set width */
 }
 .text-center.modal-body {
     margin: 40px;
+}
+.logout-cnt {
+  max-width: 120px;
+    height: 120px;
+    border-radius: 100%;
+    margin: 0 auto 20px;
+    padding: 30px;
+-webkit-box-shadow: 0px 0px 20px -7px rgba(179, 180, 183, 1);
+-moz-box-shadow: 0px 0px 20px -7px rgba(179, 180, 183, 1);
+box-shadow: 0px 0px 20px -7px rgba(179, 180, 183, 1);
+}
+.btn-primary {
+  min-width: 100px;;
+}
+.btn-primary.logout-btn {
+  background: #2162CD;
+  color:#fff;
 }

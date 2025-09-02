@@ -681,7 +681,7 @@
 }
 
 .search-input {
-  width: 100%;
+  /* width: 100%; */
   max-width: 300px; /* match SMS size */
   padding: 8px 12px; /* slightly tighter */
   height: 35px; /* compact height */

@@ -69,13 +69,15 @@
   display: flex;
   align-items: center;
   padding: 10px;
+  font-family: 'Inter', sans-serif;
 }
 
 .panel-subtitle {
-  font-size: 1rem;
+  font-size: 1.10rem;
   color: #404252;
   margin: 0.3rem 0 0.3rem 10px;
   font-weight: 600;
+  font-family: 'Inter', sans-serif;
 }
 
 /* Menu Items (links) */
@@ -96,9 +98,9 @@
 }
 
 .menu-item.active {
-  font-weight: bold;
+  font-weight: 600;
   background-color: #e6f0ff;
-  color: #004085;
+  color: #2162CD;
 }
 
 /* Menu icon inside NavLink */
@@ -136,11 +138,44 @@ button:focus {
 } */
 /* Submenu padding and underline */
 a.menu-item {
-    padding: 12px;
+    padding: 10px 12px;
     text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    margin: 5px 0;
+    font-weight: 500;
+    color: #17181E;
 }
 .sidebar_username {
     font-size: 16px;
     font-weight: 600;
     padding-top: 5px;
+}
+
+
+/* Sideebar 29/08 */
+
+.sidebar-panel {   
+    border-right: 1px solid #E2E4E9;
+}
+.headersec h3.Dashheader_title {
+  font-weight: 600;
+  margin-bottom: 0;
+}
+.menuIconsdiv .icon-btn {
+  border-radius: 100%;
+  width:39px;
+  height:39px;
+  background: #282A3A;
+}
+.menuIconsdiv .icon-btn-active {
+  border:2px solid #2162CD;
+  background: #fff;
+  color:#2162CD;
+  width:39px;
+  height:39px;
+  border-radius: 100%;
+}
+.menuIconsdiv .icon-btn:hover {
+    background: #fff;
+  color:#2162CD;
 }

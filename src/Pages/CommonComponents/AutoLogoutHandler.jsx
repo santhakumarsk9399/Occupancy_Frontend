@@ -11,7 +11,7 @@ const AutoLogoutHandler = ({ timeout = 5 * 60 * 1000 }) => {
     const resetTimer = () => {
       clearTimeout(timer);
       timer = setTimeout(() => {
-        // ✅ Clear session and redirect
+
         sessionStorage.clear();
         window.location.href = "/login";
       }, timeout);

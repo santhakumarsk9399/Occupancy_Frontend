@@ -6,6 +6,7 @@ import SearchBar from "../CommonComponents/SearchBar";
 import Buttons from "../CommonComponents/Button";
 import { FaEye, FaEdit, FaTrash, FaPlus, FaRedo } from "react-icons/fa";
 import "../../Components/Styles/CustomButtons.css";
+import "./ZoneStyle.css";
 import AddZone from "./AddZones";
 import EditZone from "./EditZone";
 import ResetCountModal from "./ResetCountModal";
@@ -125,7 +126,7 @@ console.log(filteredProducts)
         serviceAreaExit: exitList,
       });
     } catch (err) {
-      toast.error(err?.message || "Failed to load service area details", { position: "top-center" });
+      toast.error(err?.message || "Failed to load service area details", { position: "top-right" });
       setServiceAreaZone({ ...selectedZone, serviceAreaEntry: [], serviceAreaExit: [] });
     }
   };
@@ -264,14 +265,14 @@ console.log(filteredProducts)
     try {
       // Validate input & selection
       if (resetCount == null || Number.isNaN(Number(resetCount))) {
-        toast.error("Enter a valid number to reset.", { position: "top-center" });
+        toast.error("Enter a valid number to reset.", { position: "top-right" });
         return;
       }
       // allow modal to pass a zone in case selection was cleared
   // If modal passed a zone as second arg, prefer it; otherwise fall back to selectedZone.
   const zoneToUse = passedZone || selectedZone;
       if (!zoneToUse?.zoneName) {
-        toast.error("Select a zone first.", { position: "top-center" });
+        toast.error("Select a zone first.", { position: "top-right" });
         return;
       }
 
@@ -290,10 +291,10 @@ console.log(filteredProducts)
         const msg = data?.message || `Failed to reset count (${res.status})`;
         throw new Error(msg);
       }
-  toast.success(data?.message || "Zone count reset successfully", { position: "top-center" });
+  toast.success(data?.message || "Zone count reset successfully", { position: "top-right" });
   setShowReset(false);
     } catch (err) {
-  toast.error(err?.message || "Failed to reset count", { position: "top-center" });
+  toast.error(err?.message || "Failed to reset count", { position: "top-right" });
     }
   };
 
@@ -337,7 +338,7 @@ console.log(filteredProducts)
         const msg = data?.message || `Failed to delete zone (${res.status})`;
         throw new Error(msg);
       }
-  toast.success(data?.message || "Zone deleted successfully", { position: "top-center" });
+  toast.success(data?.message || "Zone deleted successfully", { position: "top-right" });
   const targetName = String(currentZone.zoneName).toLowerCase();
   const updated = zones.filter((z) => String(z.zoneName).toLowerCase() !== targetName);
       setZones(updated);
@@ -346,29 +347,77 @@ console.log(filteredProducts)
       setSelectedRowId(null);
       setSelectedZone({});
     } catch (err) {
-  toast.error(err?.message || "Failed to delete zone", { position: "top-center" });
+  toast.error(err?.message || "Failed to delete zone", { position: "top-right" });
     }
   };
-
+  const customStyles = {
+    headCells: {
+      style: {
+        backgroundColor: "#ffffff",
+        color: "black",
+        fontWeight: "300",
+        fontSize: "14px",
+        textTransform: "uppercase",
+        borderBottom: "2px solid #ddd",
+        fontFamily: "Inter, sans-serif",
+      },
+    },
+    cells: {
+      style: {
+        fontSize: "16px",
+        fontWeight: "400",
+        padding: "10px 15px",
+        fontFamily: "Inter, sans-serif",
+      },
+    },
+    rows: {
+      style: {
+        minHeight: "48px",
+        "&:hover": {
+          backgroundColor: "#f0f9ff",
+          cursor: "pointer",
+          fontFamily: "Inter, sans-serif",
+        },
+      },
+    },
+    pagination: {
+      style: {
+        borderTop: "1px solid #ddd",
+        padding: "10px",
+        fontFamily: "Inter, sans-serif",
+      },
+    },
+  };
   return (
     <div className="Usercontainer">
+
+   
+        <div><p><span class="top-tab-head">Zone Lists</span></p></div>
+
       <div className="tabsec">
+        
+       
+
         <Tab.Container defaultActiveKey="zones">
-          <Nav variant="tabs">
-            <Nav.Item>
-              {/* <Nav.Link eventKey="zones">Zone Lists</Nav.Link> */}
-            </Nav.Item>
+         {/*
+          <Nav variant="tabs" >
+            
+             {/*<Nav.Item>
+               <Nav.Link eventKey="zones">Zone Lists</Nav.Link> 
+            </Nav.Item>*/}
+
             {/* <Nav.Item>
               <Nav.Link eventKey="zones">Zone(s)</Nav.Link>
             </Nav.Item> */}
-          </Nav>
+
+          {/*</Nav> */}
 
           <Tab.Content className="bg-white border p-3">
             {/* <Tab.Pane eventKey="zones"></Tab.Pane> */}
             <Tab.Pane eventKey="zones">
-              <div className="UserTable_TopSection" ref={tableWrapperRef}>
+              <div className="Zone_TopSection" ref={tableWrapperRef}>
                 {/* <h1>All Users</h1> */}
-                <div className="UserTable_Section">
+                <div className="Zone_Section">
                   <div className="searchandBtSection">
                     <div className="searchbarsec">
                       <SearchBar
@@ -377,15 +426,13 @@ console.log(filteredProducts)
                       />
                     </div>
                     <div className="buttonsSections">
-                      <div className="p-4">
+                      <div className="pb-2">
                         <Buttons
                           text="View Service Area Entry/Exit"
                           type="button"
                           size="md"
                           variant="light"
-                          className="btn-soft-outline"
-                          icon={<FaEye />}
-                          iconPosition="right"
+                          className="btn-primary"                          
                           onClick={handleViewServiceArea}
                           disabled={!isRowSelected}
                         />{" "}
@@ -394,10 +441,8 @@ console.log(filteredProducts)
                           type="button"
                           size="md"
                           variant="light"
-                          className="btn-soft-outline"
-                          onClick={() => handleEditClick(selectedZone)}
-                          icon={<FaEdit />}
-                          iconPosition="right"
+                          className="btn-primary"
+                          onClick={() => handleEditClick(selectedZone)}                         
                           disabled={!isRowSelected}
                         />{" "}
                         <Buttons
@@ -405,10 +450,8 @@ console.log(filteredProducts)
                           type="button"
                           size="md"
                           variant="light"
-                          className="btn-soft-outline"
-                          onClick={handleOpenDelete}
-                          icon={<FaTrash />}
-                          iconPosition="right"
+                          className="btn-primary"
+                          onClick={handleOpenDelete}                          
                           disabled={!isRowSelected}
                         />{" "}
                         <Buttons
@@ -416,10 +459,8 @@ console.log(filteredProducts)
                           type="button"
                           size="md"
                           variant="light"
-                          className="btn-soft-outline"
-                          onClick={handleOpenReset}
-                          icon={<FaRedo />}
-                          iconPosition="right"
+                          className="btn-primary"
+                          onClick={handleOpenReset}                          
                           disabled={!isRowSelected}
                         />{" "}
                         <Buttons
@@ -427,10 +468,8 @@ console.log(filteredProducts)
                           type="button"
                           size="md"
                           variant="light"
-                          className="btn-soft-outline"
-                          onClick={handleAddZones}
-                          icon={<FaPlus />}
-                          iconPosition="right"
+                          className="btn-primary"
+                          onClick={handleAddZones}                          
                         />{" "}
                          <AddZone
                           show={showModal}
@@ -460,7 +499,7 @@ console.log(filteredProducts)
                       </div>
                     </div>
                   </div>
-                  <div style={{ maxHeight: "400px", overflowY: "scroll" }}>
+                  <div style={{ maxHeight: "650px", overflowY: "scroll" }}>
                     {isLoading ? (
                       <Loader />
                     ) : (
@@ -473,9 +512,10 @@ console.log(filteredProducts)
                         selectableRowsHighlight
                         conditionalRowStyles={conditionalRowStyles}
                         pagination
-                        paginationPerPage={5}
-                        paginationRowsPerPageOptions={[5, 10, 15]}
+                        paginationPerPage={10}
+                        paginationRowsPerPageOptions={[10, 20, 30]}
                         responsive
+                        customStyles ={customStyles}
                       />
                     )}
                   </div>

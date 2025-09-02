@@ -11,7 +11,38 @@ html {
     padding: 2rem;
     border-radius: 10px;
     margin-bottom: 1rem;
+    box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 
+                0 1px 2px 0 rgba(16, 24, 40, 0.06)!important;
 }
 .Header_app {
     background: #f6f7fc;
+}
+.header h3 {
+    color: #17181E;
+    margin: 0;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+}
+.header {
+  background-color: #fff;  
+  border-bottom: 1px solid #E2E4E9;
+}
+.filterSection .custom-close-button, 
+.filterSection .custom-close-button:hover {
+    background-color: #E9EFFA;
+    border-color: #2162CD;
+    color: #2162CD;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-style: normal;
+    font-weight: 500;
+    width:auto;
+    height:auto;
+    font-family: 'Inter', sans-serif;
+}
+
+label.msd__item  {
+    margin-bottom: 0;
+
 }

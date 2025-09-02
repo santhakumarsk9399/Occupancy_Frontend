@@ -1,4 +1,4 @@
-.header {
+/* .header {
   background-color: #f0f0f0;
   padding: 12px 24px;
   font-size: 20px;
@@ -11,4 +11,101 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.custom-close-button {
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+  padding: 6px 12px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.custom-close-button:hover,
+.custom-close-button:active,
+.custom-close-button:focus {
+  background-color: #E9EFFA !important;   
+  color: #2162CD !important;               
+  border: 1px solid #2162CD !important;   
+}
+
+.custom-close-button .btn-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+.d-flex.justify-content-between.align-items-center.Dash_header {
+    padding: 10px;
+    background: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    margin: 0;
+}
+h3.Dashheader_title {
+    font-family: 'Inter';
+    font-size: 24px;
+    font-weight: 500;
+    padding: 10px 5px 5px 20px;
+} */
+ .header {
+  background-color: #fff!important;
+  padding: 12px 24px;
+  font-size: 20px;
+  font-weight: 600;
+  border-bottom: 1px solid #E2E4E9;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.custom-close-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.custom-close-button:hover,
+.custom-close-button:active,
+.custom-close-button:focus {
+  background-color: #E9EFFA !important;  
+  color: #2162CD !important;              
+  border: 1px solid #2162CD !important;  
+}
+ 
+.custom-close-button .btn-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+.d-flex.justify-content-between.align-items-center.Dash_header {
+    padding: 10px;
+    background: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    margin: 0;
+}
+h3.Dashheader_title {
+    font-family: 'Inter';
+    font-size: 24px;
+    font-weight: 500;
+    padding: 10px 5px 5px 20px;
+}
+
+
+/* Dash Header 29/08  */
+
+.Dash_header {
+  border-bottom: 1px solid #E2E4E9;
 }

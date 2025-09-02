@@ -7,12 +7,14 @@ fieldset {
   outline: none !important;
   box-shadow: none !important;
 }
+
 .live-chart-wrapper:focus,
 .live-chart-wrapper *:focus {
-  outline: none !important;
-  border: none !important;
+ /* outline: none !important;
+  border: none !important;*/
 }
 
+/* Chart summary row */
 .chart-summary {
   display: flex;
   gap: 24px;
@@ -30,37 +32,91 @@ fieldset {
   align-items: center;
 }
 
+/* Legend checkboxes below chart */
 .checkbox-legend {
   display: flex;
-  gap: 24px;
   justify-content: center;
-  margin-top: 8px;
+  gap: 20px;
+  margin-top: 12px;
 }
 .legend-checkbox {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  font-weight: 600;
-}
-.legend-checkbox input {
-  transform: translateY(1px);
+  gap: 6px;
+  cursor: pointer;
 }
 
+/* Custom styled checkbox */
+.legend-checkbox-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #999; /* always visible border */
+  border-radius: 4px;
+  background-color: white;
+  position: relative;
+  cursor: pointer;
+}
+
+/* Checked state → tick + color */
+.legend-checkbox-input:checked::after {
+  content: "✔";
+  color: white;
+  font-size: 12px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.legend-checkbox-input.low:checked {
+  background-color: #25b27a;
+  border-color: #25b27a;
+}
+.legend-checkbox-input.medium:checked {
+  background-color: #ffb700;
+  border-color: #ffb700;
+}
+.legend-checkbox-input.high:checked {
+  background-color: #f35f5f;
+  border-color: #f35f5f;
+}
+
+/* Tooltip (single clean version) */
 .custom-tooltip {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  padding: 8px 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 12px 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  font-family: "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
   font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+  opacity: 0;
+  transform: translateY(10px) scale(0.96);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  z-index: 1000;
+  min-width: 150px;
+  max-width: 240px;
 }
-
-.tabsec_dash .nav-tabs .nav-link {
-  font-weight: 600;
+.custom-tooltip.fade-in-tooltip {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
-.topSections {
-    display: flex;
-    justify-content: space-between;
+.custom-tooltip div {
+  margin-bottom: 6px;
+}
+.custom-tooltip div:last-child {
+  margin-bottom: 0;
+}
+.custom-tooltip strong {
+  color: #555;
+  display: inline-block;
+  min-width: 90px;
 }
 
 /* Modal overlay */
@@ -86,7 +142,7 @@ fieldset {
   overflow: hidden;
 }
 
-/* Header */
+/* Modal header */
 .modal-header {
   display: flex;
   align-items: center;
@@ -94,14 +150,11 @@ fieldset {
   padding: 10px 14px;
   border-bottom: 1px solid #eee;
 }
-
 .modal-title {
   margin: 0;
   font-size: 16px;
   font-weight: 700;
 }
-
-/* Close btn */
 .modal-close-btn {
   border: none;
   background: #ffffff;
@@ -115,13 +168,12 @@ fieldset {
   background: #e5e7eb;
 }
 
-/* Body where chart fills */
+/* Modal body */
 .modal-body {
   flex: 1;
   padding: 8px;
   min-height: 0; 
 }
-
 .enlarge_icon {
   padding: 6px 10px;
   border-radius: 8px;
@@ -133,6 +185,7 @@ fieldset {
   background: #f9fafb;
 }
 
+/* Fade-in effect for chart */
 .chart-fade {
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
@@ -140,8 +193,46 @@ fieldset {
 .chart-fade.loaded {
   opacity: 1;
 }
+
+/* Zone label color */
 p.OccupiedZoneLabel_color {
+  margin: 0;
+  color: #9496A1;
+  font-size: 14px;
+   font-weight: 500;
+}
+.topSections {
+    display: flex;
+    justify-content: space-between;
+}
+.custom-card-body {
+    background: white ;
+}
+
+/* 29/08 */
+
+.topSections {
+  margin-bottom: 5px;
+}
+.modal-title {
+    font-size: 20px;
+    font-weight: 500;
     margin: 0;
-    color: #9496A1;
-    font-size: 14px;
+    color: #17181E;
+    font-family: 'Inter', sans-serif;
+}
+.legend-container {
+  width: 100%;
+}
+
+.update-text {
+  font-size: 13px;
+  color: #666;
+  font-style: italic;
+}
+p.update-text_sub {
+    font-size: 12px;
+    font-family: 'Inter';
+    color: #5B5D6B;
+    font-weight: 300;
 }

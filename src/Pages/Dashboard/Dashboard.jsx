@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import DashHeader from "../CommonComponents/Dashboard_Header";
 import "../../Components/Styles/LiveChart.css";
@@ -9,6 +8,9 @@ import { Tab, Nav, Spinner } from "react-bootstrap";
 import DashFilters from "./CascadeMultiSelect";
 import { showSuccess } from "../CommonComponents/Toaster";
 import NoData from "../CommonComponents/NoDataAvailable";
+import UnderDevelopment from "../CommonComponents/UnderDevlopment";
+import Dashboard2 from "./Dashboard2";
+import Dashboard3 from "./Dashboard3";
 
 const DashboardPage = () => {
   const [dashboardData, setDashboardData] = useState(null);
@@ -32,6 +34,7 @@ const DashboardPage = () => {
   const username = sessionStorage.getItem("username");
   const API_URL = import.meta.env.VITE_API_URL;
   const hasFetchedRef = useRef(false);
+  const [activeTab, setActiveTab] = useState("Dash1");
 
   const handleZones = async (isFirstLoad = false) => {
     if (isFirstLoad) setPageLoading(true);
@@ -44,10 +47,20 @@ const DashboardPage = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      const zoneData = response.data?.data;
-      setZones(zoneData);
+      const zoneData = response.data?.data; // Expecting { selectedZones: [...] }
+      const raw = zoneData?.selectedZones;
+      let normalizedZones = [];
+      if (Array.isArray(raw)) {
+        normalizedZones = raw
+          .flatMap((item) => (typeof item === "string" ? item.split(",") : []))
+          .map((s) => s.trim())
+          .filter(Boolean);
+      } else if (typeof raw === "string") {
+        normalizedZones = raw.split(",").map((s) => s.trim()).filter(Boolean);
+      }
+      setZones(normalizedZones);
 
-      const zoneNames = zoneData ? zoneData.selectedZones : "";
+      const zoneNames = zoneData ? zoneData.selectedZones : ""; // keep original shape for API call
       let dashpayload = { selectedZones: zoneNames };
 
       const sendRes = await axios.post(
@@ -65,16 +78,19 @@ const DashboardPage = () => {
     }
   };
 
-  // First load + auto refresh silently
+  // Fetch only when Dashboard 1 tab is active; poll every 15s while active
+  const dash1FirstLoadRef = useRef(false);
   useEffect(() => {
-    handleZones(true); 
-
+    if (activeTab !== 'Dash1') return; // only active tab
+    // First activation: show loader; later activations silent refresh
+    const first = !dash1FirstLoadRef.current;
+    handleZones(first);
+    dash1FirstLoadRef.current = true;
     const interval = setInterval(() => {
-      handleZones(false); 
-    }, 5000);
-
+      handleZones(false);
+    }, 15000); // 15 seconds
     return () => clearInterval(interval);
-  }, []);
+  }, [activeTab]);
 
   const filters = async () => {
     try {
@@ -162,7 +178,7 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="Dashcontainer">
       <DashHeader
         title="Live Occupancy"
         onFilterClick={async () => {
@@ -186,7 +202,7 @@ const DashboardPage = () => {
       />
 
       <div className="tabsec_dash">
-        <Tab.Container defaultActiveKey="Dash1">
+        <Tab.Container activeKey={activeTab} onSelect={(k) => setActiveTab(k || "Dash1")}>        
           <Nav variant="tabs">
             <Nav.Item>
               <Nav.Link eventKey="Dash1">Dashboard 1</Nav.Link>
@@ -201,11 +217,11 @@ const DashboardPage = () => {
 
           <Tab.Content className="bg-white border p-3">
             <Tab.Pane eventKey="Dash1">
-              <div className="UserTable_TopSection">
-                <div className="UserTable_Section">
+              <div className="Dash_TopSection">
+                <div className="Dash_Section">
                   <div style={{ maxHeight: "650px" }}>
-                    <div className="mt-4">
-                      <CustomCard title="" size="md">
+                    <div className="mt-1">
+                      <CustomCard title="" size="md" style={{background:"white"}}>
                         {pageLoading ? (
                           // Loader only on first page load
                           <div
@@ -229,7 +245,6 @@ const DashboardPage = () => {
                         ) : dashboardData && dashboardData.length > 0 ? (
                           <LiveOccupancyChart2 data={dashboardData} />
                         ) : (
-                          // ✅ Only show NoData when pageLoading is false AND data is empty
                           <NoData />
                         )}
                       </CustomCard>
@@ -237,6 +252,18 @@ const DashboardPage = () => {
                   </div>
                 </div>
               </div>
+            </Tab.Pane>
+          </Tab.Content>
+
+          <Tab.Content className="bg-white border p-3">
+            <Tab.Pane eventKey="Dash2">
+              <Dashboard2 zones={zones} isActive={activeTab === "Dash2"} />
+            </Tab.Pane>
+          </Tab.Content>
+
+          <Tab.Content className="bg-white border p-3">
+            <Tab.Pane eventKey="Dash3">
+              <Dashboard3 zones={zones} isActive={activeTab === "Dash3"} />
             </Tab.Pane>
           </Tab.Content>
         </Tab.Container>

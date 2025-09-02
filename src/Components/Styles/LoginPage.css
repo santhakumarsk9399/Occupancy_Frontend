@@ -41,18 +41,23 @@ button.btn.btn-primary.lgnsbbtn {
   width: 100%;
   /* margin: 10px 20px; */
   border-radius: 8px;
+  color:#fff;
+}
+button.btn.btn-primary.lgnsbbtn:hover {
+
 }
 .FormSection {
   margin: 24px 0px;
 }
 .form-control.textfield {
   border-radius: 8px;
+  height:35px;
 }
 label.addExpenseLabel {
   font-size: 13px;
 }
 label.addExpenseLabel {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   font-style: normal;
   font-family: inter;
@@ -83,4 +88,11 @@ p.splabel {
 img.c_logo {
   margin: 0px 2px;
   vertical-align: top;
+}
+p.cplabel, p.splabel {
+  font-weight: 400;
+}
+
+.LogcopyrightSec .cplabel {
+  margin-top: 5px;
 }

@@ -1,16 +1,44 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Form, Row, Col, InputGroup } from "react-bootstrap";
+import { Modal, Button, Form, Row, Col, InputGroup, OverlayTrigger, Tooltip, Tab, Nav } from "react-bootstrap";
+import "./ZoneForm.css";
+import "./ServiceAreaModal.css"; // reuse styling from Add zone validation popup
+import { FaSearch } from "react-icons/fa";
 import { Formik, Form as FormikForm } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MultiSelectDropdown from "../CommonComponents/MultiSelectDropDown";
+import "../../Components/Styles/CustomButtons.css";
 
 // Prefer environment variable for API base, fallback to known dev host
 const API_BASE = import.meta.env.VITE_API_URL || "http://delbi2dev.deloptanalytics.com:3000";
 
 const EditZone = ({ show, handleClose, onSave, editingZone }) => {
   const RequiredIcon = () => <span style={{ color: "red" }}> *</span>;
+  const InfoTooltip = ({ id, children }) => (
+    <OverlayTrigger placement="top" overlay={<Tooltip id={id}>{children}</Tooltip>} delay={{ show: 150, hide: 100 }}>
+      <span
+        role="img"
+        aria-label="info"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          marginLeft: 4,
+          width: 14,
+          height: 14,
+          borderRadius: "50%",
+          border: "1px solid #6c757d",
+          fontSize: 10,
+          lineHeight: 1,
+          cursor: "help",
+          userSelect: "none",
+        }}
+      >
+        i
+      </span>
+    </OverlayTrigger>
+  );
 
   const [entryOptions, setEntryOptions] = useState([]);
   const [exitOptions, setExitOptions] = useState([]);
@@ -19,6 +47,20 @@ const EditZone = ({ show, handleClose, onSave, editingZone }) => {
   const [exitUniqueMap, setExitUniqueMap] = useState({});
   const [loadingOptions, setLoadingOptions] = useState(false);
   const [loadingZone, setLoadingZone] = useState(false);
+  // Validation popup state (mirror logic from AddZones for consistency)
+  const [showValidationModal, setShowValidationModal] = useState(false);
+  const [validationData, setValidationData] = useState(null); // holds mapped entries/exits from validation API
+  const [pendingAction, setPendingAction] = useState(null); // { values, entryAreas, exitAreas, sentryuniqueid, sexituniqueid, resetForm, setSubmitting }
+  const [vActive, setVActive] = useState("entry");
+  const [vQ, setVQ] = useState("");
+
+  // Always reset validation modal tabs/search when opened
+  useEffect(() => {
+    if (showValidationModal) {
+      setVActive("entry");
+      setVQ("");
+    }
+  }, [showValidationModal]);
 
   const buildInitial = (src = {}) => ({
     zoneName: src?.zoneName || "",
@@ -137,7 +179,7 @@ const EditZone = ({ show, handleClose, onSave, editingZone }) => {
         }
       } catch (err) {
         console.error("Failed to load service area options:", err);
-  if (!cancelled) toast.error(err?.message || "Failed to load service areas", { position: "top-center" });
+  if (!cancelled) toast.error(err?.message || "Failed to load service areas", { position: "top-right" });
       } finally {
         if (!cancelled) setLoadingOptions(false);
       }
@@ -243,7 +285,7 @@ const EditZone = ({ show, handleClose, onSave, editingZone }) => {
         }
       } catch (err) {
         console.error("Failed to load zone details:", err);
-  if (!cancelled) toast.error(err?.message || "Failed to load zone details", { position: "top-center" });
+  if (!cancelled) toast.error(err?.message || "Failed to load zone details", { position: "top-right" });
         if (!cancelled) setInitialValuesState(buildInitial(editingZone));
       } finally {
         if (!cancelled) setLoadingZone(false);
@@ -265,17 +307,20 @@ const EditZone = ({ show, handleClose, onSave, editingZone }) => {
   const initialValues = initialValuesState;
 
   const validationSchema = Yup.object().shape({
-    zoneName: Yup.string().required("Zone Name is required"),
+    zoneName: Yup.string()
+      .max(75, 'Max 75 characters')
+      .matches(/^[^\s]+$/, 'No spaces allowed')
+      .required("Zone Name is required"),
     country: Yup.string().required("Country is required"),
     city: Yup.string().required("City is required"),
-    threshold: Yup.number().typeError("Threshold must be a number").required("Threshold is required").min(0, "Must be >= 0"),
+  threshold: Yup.number().typeError("Threshold must be a number").required("Threshold is required").min(1, "Must be between 1 and 100").max(100, "Must be between 1 and 100"),
     capacity: Yup.number().typeError("Capacity must be a number").required("Capacity is required").min(0, "Must be >= 0"),
     serviceAreaEntry: Yup.array().min(1, "Service Area Entry is required"),
     serviceAreaExit: Yup.array().min(1, "Service Area Exit is required"),
   });
 
   return (
-    <Modal show={show} onHide={handleClose} centered backdrop="static" size="lg">
+    <Modal show={show} onHide={handleClose} centered backdrop="static" size="lg" className="zone-form">
       <Formik
         key={show ? (editingZone?.zoneName || "edit") : "hidden"}
         initialValues={initialValues}
@@ -307,9 +352,56 @@ const EditZone = ({ show, handleClose, onSave, editingZone }) => {
           };
           const entryParsed = parse(entryList);
           const exitParsed = parse(exitList);
-          // send separate unique id lists for entry and exit
           const sentryuniqueid = Array.from(new Set((entryParsed.uniques || []).filter(Boolean))).join(",");
           const sexituniqueid = Array.from(new Set((exitParsed.uniques || []).filter(Boolean))).join(",");
+
+          // Build validation payload (API expects zonename field like Add flow)
+          const validationPayload = {
+            vid,
+            username,
+            zonename: values.zoneName,
+            country: values.country,
+            city: values.city,
+            threshold: Number(values.threshold),
+            capacity: Number(values.capacity),
+            remarks: values.remarks || "",
+            serviceareaentry: entryParsed.areas.join(","),
+            sentryuniqueid,
+            serviceareaexit: exitParsed.areas.join(","),
+            sexituniqueid,
+          };
+
+          // Call validation API first to detect mapped lines
+          try {
+            const vres = await fetch(`${API_BASE}/settings/zones/validationZone`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+              },
+              body: JSON.stringify(validationPayload),
+            });
+            const vdata = await vres.json().catch(() => ({}));
+            const hasMapped = !!(vdata?.mappedLineEntryFlag || vdata?.mappedLineExitFlag);
+            if (hasMapped) {
+              setValidationData(vdata);
+              setPendingAction({ values, entryAreas: entryParsed.areas, exitAreas: exitParsed.areas, sentryuniqueid, sexituniqueid, resetForm, setSubmitting });
+              setShowValidationModal(true);
+              setSubmitting(false);
+              return; // wait for user confirmation
+            }
+          } catch (err) {
+            console.error("Validation API failed:", err);
+            toast.error(err?.message || "Validation check failed", { position: "top-right" });
+            // proceed anyway
+          }
+
+          // Optional: if zone name changed, ensure uniqueness (client-side) before edit
+            const nameChanged = String(values.zoneName || "").toLowerCase().trim() !== String(editingZone.zoneName || "").toLowerCase().trim();
+            if (nameChanged) {
+              // We don't have zone list here; server will likely handle duplicates. Could add fetch if needed.
+            }
+
           try {
             setSubmitting(true);
             const body = {
@@ -340,7 +432,7 @@ const EditZone = ({ show, handleClose, onSave, editingZone }) => {
               const msg = data?.message || `Failed to update zone (${res.status})`;
               throw new Error(msg);
             }
-            toast.success(data?.message || "Zone updated successfully", { position: "top-center" });
+            toast.success(data?.message || "Zone updated successfully", { position: "top-right" });
             onSave({
               zoneName: values.zoneName,
               country: values.country,
@@ -354,39 +446,58 @@ const EditZone = ({ show, handleClose, onSave, editingZone }) => {
             resetForm();
             handleClose();
           } catch (err) {
-            toast.error(err?.message || "Failed to update zone", { position: "top-center" });
+            toast.error(err?.message || "Failed to update zone", { position: "top-right" });
           } finally {
             setSubmitting(false);
           }
         }}
       >
-        {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue }) => (
+        {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue, isSubmitting }) => (
           <FormikForm noValidate onSubmit={handleSubmit}>
-            <Modal.Header closeButton>
+            <Modal.Header closeButton className="pb-2">
               <Modal.Title>Edit Zone</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               {loadingZone && <div className="m-3 text-muted">Loading zone details...</div>}
-              <h6 className="text-muted fw-semibold mb-2">Details</h6>
+              <h6 className=" ">Details</h6>
               <Row>
-                <Form.Group as={Col} className="m-3">
+                <Form.Group as={Col} className="mb-4"> 
                   <Form.Label>
                     Zone Name <RequiredIcon />
+                    <InfoTooltip id="tt-zone-name-edit">
+                      <div>
+                        • Zone name should contain maximum 75 characters. 
+                        <br />• It should not accept spaces.
+                      </div>
+                    </InfoTooltip>
                   </Form.Label>
                   <Form.Control
                     name="zoneName"
                     value={values.zoneName}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
+                    maxLength={75}
+                    onChange={(e) => {
+                      const cleaned = e.target.value.replace(/\s+/g, '').slice(0, 75);
+                      e.target.value = cleaned;
+                      handleChange(e);
+                    }}
+                    onBlur={(e) => {
+                      const cleaned = (e.target.value || '').replace(/\s+/g, '').slice(0, 75);
+                      if (cleaned !== e.target.value) {
+                        e.target.value = cleaned;
+                        handleChange(e);
+                      }
+                      handleBlur(e);
+                    }}
                     isInvalid={touched.zoneName && !!errors.zoneName}
+                    style={{ wordBreak: 'break-word' }}
                   />
                   <Form.Control.Feedback type="invalid">{errors.zoneName}</Form.Control.Feedback>
                 </Form.Group>
               </Row>
 
-              <h6 className="text-muted fw-semibold mb-2">Address</h6>
+              <h6 className="">Address</h6>
               <Row>
-                <Form.Group as={Col} className="m-3">
+                <Form.Group as={Col} className="mb-4">
                   <Form.Label>
                     Country <RequiredIcon />
                   </Form.Label>
@@ -399,7 +510,7 @@ const EditZone = ({ show, handleClose, onSave, editingZone }) => {
                   />
                   <Form.Control.Feedback type="invalid">{errors.country}</Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group as={Col} className="m-3">
+                <Form.Group as={Col} className="mb-4">
                   <Form.Label>
                     City <RequiredIcon />
                   </Form.Label>
@@ -414,44 +525,92 @@ const EditZone = ({ show, handleClose, onSave, editingZone }) => {
                 </Form.Group>
               </Row>
 
-              <h6 className="text-muted fw-semibold mb-2">Threshold</h6>
+              <h6 className=" ">Threshold</h6>
               <Row>
-                <Form.Group as={Col} className="m-3">
+                <Form.Group as={Col} className="mb-4">
                   <Form.Label>
                     Threshold <RequiredIcon />
+                    <InfoTooltip id="tt-threshold-edit">
+                      <div>
+                        • Allowed range 1 - 100
+                        {/* <br />• Spinner hidden */}
+                      </div>
+                    </InfoTooltip>
                   </Form.Label>
-                  <InputGroup>
+                  <InputGroup className="thresper-input">
                     <Form.Control
                       name="threshold"
                       type="number"
+                      min={1}
+                      max={100}
                       value={values.threshold}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
+                      onChange={(e) => {
+                        let v = e.target.value.replace(/[^0-9]/g, '');
+                        if (v) {
+                          let num = Math.min(100, Math.max(1, Number(v)));
+                          e.target.value = String(num);
+                        }
+                        handleChange(e);
+                      }}
+                      onBlur={(e) => {
+                        let num = Number(e.target.value);
+                        if (Number.isNaN(num) || num < 1) num = 1;
+                        if (num > 100) num = 100;
+                        if (String(num) !== e.target.value) {
+                          e.target.value = String(num);
+                          handleChange(e);
+                        }
+                        handleBlur(e);
+                      }}
+                      className="no-spinner"
                       isInvalid={touched.threshold && !!errors.threshold}
                     />
                     <InputGroup.Text>%</InputGroup.Text>
                     <Form.Control.Feedback type="invalid">{errors.threshold}</Form.Control.Feedback>
                   </InputGroup>
                 </Form.Group>
-                <Form.Group as={Col} className="m-3">
+                <Form.Group as={Col} className="mb-4">
                   <Form.Label>
                     Capacity <RequiredIcon />
+                    <InfoTooltip id="tt-capacity-edit">
+                      <div>
+                        • Must be a number &gt;= 0
+                        {/* <br />• Spinner hidden */}
+                      </div>
+                    </InfoTooltip>
                   </Form.Label>
                   <Form.Control
                     name="capacity"
                     type="number"
+                    min={0}
                     value={values.capacity}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
+                    onChange={(e) => {
+                      let v = e.target.value.replace(/[^0-9]/g, '');
+                      if (v) {
+                        let num = Math.max(0, Number(v));
+                        e.target.value = String(num);
+                      }
+                      handleChange(e);
+                    }}
+                    onBlur={(e) => {
+                      let num = Number(e.target.value);
+                      if (Number.isNaN(num) || num < 0) num = 0;
+                      if (String(num) !== e.target.value) {
+                        e.target.value = String(num);
+                        handleChange(e);
+                      }
+                      handleBlur(e);
+                    }}
+                    className="no-spinner"
                     isInvalid={touched.capacity && !!errors.capacity}
                   />
                   <Form.Control.Feedback type="invalid">{errors.capacity}</Form.Control.Feedback>
                 </Form.Group>
               </Row>
 
-              <h6 className="text-muted fw-semibold mb-2">Service Area</h6>
+              <h6 className=" ">Service Area</h6>
               <Row>
-                <Form.Group as={Col} className="m-3">
+                <Form.Group as={Col} className="mb-4">
                   <Form.Label>
                     Service Area Entry <RequiredIcon />
                   </Form.Label>
@@ -481,7 +640,7 @@ const EditZone = ({ show, handleClose, onSave, editingZone }) => {
                     error={errors.serviceAreaEntry}
                   />
                 </Form.Group>
-                <Form.Group as={Col} className="m-3">
+                <Form.Group as={Col} className="mb-4">
                   <Form.Label>
                     Service Area Exit <RequiredIcon />
                   </Form.Label>
@@ -513,7 +672,7 @@ const EditZone = ({ show, handleClose, onSave, editingZone }) => {
                 </Form.Group>
               </Row>
 
-              <Form.Group className="m-3">
+              <Form.Group className="mb-4">
                 <Form.Label>Remarks</Form.Label>
                 <Form.Control
                   as="textarea"
@@ -526,16 +685,142 @@ const EditZone = ({ show, handleClose, onSave, editingZone }) => {
               </Form.Group>
             </Modal.Body>
             <Modal.Footer className="d-flex justify-content-center">
-              <Button className="custom-close-button" variant="secondary" onClick={handleClose}>
+              <Button className="btn btn-primary btn-sm" variant="secondary" onClick={handleClose}>
                 Cancel
               </Button>
-              <Button className="custom-save-button" type="submit" variant="primary">
+              <Button className="btn btn-primary btn-sm actv" type="submit" variant="primary" disabled={isSubmitting}>
                 Save
               </Button>
             </Modal.Footer>
           </FormikForm>
         )}
       </Formik>
+      {/* Validation / confirmation popup for mapped entries or exits */}
+      <Modal show={showValidationModal} onHide={() => { setShowValidationModal(false); setPendingAction(null); }} centered backdrop="static" size="lg">
+        <div className="sa-modal">
+          <div className="sa-header">
+            {/* <div className="sa-zone">The line(s) are mapped with the another zone</div> */}
+           <div className="sa-zone">The line(s) are mapped with the another zone<br/><span style={{textAlign: "left"}}>Do you want to continue? </span></div>
+            <button className="sa-close" aria-label="Close" onClick={() => { setShowValidationModal(false); setPendingAction(null); }}>×</button>
+          </div>
+          <div className="sa-tabs">
+            <Tab.Container activeKey={vActive} onSelect={(k) => { setVQ(""); setVActive(k || "entry"); }}>
+              <Nav variant="tabs">
+                <Nav.Item>
+                  <Nav.Link eventKey="entry">Mapped Entry</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="exit">Mapped Exit</Nav.Link>
+                </Nav.Item>
+              </Nav>
+              <Tab.Content className="sa-content">
+                <Tab.Pane eventKey="entry">
+                  <div className="sa-topline">
+                    <div className="sa-section-title">Mapped Entry</div>
+                    <div className="sa-count">Total: {(validationData?.mappedEntry || []).length}</div>
+                  </div>
+                  <div className="sa-search">
+                    <FaSearch className="sa-search-icon" />
+                    <input type="text" placeholder="Search" value={vQ} onChange={(e) => setVQ(e.target.value)} />
+                  </div>
+                  <div className="sa-list">
+                    <div className="sa-list-head">MAPPED ENTRY</div>
+                    <div className="sa-list-body">
+                      {((validationData?.mappedEntry || []).filter((m) => String(m?.ServiceAreaEntry || "").toLowerCase().includes(vQ.toLowerCase())).map((m, idx) => (
+                        <div key={`me-${idx}`} className="sa-row">{m.ServiceAreaEntry}</div>
+                      ))) || <div className="sa-empty">No mapped entries</div>}
+                    </div>
+                  </div>
+                </Tab.Pane>
+                <Tab.Pane eventKey="exit">
+                  <div className="sa-topline">
+                    <div className="sa-section-title">Mapped Exit</div>
+                    <div className="sa-count">Total: {(validationData?.mappedExit || []).length}</div>
+                  </div>
+                  <div className="sa-search">
+                    <FaSearch className="sa-search-icon" />
+                    <input type="text" placeholder="Search" value={vQ} onChange={(e) => setVQ(e.target.value)} />
+                  </div>
+                  <div className="sa-list">
+                    <div className="sa-list-head">MAPPED EXIT</div>
+                    <div className="sa-list-body">
+                      {((validationData?.mappedExit || []).filter((m) => String(m?.ServiceAreaExit || "").toLowerCase().includes(vQ.toLowerCase())).map((m, idx) => (
+                        <div key={`mx-${idx}`} className="sa-row">{m.ServiceAreaExit}</div>
+                      ))) || <div className="sa-empty">No mapped exits</div>}
+                    </div>
+                  </div>
+                </Tab.Pane>
+              </Tab.Content>
+            </Tab.Container>
+          </div>
+          {/* <div className="sa-continue-question">The line(s) are mapped with the another zone.Do you want to continue?</div> */}
+          <div className="reset-footer" style={{ display: 'flex', justifyContent: 'center', gap: 12, marginTop: 16 }}>
+            <Button className="btn btn-primary btn-sm" variant="secondary" onClick={() => { setShowValidationModal(false); setPendingAction(null); }}>
+              Cancel
+            </Button>
+            <Button className="btn btn-primary btn-sm actv" onClick={async () => {
+              const act = pendingAction;
+              if (!act) return;
+              const { values, entryAreas, exitAreas, sentryuniqueid, sexituniqueid, resetForm, setSubmitting } = act;
+              const token = sessionStorage.getItem("token");
+              const vid = Number(sessionStorage.getItem("vid")) || 4;
+              const username = sessionStorage.getItem("username") || "Occupancy";
+              try {
+                setSubmitting(true);
+                const body = {
+                  vid,
+                  username,
+                  Oldzonename: editingZone.zoneName,
+                  Newzonename: values.zoneName,
+                  country: values.country,
+                  city: values.city,
+                  threshold: Number(values.threshold),
+                  capacity: Number(values.capacity),
+                  remarks: values.remarks || "",
+                  serviceareaentry: entryAreas.join(","),
+                  serviceareaexit: exitAreas.join(","),
+                  sentryuniqueid: sentryuniqueid || entryAreas.join(","),
+                  sexituniqueid: sexituniqueid || exitAreas.join(","),
+                };
+                const res = await fetch(`${API_BASE}/settings/zones/editZone`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                  },
+                  body: JSON.stringify(body),
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || data?.success === false) {
+                  const msg = data?.message || `Failed to update zone (${res.status})`;
+                  throw new Error(msg);
+                }
+                toast.success(data?.message || "Zone updated successfully", { position: "top-right" });
+                onSave({
+                  zoneName: values.zoneName,
+                  country: values.country,
+                  city: values.city,
+                  serviceAreaEntry: entryAreas.join(","),
+                  serviceAreaExit: exitAreas.join(","),
+                  threshold: Number(values.threshold),
+                  capacity: Number(values.capacity),
+                  remarks: values.remarks || "",
+                });
+                resetForm();
+                setShowValidationModal(false);
+                setPendingAction(null);
+                handleClose();
+              } catch (err) {
+                toast.error(err?.message || "Failed to update zone", { position: "top-right" });
+              } finally {
+                setSubmitting(false);
+              }
+            }}>
+              Continue
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </Modal>
   );
 };

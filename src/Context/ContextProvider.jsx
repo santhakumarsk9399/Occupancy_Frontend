@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     // Restore user from localStorage
     const name = sessionStorage.getItem("username");
     const role = sessionStorage.getItem("role");
-    // URL = import.meta.env.VITE_API_URL;
+    console.log(name);
     if (name && role) {
       setUser({ name, role });
     } else {
@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
     const names = sessionStorage.getItem("username");
     const roles = sessionStorage.getItem("role");
     setUser({ name: names, role: roles });
-    console.log(user);
+   
   };
   const logout = () => {
     sessionStorage.clear();
