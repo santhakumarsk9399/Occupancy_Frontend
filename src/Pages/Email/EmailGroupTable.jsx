@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import DataTable from "react-data-table-component";
 import AddEmailGroupModal from "./AddEmailGroupModal";
 import EditEmailGroup from "./EditEmailGroup";
@@ -20,6 +20,10 @@ const EmailGroupTable = () => {
   const [showSavedModal, setShowSavedModal] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  // Track previous modal open state to refresh list when all modals close (same as Zones)
+  const prevAnyModalOpenRef = useRef(false);
+  // Wrapper ref to detect outside clicks (same approach as Zones)
+  const tableWrapperRef = useRef(null);
 
   // Fetch groups from API (POST request)
   const fetchGroups = () => {
@@ -54,26 +58,68 @@ const EmailGroupTable = () => {
     fetchGroups();
   }, []);
 
-  const filteredGroups = groups.filter((group) =>
-    group["GROUP(S) NAME"]
-      ?.toLowerCase()
-      .includes(filter.trim().toLowerCase())
-  );
+  // Clear selected row when clicking outside the table+buttons wrapper, unless a modal is open
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Don't clear while interacting with modals
+      if (showAddModal || showEditModal || showDeleteModal || showSavedModal) return;
+      if (tableWrapperRef.current && !tableWrapperRef.current.contains(event.target)) {
+        setSelectedGroup(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showAddModal, showEditModal, showDeleteModal, showSavedModal]);
+
+  // Refetch whenever any Email modal transitions from open -> all closed
+  useEffect(() => {
+    const anyOpen = showAddModal || showEditModal || showDeleteModal || showSavedModal;
+    if (prevAnyModalOpenRef.current && !anyOpen) {
+      // A modal just closed -> refresh groups list and clear selection
+      fetchGroups();
+      setSelectedGroup(null);
+    }
+    prevAnyModalOpenRef.current = anyOpen;
+  }, [showAddModal, showEditModal, showDeleteModal, showSavedModal]);
+
+  // Refresh when ALL popups are closed
+  const anyModalOpen =
+    showAddModal || showEditModal || showDeleteModal || showSavedModal;
+  const prevAnyOpenRef = useRef(anyModalOpen);
+  useEffect(() => {
+    if (!anyModalOpen && prevAnyOpenRef.current) {
+      // transitioned from open -> all closed
+      fetchGroups();
+    }
+    prevAnyOpenRef.current = anyModalOpen;
+  }, [anyModalOpen]);
+
+  // Search logic: preserve spaces so a single space filters only names containing a space
+  // (previously trim() caused any space-only input to match all). Empty string still returns all.
+  const filteredGroups = groups.filter((group) => {
+    const groupName = (group["GROUP(S) NAME"] || "").toLowerCase();
+    const searchTerm = filter.toLowerCase();
+    if (searchTerm === "") return true; // show all when input actually empty
+    return groupName.includes(searchTerm);
+  });
 
   const handleAdd = () => setShowAddModal(true);
   const handleEdit = () => selectedGroup && setShowEditModal(true);
   const handleDelete = () => setShowDeleteModal(true);
 
   const confirmDelete = async () => {
-    if (!selectedGroup) return;
+    if (!selectedGroup) return { success: false, message: 'No group selected' };
     try {
       const token = sessionStorage.getItem("token");
-      const usernameRaw = (sessionStorage.getItem("username") || "").toString().trim();
+      const usernameRaw = (sessionStorage.getItem("username") || "")
+        .toString()
+        .trim();
       const username = usernameRaw.length > 0 ? usernameRaw : "TestUser";
-      const groupname = (selectedGroup["GROUP(S) NAME"] || "").toString().trim();
+      const groupname = (selectedGroup["GROUP(S) NAME"] || "")
+        .toString()
+        .trim();
       if (!groupname) {
-        toast.error("Missing group name", { position: "top-center" });
-        return;
+        return { success: false, message: 'Missing group name' };
       }
 
       const res = await fetch(`${API_BASE}/settings/email/delete`, {
@@ -85,128 +131,153 @@ const EmailGroupTable = () => {
         body: JSON.stringify({ username, groupname }),
       });
 
+      const raw = await res.text();
+      let data = {};
+      try {
+        data = raw ? JSON.parse(raw) : {};
+      } catch {}
+
       if (!res.ok) {
-        const txt = await res.text();
-        throw new Error(txt || `Delete failed (${res.status})`);
+        return { success: false, message: data?.message || raw || `Delete failed (${res.status})` };
       }
-  // success
-      setShowDeleteModal(false);
+
+      const message = String(data?.message || "");
+      if (/cannot be deleted/i.test(message)) {
+        return { success: false, message };
+      }
+
+      // success
       setSelectedGroup(null);
-      fetchGroups();
-  toast.success(`Group "${groupname}" deleted`, { position: "top-center" });
+      return { success: true, message: message || `Group "${groupname}" deleted` };
     } catch (err) {
       console.error("Email group delete failed:", err);
-  toast.error(err?.message || "Failed to delete group", { position: "top-center" });
+      return { success: false, message: err?.message || 'Failed to delete group' };
     }
   };
+
   const cancelDelete = () => setShowDeleteModal(false);
-  // DataTable columns
+
   const columns = [
     {
       name: "SL",
       selector: (row) => row.SL,
-      sortable: true,
       width: "80px",
     },
     {
       name: "GROUP(S) NAME",
       selector: (row) => row["GROUP(S) NAME"],
-      sortable: true,
-    }
+    },
   ];
 
   return (
     <>
-      <ToastContainer />
-      <div className="group-table-container">
-      {/* Search + Buttons */}
-      <div className="group-table-header">
-        <input
-          className="search-input"
-          placeholder="Search"
-          value={filter}
-          onChange={(e) => {
-            setFilter(e.target.value);
-            setSelectedGroup(null);
-          }}
-        />
-        <div>
-          <button
-            className="edit-btn"
-            disabled={!selectedGroup}
-            onClick={handleEdit}
-          >
-            Edit Group
-          </button>
-          <button
-            className="delete-btn"
-            disabled={!selectedGroup}
-            onClick={handleDelete}
-          >
-            Delete Group
-          </button>
-          <button className="add-btn" onClick={handleAdd}>
-            + Add Group
-          </button>
-        </div>
-      </div>
-
-      {/* DataTable */}
-       <div style={{ overflowY: "scroll" }}>
-        {/* const FixedHeaderStory = ({ fixedHeader, fixedHeaderScrollHeight }) => ( */}
-        <DataTable
-          keyField="SL"
-          columns={columns}
-          data={filteredGroups}
-          onRowClicked={(row) => setSelectedGroup(row)}
-          highlightOnHover
-          pointerOnHover
-          selectableRowsHighlight
-          conditionalRowStyles={[
-            {
-              when: (row) => selectedGroup && row.SL === selectedGroup.SL,
-              style: { backgroundColor: "#f6f7fc" },
-            },
-          ]}
-          pagination
-          paginationPerPage={10}
-          paginationRowsPerPageOptions={[ 10, 15]}
-        />
-      </div>
-
-      {/* Modals */}
-  {showAddModal && (
-    <AddEmailGroupModal
-          show={showAddModal}
-          onClose={() => setShowAddModal(false)}
-          onSave={() => {
-            setShowAddModal(false);
-            fetchGroups();
-            // Do not show popup; only one toast
-            toast.success('Email group added', { position: 'top-center', autoClose: 3000 });
-          }}
-        />
-      )}
-    {showEditModal && selectedGroup && (
-    <EditEmailGroup
-          groupId={selectedGroup.SL}
-      groupName={selectedGroup["GROUP(S) NAME"]}
-          onClose={() => setShowEditModal(false)}
-          onSave={() => {
-            setShowEditModal(false);
-            fetchGroups();
-      // Do not show popup; only one toast
-      toast.success('Email group updated', { position: 'top-center', autoClose: 3000 });
-          }}
-        />
-      )}
-      <GroupSavedModal
-        show={showSavedModal}
-        onClose={() => setShowSavedModal(false)}
+      {/* Scoped toast container for Email Group only */}
+      <ToastContainer
+        containerId="email-group"
+        position="top-right"
+        autoClose={3000}
+        newestOnTop
+        closeOnClick
+        draggable
+        pauseOnHover={false}
+        pauseOnFocusLoss={false}
+        toastStyle={{ textAlign: "center" }}
+        style={{ zIndex: 13000 }}
       />
-      {showDeleteModal && selectedGroup && (
-        <DeleteEmailGroup onCancel={cancelDelete} onDelete={confirmDelete} />
-      )}
+  <div className="group-table-container" ref={tableWrapperRef}>
+        {/* Search + Buttons */}
+        <div className="group-table-header">
+          <input
+            className="search-input"
+            placeholder="Search"
+            value={filter}
+            onChange={(e) => {
+              setFilter(e.target.value);
+              setSelectedGroup(null);
+            }}
+          />
+          <div>
+            <button
+              className="edit-btn"
+              disabled={!selectedGroup}
+              onClick={handleEdit}
+            >
+              Edit Group
+            </button>
+            <button
+              className="delete-btn"
+              disabled={!selectedGroup}
+              onClick={handleDelete}
+            >
+              Delete Group
+            </button>
+            <button className="add-btn" onClick={handleAdd}>
+              Add Group
+            </button>
+          </div>
+        </div>
+
+        {/* DataTable */}
+        <div style={{ overflowY: "scroll", maxHeight: "550px" }}>
+          <DataTable
+            keyField="SL"
+            columns={columns}
+            data={filteredGroups}
+            onRowClicked={(row) => setSelectedGroup(row)}
+            highlightOnHover
+            pointerOnHover
+            selectableRowsHighlight
+            conditionalRowStyles={[
+              {
+                when: (row) => selectedGroup && row.SL === selectedGroup.SL,
+                style: { backgroundColor: "#f6f7fc" },
+              },
+            ]}
+            pagination
+            paginationPerPage={10}
+            paginationRowsPerPageOptions={[10, 15,20]}
+          />
+        </div>
+
+        {/* Modals */}
+        {showAddModal && (
+          <AddEmailGroupModal
+            show={showAddModal}
+            onClose={() => setShowAddModal(false)}
+            onSave={() => {
+              setShowAddModal(false);
+              // toast.success("Email group added", {
+              //   position: "top-center",
+              //   autoClose: 3000,
+              // });
+            }}
+          />
+        )}
+        {showEditModal && selectedGroup && (
+          <EditEmailGroup
+            groupId={selectedGroup.SL}
+            groupName={selectedGroup["GROUP(S) NAME"]}
+            onClose={() => setShowEditModal(false)}
+            onSave={() => {
+              setShowEditModal(false);
+              // toast.success("Email group updated", {
+              //   position: "top-center",
+              //   autoClose: 3000,
+              // });
+            }}
+          />
+        )}
+        <GroupSavedModal
+          show={showSavedModal}
+          onClose={() => setShowSavedModal(false)}
+        />
+        {showDeleteModal && selectedGroup && (
+          <DeleteEmailGroup
+            onCancel={cancelDelete}
+            onDelete={confirmDelete}
+            groupName={selectedGroup["GROUP(S) NAME"]}
+          />
+        )}
       </div>
     </>
   );

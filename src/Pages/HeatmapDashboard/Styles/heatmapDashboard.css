@@ -1,0 +1,51 @@
+.heatmap-top-section {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2px;
+  
+  }
+    
+  .heatmap-top-section .nav-tabs {
+  
+    border-bottom: none;
+    gap: 14px;
+  
+  }
+  .heatmap-dashboard-page .tabsec_dash {
+
+    padding: 10px !important;
+    margin: 2px !important;
+    border-radius: 12px;
+    margin-top: 10px;
+  
+  }
+
+  /* .heatmap-top-section .nav-link {
+  
+    border: none !important;
+  
+    background: white !important;
+  
+    color: #1f2937 !important;
+  
+    border-radius: 12px !important;
+  
+    padding: 10px 22px !important;
+  
+    font-size: 14px;
+    font-weight: 500;
+  
+    box-shadow:
+      0 2px 8px rgba(0,0,0,0.06);
+  
+  }
+  
+  .heatmap-top-section .nav-link.active {
+  
+    background: #2563eb !important;
+  
+    color: white !important;
+  
+  } */

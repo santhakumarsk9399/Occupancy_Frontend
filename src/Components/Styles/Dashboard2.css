@@ -132,7 +132,7 @@ box-shadow: 0 1px 2px rgba(194, 206, 231, 0.4);
   color: #fff;
 }
 .badge-empty {
-  background: #009eee;
+  background: #009EEE;
   color: #fff;
 }
 .badge-full {
@@ -249,7 +249,8 @@ box-shadow: 0 1px 2px rgba(194, 206, 231, 0.4);
 }
 .Dash2_NoDataTopsection {
     background: white;
-    padding: 40px;
-    margin: 5px;
+    /* padding: 40px;
+    margin: 5px; */
     border-radius: 12px;
+    height:75vh;
 }

@@ -1,11 +1,18 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { toast } from 'react-toastify';
-import '../../SMS/PopupModal.css';
+import { Formik, Form as FormikForm } from 'formik';
+import * as Yup from 'yup';
+// import '../../SMS/PopupModal.css';
 import './ThresholdForm.css';
+import SingleSelectDropdown from '../../CommonComponents/SingleSelectDropdown';
 
 const ThresholdForm = ({ open, onClose, onSave, initialData }) => {
-  const [form, setForm] = useState(initialData || {
+  const [templates, setTemplates] = useState([]); // SMS templates list
+  const [tplLoading, setTplLoading] = useState(false); // SMS templates loading state
+  const [viewLoading, setViewLoading] = useState(false); // Editing: loading existing threshold details
+  const [oldName, setOldName] = useState(''); // Keep original name for edit API
+  const [initialValues, setInitialValues] = useState({
     name: '',
     description: '',
     start: '',
@@ -13,26 +20,7 @@ const ThresholdForm = ({ open, onClose, onSave, initialData }) => {
     duration: '',
     smsTemplate: ''
   });
-  const [submitting, setSubmitting] = useState(false);
-  const [templates, setTemplates] = useState([]);
-  const [tplLoading, setTplLoading] = useState(false);
-  const [viewLoading, setViewLoading] = useState(false);
-  const [oldName, setOldName] = useState('');
   const API_BASE = useMemo(() => import.meta.env.VITE_API_URL || 'http://delbi2dev.deloptanalytics.com:3000', []);
-
-  // Keep form in sync when switching between add/edit
-  useEffect(() => {
-    if (open) {
-      setForm(initialData || {
-        name: '',
-        description: '',
-        start: '',
-        end: '',
-        duration: '',
-        smsTemplate: ''
-      });
-    }
-  }, [open, initialData]);
 
   // Load SMS templates when modal opens
   useEffect(() => {
@@ -77,8 +65,8 @@ const ThresholdForm = ({ open, onClose, onSave, initialData }) => {
         console.error('Failed to load SMS templates:', err);
         if (!cancelled) {
           setTemplates([]);
-          toast(`❌ ${err?.message || 'Failed to load SMS templates'}`, {
-            position: 'top-center',
+          toast(` ${err?.message || 'Failed to load SMS templates'}`, {
+            position: 'top-right',
             autoClose: 3000,
             theme: 'light',
           });
@@ -119,7 +107,7 @@ const ThresholdForm = ({ open, onClose, onSave, initialData }) => {
         const data = await res.json();
         const item = Array.isArray(data?.thresHold) ? data.thresHold[0] : undefined;
         if (item && !cancelled) {
-          setForm(prev => ({
+          setInitialValues(prev => ({
             name: item.threshold ?? prev.name ?? '',
             description: item.description ?? prev.description ?? '',
             start: String(item.startTime ?? prev.start ?? ''),
@@ -131,8 +119,8 @@ const ThresholdForm = ({ open, onClose, onSave, initialData }) => {
       } catch (err) {
         console.error('Failed to view threshold:', err);
         if (!cancelled) {
-          toast(`❌ ${err?.message || 'Failed to load existing threshold'}`, {
-            position: 'top-center',
+          toast(` ${err?.message || 'Failed to load existing threshold'}`, {
+            position: 'top-right',
             autoClose: 3000,
             theme: 'light',
           });
@@ -145,42 +133,55 @@ const ThresholdForm = ({ open, onClose, onSave, initialData }) => {
     return () => { cancelled = true; };
   }, [open, initialData, API_BASE]);
 
-  const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  // Formik + Yup validation schema
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .required('Name is required')
+      .max(75, 'Max 75 characters')
+      .test('not-only-spaces', 'Name cannot be empty or only spaces', v => !!v && v.trim().length > 0),
+  description: Yup.string().max(100, 'Max 100 characters').nullable(),
+    start: Yup.number()
+      .transform(v => (v === '' || v === null ? undefined : Number(v)))
+      .typeError('Start must be a number')
+      .required('Start is required')
+      .min(1, 'Must be > 0'),
+    end: Yup.number()
+      .transform(v => (v === '' || v === null ? undefined : Number(v)))
+      .typeError('End must be a number')
+      .required('End is required')
+      .min(1, 'Must be > 0')
+      .test('gt-start', 'End must be greater than Start', function (value) {
+        const { start } = this.parent;
+        if (start === undefined || start === null || start === '' || value === undefined || value === null || value === '') return true; // other validators handle empties
+        return Number(value) > Number(start);
+      }),
+    duration: Yup.number().typeError('Duration must be a number').required('Duration is required').min(1, 'Must be > 0'),
+    smsTemplate: Yup.string().required('SMS Template is required'),
+  });
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    if (submitting) return;
-    setSubmitting(true);
-
+  // Submit handler integrated with Formik
+  const submitForm = async (values, { setSubmitting }) => {
     try {
-      // If editing, call edit API
       if (initialData) {
+        // Edit flow
         const token = sessionStorage.getItem('token');
         const username = sessionStorage.getItem('username') || 'Occupancy';
         if (!token) throw new Error('Missing auth token');
-
         const payload = {
           username,
-          Oldthresholdname: String(oldName || initialData.name || ''),
-          thresholdname: String(form.name || ''),
-          description: String(form.description || ''),
-          startTime: String(form.start ?? ''),
-          endTime: String(form.end ?? ''),
-          duration: String(form.duration ?? ''),
-          smstemplate: String(form.smsTemplate || ''),
+            Oldthresholdname: String(oldName || initialData.name || ''),
+            thresholdname: String(values.name || ''),
+            description: String(values.description || ''),
+            startTime: String(values.start ?? ''),
+            endTime: String(values.end ?? ''),
+            duration: String(values.duration ?? ''),
+            smstemplate: String(values.smsTemplate || ''),
         };
-
         const res = await fetch(`${API_BASE}/settings/threshold/edit`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
           body: JSON.stringify(payload),
         });
-
         if (!res.ok) {
           let msg = '';
           const ct = res.headers?.get?.('content-type') || '';
@@ -188,110 +189,69 @@ const ThresholdForm = ({ open, onClose, onSave, initialData }) => {
             if (ct.includes('application/json')) {
               const d = await res.json();
               msg = d?.message || d?.error || d?.detail || JSON.stringify(d);
-            } else {
-              msg = await res.text();
-            }
+            } else { msg = await res.text(); }
           } catch (_) { /* ignore */ }
           if (!msg) msg = res.statusText || `Request failed (${res.status})`;
           throw new Error(msg);
         }
-
         const data = await res.json();
-        const successMsg = data?.message || 'Threshold updated successfully';
-        toast.success(`✅ ${successMsg}`, {
-          position: 'top-center',
-          autoClose: 3000,
-          theme: 'light',
+        toast.success(` ${data?.message || 'Threshold updated successfully'}`, { position: 'top-right', autoClose: 3000, theme: 'light' });
+        onSave({
+          name: String(values.name || ''),
+          description: String(values.description || ''),
+          start: Number(values.start),
+          end: Number(values.end),
+          duration: Number(values.duration),
+          smsTemplate: String(values.smsTemplate || ''),
         });
-
-        const normalized = {
-          name: String(form.name || ''),
-          description: String(form.description || ''),
-          start: Number(form.start),
-          end: Number(form.end),
-          duration: Number(form.duration),
-          smsTemplate: String(form.smsTemplate || ''),
-        };
-        onSave(normalized);
         return;
       }
-
+      // Create flow
       const token = sessionStorage.getItem('token');
       const username = sessionStorage.getItem('username') || 'Occupancy';
       if (!token) throw new Error('Missing auth token');
-
       const payload = {
         username,
-        thresholdname: String(form.name || ''),
-        description: String(form.description || ''),
-        startTime: String(form.start ?? ''),
-        endTime: String(form.end ?? ''),
-        duration: String(form.duration ?? ''),
-        smstemplate: String(form.smsTemplate || ''),
+        thresholdname: String(values.name || ''),
+        description: String(values.description || ''),
+        startTime: String(values.start ?? ''),
+        endTime: String(values.end ?? ''),
+        duration: String(values.duration ?? ''),
+        smstemplate: String(values.smsTemplate || ''),
       };
-
       const res = await fetch(`${API_BASE}/settings/threshold/create`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(payload),
       });
-
       if (!res.ok) {
         let msg = '';
         const ct = res.headers?.get?.('content-type') || '';
         try {
-          if (ct.includes('application/json')) {
-            const d = await res.json();
-            msg = d?.message || d?.error || d?.detail || JSON.stringify(d);
-          } else {
-            msg = await res.text();
-          }
+          if (ct.includes('application/json')) { const d = await res.json(); msg = d?.message || d?.error || d?.detail || JSON.stringify(d); }
+          else { msg = await res.text(); }
         } catch (_) { /* ignore */ }
         if (!msg) msg = res.statusText || `Request failed (${res.status})`;
         throw new Error(msg);
       }
-
       const data = await res.json();
       const apiMsg = String(data?.message || '').trim();
-
-      // If API says threshold already exists, show as error and stop
       if (/already exists/i.test(apiMsg)) {
-        const errMsg = apiMsg.replace(/^✅\s*/u, '');
-        toast.error(errMsg || 'Threshold already exists', {
-          position: 'top-center',
-          autoClose: 3000,
-          theme: 'light',
-        });
-        return; // Do not proceed to update local list or close form
+        toast.error(apiMsg.replace(/^\s*/u, '') || 'Threshold already exists', { position: 'top-right', autoClose: 3000, theme: 'light' });
+        return;
       }
-
-      const successMsg = apiMsg || 'Threshold added successfully';
-      toast.success(`✅ ${successMsg}`, {
-        position: 'top-center',
-        autoClose: 3000,
-        theme: 'light',
+      toast.success(` ${apiMsg || 'Threshold added successfully'}`, { position: 'top-right', autoClose: 3000, theme: 'light' });
+      onSave({
+        name: String(values.name || ''),
+        description: String(values.description || ''),
+        start: Number(values.start),
+        end: Number(values.end),
+        duration: Number(values.duration),
+        smsTemplate: String(values.smsTemplate || ''),
       });
-
-      // update parent list with normalized types
-      const normalized = {
-        name: String(form.name || ''),
-        description: String(form.description || ''),
-        start: Number(form.start),
-        end: Number(form.end),
-        duration: Number(form.duration),
-        smsTemplate: String(form.smsTemplate || ''),
-      };
-      onSave(normalized);
     } catch (err) {
-      console.error('Failed to create threshold:', err);
-      toast(`❌ ${err?.message || 'Failed to create threshold'}`, {
-        position: 'top-center',
-        autoClose: 3000,
-        theme: 'light',
-      });
+      console.error('Threshold save failed:', err);
+      toast(` ${err?.message || 'Failed to save threshold'}`, { position: 'top-right', autoClose: 3000, theme: 'light' });
     } finally {
       setSubmitting(false);
     }
@@ -305,96 +265,170 @@ const ThresholdForm = ({ open, onClose, onSave, initialData }) => {
   };
 
   const content = (
-    <div className="popup-overlay" onKeyDown={handleKeyDown} tabIndex={-1} onClick={onClose}>
-      <div
-        className="popup-box threshold-modal"
-        role="dialog"
-        aria-modal="true"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="popup-overlay" onKeyDown={handleKeyDown} tabIndex={-1}>
+      <div className="popup-box threshold-modal" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
         <div className="popup-header">
           <h3>{initialData ? 'Edit Threshold' : 'Add Threshold'}</h3>
           <button aria-label="Close" className="close-btn" onClick={onClose}>×</button>
         </div>
-        <div className="popup-body">
-          <form onSubmit={handleSubmit} className="threshold-form">
-            <div className="form-row">
-              <div style={{ flex: 1 }}>
-                <label>Threshold Name <span className="req">*</span></label>
-                <input
-                  name="name"
-                  placeholder="Enter name"
-                  value={form.name}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div style={{ flex: 1 }}>
-                <label>Description</label>
-                <input
-                  name="description"
-                  placeholder="Optional description"
-                  value={form.description}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-            <div className="form-row">
-              <div style={{ flex: 1 }}>
-                <label>Threshold Start <span className="req">*</span></label>
-                <input
-                  type="number"
-                  name="start"
-                  placeholder="e.g. 50"
-                  value={form.start}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div style={{ flex: 1 }}>
-                <label>Threshold End <span className="req">*</span></label>
-                <input
-                  type="number"
-                  name="end"
-                  placeholder="e.g. 100"
-                  value={form.end}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
-            <div className="form-row">
-              <div style={{ flex: 1 }}>
-                <label>Duration (Seconds) <span className="req">*</span></label>
-                <input
-                  type="number"
-                  name="duration"
-                  placeholder="e.g. 60"
-                  value={form.duration}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
-            <div className="form-row">
-              <div style={{ flex: 1 }}>
-                <label>SMS Template <span className="req">*</span></label>
-                <div className="threshold-email-template-select">
-                  <select className="threshold-email-template-dropdown" name="smsTemplate" value={form.smsTemplate} onChange={handleChange} required disabled={tplLoading}>
-                    <option value="">{tplLoading ? 'Loading…' : 'Select'}</option>
-                    {templates.map((tpl) => (
-                      <option key={tpl} value={tpl}>{tpl}</option>
-                    ))}
-                  </select>
+        <Formik
+          enableReinitialize
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={submitForm}
+        >
+          {({ values, errors, touched, handleChange, handleBlur, setFieldValue, setFieldTouched, validateField, isSubmitting }) => (
+            <FormikForm className="threshold-form-wrapper">
+              <div className="popup-body">
+                <div className="threshold-form">
+                  <div className="form-row">
+                    <div style={{ flex: 1 }}>
+                      <label>Threshold Name <span className="req">*</span></label>
+                      <input
+                        name="name"
+                        value={values.name}
+                        maxLength={75}
+                        onChange={(e) => {
+                          let v = e.target.value;
+                          if (v.length > 75) v = v.slice(0,75);
+                          setFieldValue('name', v);
+                        }}
+                        onBlur={(e) => {
+                          // Trim leading/trailing spaces on blur but keep internal spaces
+                          const trimmed = (e.target.value || '').trim();
+                          setFieldValue('name', trimmed);
+                          handleBlur(e);
+                        }}
+                        className={`form-control ${touched.name && errors.name ? 'is-invalid' : ''}`}
+                      />
+                      {touched.name && errors.name && <div className="invalid-feedback d-block">{errors.name}</div>}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <label>Description</label>
+                      <input
+                        name="description"
+                        value={values.description}
+                        maxLength={100}
+                        onChange={(e) => {
+                          let v = e.target.value || '';
+                          if (v.length > 100) v = v.slice(0,100);
+                          setFieldValue('description', v);
+                        }}
+                        onBlur={handleBlur}
+                        className={`form-control ${touched.description && errors.description ? 'is-invalid' : ''}`}
+                      />
+                      {touched.description && errors.description && <div className="invalid-feedback d-block">{errors.description}</div>}
+                      <div className="d-flex justify-content-between mt-1">
+                        <small className="text-muted"></small>
+                        <small className="text-muted">{(values.description || '').length}/100</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-row">
+                    <div style={{ flex: 1 }}>
+                      <label>Threshold Start <span className="req">*</span></label>
+                      <input
+                        type="number"
+                        name="start"
+                        value={values.start}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          if (val !== '' && Number(val) <= 0) {
+                            setFieldValue('start', '');
+                            return;
+                          }
+                          handleChange(e);
+                          const newStart = val;
+                          if (values.end !== '' && !isNaN(newStart) && !isNaN(values.end)) {
+                            if (Number(values.end) <= Number(newStart)) {
+                              setFieldTouched('end', true, false);
+                            }
+                          }
+                        }}
+                        onBlur={handleBlur}
+                        className={`form-control no-spinner ${touched.start && errors.start ? 'is-invalid' : ''}`}
+                      />
+                      {touched.start && errors.start && <div className="invalid-feedback d-block">{errors.start}</div>}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <label>Threshold End <span className="req">*</span></label>
+                      <input
+                        type="number"
+                        name="end"
+                        value={values.end}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          if (val !== '' && Number(val) <= 0) {
+                            setFieldValue('end', '');
+                            setFieldTouched('end', true, false);
+                            validateField('end');
+                            return;
+                          }
+                          handleChange(e);
+                          setFieldTouched('end', true, false);
+                          validateField('end');
+                        }}
+                        onBlur={(e)=>{handleBlur(e); validateField('end');}}
+                        className={`form-control no-spinner ${touched.end && errors.end ? 'is-invalid' : ''}`}
+                      />
+                      {touched.end && errors.end && <div className="invalid-feedback d-block">{errors.end}</div>}
+                    </div>
+                  </div>
+                  <div className="form-row">
+                    <div style={{ flex: 1 }}>
+                      <label>Duration (Seconds) <span className="req">*</span></label>
+                      <input
+                        type="number"
+                        name="duration"
+                        value={values.duration}
+                        onChange={(e)=>{
+                          const val = e.target.value;
+                          if (val !== '' && Number(val) <= 0) {
+                            setFieldValue('duration','');
+                            return;
+                          }
+                          handleChange(e);
+                        }}
+                        onBlur={handleBlur}
+                        className={`form-control no-spinner ${touched.duration && errors.duration ? 'is-invalid' : ''}`}
+                      />
+                      {touched.duration && errors.duration && <div className="invalid-feedback d-block">{errors.duration}</div>}
+                    </div>
+                  </div>
+                  <div className="form-row">
+                    <div style={{ flex: 1 }}>
+                      <label>SMS Template <span className="req">*</span></label>
+                      <div className="threshold-email-template-select">
+                        <SingleSelectDropdown
+                          options={[{ value: "", label: tplLoading ? "Loading…" : "Select" }, ...templates.map(t => ({ value: t, label: t }))]}
+                          value={(() => {
+                            if (!values.smsTemplate) return null;
+                            return { value: values.smsTemplate, label: values.smsTemplate };
+                          })()}
+                          onChange={(opt) => {
+                            const val = opt ? opt.value : "";
+                            const synthetic = { target: { name: "smsTemplate", value: val } };
+                            handleChange(synthetic);
+                          }}
+                          // placeholder={tplLoading ? "Loading…" : "Select"}
+                          isInvalid={Boolean(touched.smsTemplate && errors.smsTemplate)}
+                          usePortal={true}
+                          portalZIndex={6000}
+                        />
+                        {touched.smsTemplate && errors.smsTemplate && <div className="invalid-feedback d-block">{errors.smsTemplate}</div>}
+                      </div>
+                    </div>
+                  </div>
+                  {viewLoading && <div className="loading-note">Loading existing threshold…</div>}
                 </div>
               </div>
-            </div>
-          </form>
-        </div>
-        <div className="popup-footer">
-          <button type="button" className="cancel-btn" onClick={onClose}>Cancel</button>
-          <button type="button" className="submit-btn save-btn" onClick={handleSubmit} disabled={submitting}>{submitting ? 'Saving…' : 'Save'}</button>
-        </div>
+              <div className="popup-footer">
+                <button type="button" className="btn btn-primary btn-sm" onClick={onClose} disabled={isSubmitting}>Cancel</button>
+                <button type="submit" className="btn btn-primary btn-sm actv" disabled={isSubmitting}>{isSubmitting ? 'Saving…' : 'Save'}</button>
+              </div>
+            </FormikForm>
+          )}
+        </Formik>
       </div>
     </div>
   );

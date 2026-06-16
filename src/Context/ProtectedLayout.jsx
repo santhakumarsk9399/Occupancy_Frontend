@@ -10,11 +10,11 @@ import AutoLogoutHandler from "../Pages/CommonComponents/AutoLogoutHandler";
 const ProtectedLayout = () => {
   const { user } = useAuth();
   const location = useLocation();
- console.log(user)
+//  console.log(user)
   if (!user) return <Navigate to="/login" />;
 
   // Routes to hide header and/or footer
-  const hideHeaderOn = ["/users/view", "/liveOccupancy"];
+  const hideHeaderOn = ["/users/view", "/liveOccupancy", "/historicalAnalytics", "/HeatmapDashboard", "/SettingsHeatmap"];
   const hideFooterOn = ["/analytics/raw", "/sms"];
 
   // Match exact or wildcard routes

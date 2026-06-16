@@ -26,10 +26,19 @@
     margin: 10px;
     padding: 10px;
 }
-label.form-label {
+/* label.form-label {
     color: #404252;
     font-size: 14px;
     font-weight: 400;
+} */
+label.form-label {
+    color: #545963;
+    font-size: 14px;
+    font-weight: 400;
+}
+input.form-control {
+    color: black;
+    font-weight: 500;
 }
 .form-control {
   border-radius: 8px;
@@ -123,9 +132,16 @@ p.user_useraddress
     font-weight: 300;
 }
 .flex-grow-1.usersection_profile {
-    padding: 12px;
+    padding: 12px 0;
     margin-top: 15px;
 }
+
+.Usercontainer .flex-grow-1.usersection_profile {   
+    margin-top: 0;
+}
+
+.Usercontainer 
+
 p.View_userdata {
     font-weight: 300;
 }
@@ -193,11 +209,22 @@ p.View_userdata {
 }
 .UserTable_Section .eBVvRK {
     font-size: 14px ;
-    color:#404252;
+    color:#181D27;
 }
 .UserTable_Section .frcmPU {
     color: #535862;
 }
+.UserTable_Section .hXgQeh:hover {
+    color: #181D27;
+    background-color: #E9EFFA;
+    outline-color: rgba(0, 0, 0, .06);
+    border-bottom-color: rgba(0, 0, 0, .06);
+}
+.UserTable_Section .gxvszF {
+    color: #535862;
+    font-size: 13px;
+}
+
 .modal-content .modal-header {
    padding: 24px 16px 0 16px;
 }
@@ -220,7 +247,7 @@ p.View_userdata {
     min-height: 44px;
 }
 .UserTable_Section .kMgreK {
-  min-height: 48px;  
+  min-height: 46px;  
 }
 .modal-body .msd__header {
    padding: 8px 12px; 
@@ -321,7 +348,7 @@ p.View_userdata {
 }
 .form-control {
 	border-radius: 8px;
-	height: 36px;
+	/*height: 36px;*/
 }
 
 .top-tab-head {
@@ -331,8 +358,9 @@ p.View_userdata {
     font-size: 14px;
     border: 1px solid #2162CD;
     box-shadow: none;
-    padding: 10px 16px;
+    padding: 8px 16px 9px;
     background: #FFF;
     display: inline-block;
-    background-color: #E9EFFA;
+    font-weight: 500;
+    background: #E9EFFA;
  }

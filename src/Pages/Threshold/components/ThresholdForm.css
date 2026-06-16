@@ -3,24 +3,43 @@
   position: relative;
   margin-top: 2px;
 }
+/* Restyled to match AddSMSGroup "Threshold" select (white bg + arrow) */
 .threshold-email-template-dropdown {
   width: 100%;
-  padding: 12px 10px;
-  border: 1px solid #2162CD;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
-  font-size: 15px;
-  background: #f5f8fe;
-  color: #222;
-  transition: border-color 0.18s, box-shadow 0.18s;
+  font-size: 14px;
+  background: #ffffff;
+  color: #17181E;
+  transition: border-color .2s, box-shadow .2s;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* Arrow handled by wrapper pseudo-element */
+  padding-right: 44px; /* room for arrow */
+  line-height: 1.2;
 }
+/* Disable wrapper arrow since SingleSelectDropdown renders its own caret */
+.threshold-email-template-select::after { content: none !important; }
+.threshold-email-template-select { position: relative; }
 .threshold-email-template-dropdown:focus {
-  border-color: #174d9f;
-  box-shadow: 0 0 0 2px #e9f0ff;
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.10);
 }
 .threshold-email-template-dropdown:disabled {
-  background: #f3f3f3;
-  color: #aaa;
+  background-color: #ffffff;
+  color: #6b7280;
+  opacity: .85;
   cursor: not-allowed;
+}
+/* Invalid state when form-control adds is-invalid */
+.threshold-email-template-dropdown.is-invalid,
+.threshold-email-template-dropdown.is-invalid:focus {
+  border-color: #d32f2f !important;
+  background: #fff5f5;
+  box-shadow: 0 0 0 2px rgba(211,47,47,.18);
 }
 .threshold-page .threshold-modal-overlay {
   position: fixed;
@@ -51,21 +70,31 @@
   justify-content: center;
   z-index: 1000;
 }
+
+/* Modal Box */
 .popup-box {
   background-color: #fff;
-  padding: 20px;
+  padding: 24px;
   border-radius: 8px;
-  width: 620px;
-  max-width: 94vw;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  width:650px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   position: relative;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.popup-header h3 {
+  margin: 0;
 }
 .popup-body { padding: 8px 0; }
 .popup-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 12px; }
 
-.threshold-modal {
-  /* keep this for any threshold-specific overrides */
-}
+/* .threshold-modal reserved for future threshold-specific overrides */
 .threshold-page .threshold-modal-header { 
   display: flex; 
   justify-content: space-between; 
@@ -121,10 +150,11 @@
   margin-bottom: 6px;
 }
 /* Removed global input/select rule; now only scoped below */
-.threshold-page input, .threshold-page select {
+.threshold-page input, .threshold-modal select {
   flex: 1;
-  padding: 12px 10px;
-  border: 1px solid #e5e7eb;
+  /*padding: 12px 10px;*/
+  padding: 7px 8px;
+  border: 1px solid #E2E4E9;
   border-radius: 8px;
   font-size: 14px;
   background: #fff;
@@ -187,3 +217,94 @@
   }
   .threshold-page .form-row { flex-direction: column; }
 }
+
+
+/* CSS */
+
+.threshold-form input {
+  width: 100%;   
+  border-radius: 8px;
+  border: 1px solid #E2E4E9;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5; 
+  color:#17181E;
+
+}
+
+.threshold-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 400;
+    color: #404252;
+}
+
+.form-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.threshold-form {
+  padding: 0 7.5px;
+}
+.threshold-form {
+  color:#17181E
+}
+
+.threshold-modal .popup-footer {
+  justify-content: center;
+  gap: 18px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+.threshold-modal .popup-header {  
+  margin-bottom: 5px;
+  margin-top: 8px;
+  padding-left: 3px;
+}
+.threshold-modal.popup-box {
+  border-radius: 12px;
+}
+
+/* Match Delete Threshold modal footprint (Bootstrap md-like) */
+.threshold-modal {
+  width: 600px;           /* approx Bootstrap md modal width */
+  max-width: 95%;
+  max-height: 85vh;       /* keep within viewport similar to Bootstrap */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Allow body to scroll if content exceeds the fixed modal height */
+.threshold-modal .popup-body {
+  max-height: calc(85vh - 120px); /* reserve space for header/footer */
+  overflow-y: auto;
+}
+.threshold-form input:focus-visible {
+  outline:0.5px solid rgba(148, 150, 161, 0.75);
+}
+
+.threshold-email-template-dropdown:focus-visible {
+  outline:0.5px solid rgba(148, 150, 161, 0.75);
+}
+.threshold-email-template-dropdown:focus {
+    border: none;
+    box-shadow: none;
+}
+
+.delete-threshold-mdl .delete-threshold-body {
+  margin:0;
+}
+.delete-threshold-mdl .modal-content .modal-footer {
+    padding: 25px 17.5px 35px;
+}
+.delete-threshold-mdl.modal-content .modal-header {
+    padding: 25px 20px 20px;
+}
+
+/* Remove number input spinners for Threshold numeric fields */
+input.no-spinner::-webkit-outer-spin-button,
+input.no-spinner::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input.no-spinner { -moz-appearance: textfield; appearance: textfield; }

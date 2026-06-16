@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MainLayout from '../components/MainLayout';
+import Buttons from '../../CommonComponents/Button';
+import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import SearchBar from '../components/SearchBar';
 import ThresholdsTable from '../components/ThresholdsTable';
 import ThresholdForm from '../components/ThresholdForm';
 import DeleteThresholdModal from '../components/DeleteThresholdModal';
 import Loader from '../../CommonComponents/Loader';
+import '../components/ThresholdsPageToolbar.css';
 // import Loader from '../components/Loader';
 
 // Prefer environment variable for API base, fallback to known dev host
@@ -26,63 +29,50 @@ export default function ThresholdsPage() {
   const [isLoading, setIsLoading] = useState(false);
 
 
-  // Fetch grid from API on mount
-  useEffect(() => {
-    let cancelled = false;
-    const fetchThresholds = async () => {
-  setLoading(true);
-  setIsLoading(true);
-  setError('');
-      try {
-        const token = sessionStorage.getItem('token');
-        if (!token) {
-          throw new Error('Missing auth token in session');
-        }
-        
-
-        const res = await fetch(`${API_BASE}/settings/threshold/gridView`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ username: 'Occupancy' }),
-        });
-
-        if (!res.ok) {
-          const text = await res.text();
-          throw new Error(text || `Request failed with ${res.status}`);
-        }
-
-        const data = await res.json();
-        // API returns: { success, message, thresHold: [[{ SL, 'THRESHOLD(S)NAME', THRESHOLDSTART, THRESHOLDEND, 'DURATION(SEC)' }, ...]] }
-        const nested = Array.isArray(data?.thresHold) ? data.thresHold : [];
-        const flat = nested.flat().filter(Boolean);
-        const mapped = flat.map((item, idx) => ({
-          sl: item?.SL ?? String(idx + 1),
-          name: item?.["THRESHOLD(S)NAME"] ?? '',
-          start: Number(item?.THRESHOLDSTART ?? 0),
-          end: Number(item?.THRESHOLDEND ?? 0),
-          duration: Number(item?.["DURATION(SEC)"] ?? 0),
-        }));
-
-        if (!cancelled) {
-          setThresholds(mapped);
-        }
-      } catch (err) {
-        console.error('Failed to load thresholds grid:', err);
-        if (!cancelled) setError(err?.message || 'Failed to load data');
-      } finally {
-        if (!cancelled) setLoading(false);
-        if (!cancelled) setIsLoading(false);
+  // Reusable loader (also used after closing any popup)
+  const loadThresholds = useCallback(async () => {
+    let cancelled = false; // local guard if component unmounts mid-request
+    setLoading(true);
+    setIsLoading(true);
+    setError('');
+    try {
+      const token = sessionStorage.getItem('token');
+      if (!token) throw new Error('Missing auth token in session');
+      const res = await fetch(`${API_BASE}/settings/threshold/gridView`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ username: 'Occupancy' }),
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || `Request failed with ${res.status}`);
       }
-    };
-
-    fetchThresholds();
-    return () => {
-      cancelled = true;
-    };
+      const data = await res.json();
+      const nested = Array.isArray(data?.thresHold) ? data.thresHold : [];
+      const flat = nested.flat().filter(Boolean);
+      const mapped = flat.map((item, idx) => ({
+        sl: item?.SL ?? String(idx + 1),
+        name: item?.["THRESHOLD(S)NAME"] ?? '',
+        start: Number(item?.THRESHOLDSTART ?? 0),
+        end: Number(item?.THRESHOLDEND ?? 0),
+        duration: Number(item?.["DURATION(SEC)"] ?? 0),
+      }));
+      if (!cancelled) setThresholds(mapped);
+    } catch (err) {
+      console.error('Failed to load thresholds grid:', err);
+      if (!cancelled) setError(err?.message || 'Failed to load data');
+    } finally {
+      if (!cancelled) setLoading(false);
+      if (!cancelled) setIsLoading(false);
+    }
+    return () => { cancelled = true; };
   }, []);
+
+  // Initial load
+  useEffect(() => { loadThresholds(); }, [loadThresholds]);
 
   // No localStorage persistence; rely solely on API
 
@@ -104,14 +94,17 @@ export default function ThresholdsPage() {
   const handleDelete = () => setShowDelete(true);
 
   const handleSave = (data) => {
-    if (editData) {
-      setThresholds(thresholds.map(t => (t === editData ? data : t)));
-    } else {
-      setThresholds([...thresholds, data]);
-    }
+    // Close form then refresh from server to ensure canonical data
     setShowForm(false);
     setEditData(null);
     setSelectedRow(null);
+    loadThresholds();
+  };
+
+  const handleFormClose = () => {
+    setShowForm(false);
+    setEditData(null);
+    loadThresholds();
   };
 
   const handleDeleteConfirm = async () => {
@@ -146,37 +139,80 @@ export default function ThresholdsPage() {
       }
 
       const data = await res.json();
-      const successMsg = data?.message || 'Threshold deleted successfully';
-      toast.success(`✅ ${successMsg}`, {
-        position: 'top-center',
-        autoClose: 3000,
-        theme: 'light',
-      });
-
-      setThresholds(thresholds.filter(t => t !== selectedRow));
-      setShowDelete(false);
-      setSelectedRow(null);
+      const rawMsg = String(data?.message || '').trim() || 'Threshold deleted successfully';
+      const cleanedMsg = rawMsg.replace(/^✅\s*/u, '');
+      const lower = cleanedMsg.toLowerCase();
+      const isProtectedMsg = /configured\s+sms\/email\(s\).*cannot be deleted/i.test(cleanedMsg) || /cannot be deleted/i.test(cleanedMsg);
+      if (isProtectedMsg) {
+        // Show as warning (do not treat as success)
+        toast.warning(cleanedMsg, {
+          position: 'top-right',
+          autoClose: 4000,
+          theme: 'light',
+        });
+        // Close modal but keep current selection so user can act differently
+        setShowDelete(false);
+      } else {
+        toast.success(` ${cleanedMsg}`, {
+          position: 'top-right',
+          autoClose: 3000,
+          theme: 'light',
+        });
+        await loadThresholds();
+        setShowDelete(false);
+        setSelectedRow(null);
+      }
     } catch (err) {
       console.error('Failed to delete threshold:', err);
-      toast(`❌ ${err?.message || 'Failed to delete threshold'}`, {
-        position: 'top-center',
+      toast(` ${err?.message || 'Failed to delete threshold'}`, {
+        position: 'top-right',
         autoClose: 3000,
         theme: 'light',
       });
     }
   };
 
+  const handleDeleteClose = () => {
+    setShowDelete(false);
+    loadThresholds();
+  };
+
   return (
-    <MainLayout
-      onAdd={handleAdd}
-      onEdit={handleEdit}
-      onDelete={handleDelete}
-      disableEdit={!selectedRow}
-      disableDelete={!selectedRow}
-    >
+    <MainLayout>
   <ToastContainer />
-      <div className="card">
-        <SearchBar value={search} onChange={setSearch} />
+  <div><p><span className="top-tab-head">Threshold</span></p></div>
+      <div className="new_card threshold-sec">
+        <div className="threshold-toolbar">
+          <SearchBar value={search} onChange={setSearch} />
+          <div className="actions">
+            <Buttons
+              text="Edit Threshold"
+              type="button"
+              size="md"
+              variant="light"
+              className="btn-primary btn"             
+              onClick={handleEdit}
+              disabled={!selectedRow}
+            />
+            <Buttons
+              text="Delete Threshold"
+              type="button"
+              size="md"
+              variant="light"
+              className="btn-primary btn"             
+              onClick={handleDelete}
+              disabled={!selectedRow}
+            />
+            <Buttons
+              text="Add Threshold"
+              type="button"
+              size="md"
+              variant="light"
+              className="btn-primary btn"             
+              onClick={handleAdd}
+            />
+          </div>
+        </div>
         {error && (
           <div style={{ color: 'red', marginBottom: 8 }}>{error}</div>
         )}
@@ -191,16 +227,16 @@ export default function ThresholdsPage() {
         )}
       </div>
       <ThresholdForm
-      
         open={showForm}
-        onClose={() => setShowForm(false)}
+        onClose={handleFormClose}
         onSave={handleSave}
         initialData={editData}
       />
       <DeleteThresholdModal
         open={showDelete}
-        onClose={() => setShowDelete(false)}
+        onClose={handleDeleteClose}
         onDelete={handleDeleteConfirm}
+  thresholdName={selectedRow?.name}
       />
     </MainLayout>
   );

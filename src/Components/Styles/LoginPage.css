@@ -44,7 +44,8 @@ button.btn.btn-primary.lgnsbbtn {
   color:#fff;
 }
 button.btn.btn-primary.lgnsbbtn:hover {
-
+  background: #174692;
+  color: #fff;
 }
 .FormSection {
   margin: 24px 0px;
@@ -95,4 +96,9 @@ p.cplabel, p.splabel {
 
 .LogcopyrightSec .cplabel {
   margin-top: 5px;
+}
+.login_Container .panel-title {
+    font-size: 30px;
+    font-weight: 800;
+    margin-bottom: 0px;
 }

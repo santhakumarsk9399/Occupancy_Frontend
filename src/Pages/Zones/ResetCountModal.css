@@ -85,3 +85,20 @@
 }
 
 /* Use global .btn-soft-outline from Components/Styles/CustomButtons.css to keep button appearance consistent */
+
+/* Image styling similar to delete popup (keep consistent sizing) */
+.reset-count-image {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+}
+.reset-modal-pop .modal-content{
+    padding: 8px 8px;
+    border-radius: 15px;
+}
+
+.reset-count-body.modal-body {
+    margin: 0;
+ }
+
+ 

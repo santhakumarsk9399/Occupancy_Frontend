@@ -1,155 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import Select, { components } from 'react-select';
 import { toast } from 'react-toastify';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import './EditEmailGroup.css';
 import './EmailTab.css';
-import '../../Components/Styles/Multiselectdropdown.css';
+// Import Threshold form styles to mirror SMS Template dropdown styling
+import '../Threshold/components/ThresholdForm.css';
+import { Formik, Form as FormikForm } from 'formik';
+import * as Yup from 'yup';
+import MultiSelectDropdown from '../CommonComponents/MultiSelectDropDown';
+import SingleSelectDropdown from '../CommonComponents/SingleSelectDropdown';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://delbi2dev.deloptanalytics.com:3000';
-const emailRegex = /^\S+@\S+\.\S+$/;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// React-select based MultiSelectDropdown to match SMS Add Group UI
-const MultiSelectDropdown = ({ options, selectedValues, onChange, placeholder = 'Select' }) => {
-  const selectOptions = (options || []).map((opt) =>
-    typeof opt === 'string' ? { value: opt, label: opt } : { value: opt.value ?? opt.label, label: opt.label ?? opt.value }
-  );
-  const selected = selectOptions.filter((opt) => (selectedValues || []).includes(opt.value));
-  const wrapperRef = React.useRef(null);
-  const [menuWidth, setMenuWidth] = useState(0);
+// using shared MultiSelectDropdown (same as Add)
 
-  useEffect(() => {
-    const updateWidth = () => {
-      if (wrapperRef.current) {
-        const rect = wrapperRef.current.getBoundingClientRect();
-        setMenuWidth(rect.width);
-      }
-    };
-    updateWidth();
-    window.addEventListener('resize', updateWidth);
-    return () => window.removeEventListener('resize', updateWidth);
-  }, []);
-
-  const Option = (props) => (
-    <components.Option {...props}>
-      <label className="dropdown-item" style={{ display: 'flex', alignItems: 'center' }}>
-        <input type="checkbox" checked={props.isSelected} onChange={() => {}} style={{ marginRight: 10 }} />
-        {props.label}
-      </label>
-    </components.Option>
-  );
-
-  const MultiValue = () => null;
-
-  const ValueContainer = (props) => {
-    const count = props.getValue().length;
-    const text = count > 0 ? `${count} Selected` : props.selectProps.placeholder || 'Select';
-    return (
-      <components.ValueContainer {...props}>
-        <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{text}</div>
-        {Array.isArray(props.children) ? props.children[1] : null}
-      </components.ValueContainer>
-    );
-  };
-
-  const DropdownIndicator = (props) => {
-    const isOpen = props.selectProps.menuIsOpen;
-    return (
-      <components.DropdownIndicator {...props}>
-        <span className={`arrow ${isOpen ? 'up' : 'down'}`} />
-      </components.DropdownIndicator>
-    );
-  };
-
-  const IndicatorSeparator = () => null;
-
-  const MenuList = (props) => (
-    <>
-      <div
-        className="dropdown-item"
-        style={{ fontWeight: 600, color: '#7b809a', borderBottom: '1px solid #eee' }}
-        onClick={() => props.selectProps.onChange([])}
-      >
-        Clear Selected Items
-      </div>
-      <components.MenuList {...props} />
-    </>
-  );
-
-  return (
-    <div className="custom-dropdown" ref={wrapperRef} style={{ width: '100%' }}>
-      <Select
-        isMulti
-        options={selectOptions}
-        value={selected}
-        onChange={(selectedList) => {
-          if (!Array.isArray(selectedList)) {
-            onChange([]);
-          } else {
-            const vals = selectedList
-              .filter((opt) => opt && typeof opt.value !== 'undefined')
-              .map((opt) => String(opt.value));
-            onChange(vals);
-          }
-        }}
-        placeholder={placeholder}
-        classNamePrefix="react-select"
-        closeMenuOnSelect={false}
-        hideSelectedOptions={false}
-        menuPortalTarget={typeof document !== 'undefined' ? document.body : null}
-        menuPosition="fixed"
-        menuPlacement="auto"
-        menuShouldScrollIntoView={false}
-        maxMenuHeight={240}
-        components={{ Option, MenuList, MultiValue, ValueContainer, DropdownIndicator, IndicatorSeparator }}
-        styles={{
-          container: (provided) => ({
-            ...provided,
-            width: '100%',
-            fontFamily: 'sans-serif',
-          }),
-          control: (provided, state) => ({
-            ...provided,
-            padding: '6px 8px',
-            borderRadius: 8,
-            background: '#fff',
-            boxShadow: '0px 2px 6px rgba(0,0,0,0.1)',
-            border: state.isFocused ? '1px solid #cbd5e1' : '1px solid transparent',
-            cursor: 'pointer',
-            minHeight: 40,
-          }),
-          indicatorsContainer: (provided) => ({ ...provided, paddingRight: 8 }),
-          placeholder: (provided) => ({ ...provided, marginLeft: 0 }),
-          valueContainer: (provided) => ({
-            ...provided,
-            paddingLeft: 8,
-          }),
-          menu: (provided) => ({
-            ...provided,
-            zIndex: 9999,
-            borderRadius: 8,
-            boxShadow: '0px 4px 12px rgba(0,0,0,0.1)',
-            marginTop: 6,
-            overflow: 'hidden',
-            width: menuWidth || provided.width,
-            minWidth: menuWidth || provided.minWidth,
-          }),
-          menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-          menuList: (provided) => ({
-            ...provided,
-            paddingTop: 8,
-            paddingBottom: 8,
-          }),
-          option: (provided, state) => ({
-            ...provided,
-            padding: 0,
-            background: state.isFocused ? '#f3f4f6' : '#fff',
-            color: '#111827',
-          }),
-        }}
-      />
-    </div>
-  );
-};
+// Reusable info tooltip icon (same style as Users module)
+const InfoTooltip = ({ id, children }) => (
+  <OverlayTrigger
+    placement="top"
+    overlay={<Tooltip id={id}>{children}</Tooltip>}
+    delay={{ show: 150, hide: 100 }}
+  >
+    <span
+      role="img"
+      aria-label="info"
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        marginLeft: 4,
+        width: 14,
+        height: 14,
+        borderRadius: "50%",
+        border: "1px solid #6c757d",
+        fontSize: 10,
+        lineHeight: 1,
+        cursor: "help",
+        userSelect: "none",
+      }}
+    >
+      i
+    </span>
+  </OverlayTrigger>
+);
 
 const EditEmailGroup = ({ groupId, groupName: initialGroupName, onClose, onSave }) => {
   const [groupName, setGroupName] = useState(initialGroupName || '');
@@ -165,6 +59,7 @@ const EditEmailGroup = ({ groupId, groupName: initialGroupName, onClose, onSave 
   const [optionsLoading, setOptionsLoading] = useState(false);
   const [optionsError, setOptionsError] = useState('');
   const [saving, setSaving] = useState(false);
+  // form-level errors handled by Formik/Yup
 
   // Load existing group details and options
   useEffect(() => {
@@ -219,7 +114,7 @@ const EditEmailGroup = ({ groupId, groupName: initialGroupName, onClose, onSave 
           ? data.mappedZone.map((z) => z?.ZoneName).filter(Boolean)
           : [];
         if (mappedThreshold) setThreshold(mappedThreshold);
-        if (mappedZones?.length) setZones(mappedZones);
+        if (mappedZones?.length) setZones(mappedZones.map((z) => ({ label: z, value: z })));
 
         // Set options from allThreshold/allZone if available
         let tOpts = Array.isArray(data?.allThreshold)
@@ -258,8 +153,8 @@ const EditEmailGroup = ({ groupId, groupName: initialGroupName, onClose, onSave 
           }
         }
 
-        setThresholdOptions(tOpts);
-        setZoneOptions(zOpts);
+  setThresholdOptions(tOpts);
+  setZoneOptions(zOpts.map((z) => ({ label: z, value: z })));
       } catch (err) {
         console.error('Failed to load Email group view/options:', err);
         setOptionsError(err?.message || 'Failed to load group details');
@@ -273,21 +168,7 @@ const EditEmailGroup = ({ groupId, groupName: initialGroupName, onClose, onSave 
     }
   }, [initialGroupName]);
 
-  // Email handlers (support multiple with semicolon)
-  const handleAddEmail = () => {
-    const raw = emailInput || '';
-    const parts = raw
-      .split(';')
-      .map((e) => e.trim())
-      .filter(Boolean);
-    if (parts.length === 0) return;
-
-    const validNew = parts.filter((e) => emailRegex.test(e) && !emails.includes(e));
-    if (validNew.length > 0) {
-      setEmails([...emails, ...validNew]);
-    }
-    setEmailInput('');
-  };
+  // Formik will manage adding/removing emails
 
   const handleRemoveEmail = () => {
     if (selectedEmailIndex !== null) {
@@ -300,104 +181,219 @@ const EditEmailGroup = ({ groupId, groupName: initialGroupName, onClose, onSave 
     setSelectedEmailIndex(selectedEmailIndex === index ? null : index);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!groupName || emails.length === 0 || !threshold || (zones?.length || 0) === 0) {
-      toast.error('Please fill all required fields.', { position: 'top-center' });
-      return;
-    }
-
-    const username = sessionStorage.getItem('username') || 'TestUser';
-    const token = sessionStorage.getItem('token');
-    if (!token) {
-      toast.error('Missing auth token. Please log in again.', { position: 'top-center' });
-      return;
-    }
-
-    const payload = {
-      username,
-      oldgroupname: oldGroupName || groupName,
-      groupname: groupName.trim(),
-      email: Array.from(new Set(emails.map((e) => e.trim()))).filter(Boolean).join(';'),
-      zone: Array.isArray(zones)
-        ? Array.from(new Set(zones.map((z) => (z ?? '').toString().trim()))).filter(Boolean).join(',')
-        : (zones ?? '').toString().trim(),
-      threshold: String(threshold || '').trim(),
-    };
-
-    try {
-      setSaving(true);
-      const res = await fetch(`${API_BASE}/settings/email/edit`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || `Edit failed with ${res.status}`);
-      }
-  const data = await res.json().catch(() => ({}));
-      if (data?.success === false) {
-        throw new Error(data?.message || 'Edit failed');
-      }
-
-  onSave && onSave();
-  onClose && onClose();
-    } catch (err) {
-      console.error('Edit Email group failed:', err);
-  toast.error(err?.message || 'Failed to save changes', { position: 'top-center' });
-    } finally {
-      setSaving(false);
-    }
-  };
+  const validationSchema = Yup.object({
+    groupName: Yup.string()
+      .required('Group Name is required')
+      .max(75, 'Group Name must be 75 characters or less')
+      .test(
+        'not-whitespace-only',
+        'Group name cannot be empty or spaces only',
+        (v) => (v || '').trim().length > 0
+      ),
+    emails: Yup.array()
+      .of(
+        Yup.string()
+          .test('no-spaces', 'Email cannot contain spaces', (v) => (v ? !/\s/.test(v) : true))
+          .matches(emailRegex, 'Invalid email')
+      )
+      .min(1, 'Email ID is required'),
+    threshold: Yup.string().required('Threshold is required'),
+    zones: Yup.array().min(1, 'Zones is required'),
+    emailInput: Yup.string()
+      .test('no-spaces-input', 'Email cannot contain spaces', (v) => (v ? !/\s/.test(v) : true))
+      .test(
+        'pending-add',
+        'Click + to add it.',
+        function (v) {
+          const { emails } = this.parent;
+          if (!v) return true;
+          const parts = v.split(';').map((s) => s.trim()).filter(Boolean);
+          if (parts.length === 0) return true;
+          const anyValidNotAdded = parts.some(
+            (p) => emailRegex.test(p) && !(Array.isArray(emails) ? emails : []).includes(p)
+          );
+          const allValid = parts.every((p) => emailRegex.test(p));
+          if (allValid && anyValidNotAdded) return false;
+          return true;
+        }
+      ),
+  });
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content">
+      <div className="modal-content email-modal threshold-themed sms-modal">
         <div className="modal-header">
           <h2 className="modal-title">Edit Email Group</h2>
           <button type="button" className="modal-close" onClick={onClose}>×</button>
         </div>
-        <form className="modal-form" onSubmit={handleSubmit}>
+        <Formik
+          enableReinitialize
+          initialValues={{ groupName, emailInput, emails, threshold, zones }}
+          validationSchema={validationSchema}
+          onSubmit={async (values, { setSubmitting }) => {
+            const username = sessionStorage.getItem('username') || 'TestUser';
+            const token = sessionStorage.getItem('token');
+            if (!token) {
+              const emsg = 'Missing auth token. Please log in again.';
+              console.error(emsg);
+              toast.error(emsg, { containerId: 'email-group', position: 'top-right', autoClose: 3000 });
+              return;
+            }
+            // Determine whether changes include anything other than the name
+            const normalizeEmails = (arr) =>
+              Array.from(
+                new Set((Array.isArray(arr) ? arr : []).map((e) => (e || '').toString().trim()).filter(Boolean))
+              )
+                .sort()
+                .join(';');
+            const normalizeZones = (arr) =>
+              Array.from(
+                new Set(
+                  (Array.isArray(arr) ? arr : [])
+                    .map((z) => ((z && (z.value ?? z)) || '').toString().trim())
+                    .filter(Boolean)
+                )
+              )
+                .sort()
+                .join(',');
+            const initialEmailsNorm = normalizeEmails(emails);
+            const newEmailsNorm = normalizeEmails(values.emails);
+            const initialZonesNorm = normalizeZones(zones);
+            const newZonesNorm = normalizeZones(values.zones);
+            const initialThresh = String(threshold || '').trim();
+            const newThresh = String(values.threshold || '').trim();
+            const onlyNameChanged =
+              initialEmailsNorm === newEmailsNorm &&
+              initialZonesNorm === newZonesNorm &&
+              initialThresh === newThresh;
+            const editflag = !onlyNameChanged;
+            const payload = {
+              username,
+              oldgroupname: oldGroupName || values.groupName,
+              groupname: String(values.groupName || '').trim(),
+              email: Array.from(new Set((values.emails || []).map((e) => e.trim()))).filter(Boolean).join(';'),
+              zone: Array.isArray(values.zones)
+                ? Array.from(new Set(values.zones.map((z) => (z?.value ?? '').toString().trim()))).filter(Boolean).join(',')
+                : '',
+              threshold: String(values.threshold || '').trim(),
+              editflag,
+            };
+            try {
+              setSubmitting(true);
+              setSaving(true);
+              const res = await fetch(`${API_BASE}/settings/email/edit`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                body: JSON.stringify(payload),
+              });
+              const raw = await res.text();
+              let data = {};
+              try { data = raw ? JSON.parse(raw) : {}; } catch {}
+              if (!res.ok || data?.success === false) {
+                throw new Error(data?.message || raw || `Edit failed with ${res.status}`);
+              }
+              const smsg = data?.message || 'Email group updated';
+              console.log('Toast success:', smsg);
+              toast.success(smsg, { containerId: 'email-group', position: 'top-right', autoClose: 3000 });
+              onSave && onSave();
+              onClose && onClose();
+            } catch (err) {
+              console.error('Edit Email group failed:', err);
+              const emsg = err?.message || 'Failed to save changes';
+              console.error('Toast error:', emsg);
+              toast.error(emsg, { containerId: 'email-group', position: 'top-right', autoClose: 3000 });
+            } finally {
+              setSaving(false);
+              setSubmitting(false);
+            }
+          }}
+        >
+          {({ values, errors, touched, setFieldValue, setFieldError, handleSubmit, isSubmitting, isValid, submitCount }) => {
+            const showGroupNameError = !!(errors.groupName && (touched.groupName || submitCount > 0));
+            const hasEmails = Array.isArray(values.emails) && values.emails.length > 0;
+            const emailListErrorVisible = !hasEmails && !!(errors.emails && (touched.emails || submitCount > 0));
+            const emailInputErrorVisible = !!(errors.emailInput && (touched.emailInput || submitCount > 0));
+            const showEmailsError = emailListErrorVisible || emailInputErrorVisible;
+            const showThresholdError = !!(errors.threshold && (touched.threshold || submitCount > 0));
+            const showZonesError = !!(errors.zones && (touched.zones || submitCount > 0));
+            return (
+            <FormikForm className="modal-form" noValidate onSubmit={handleSubmit}>
           {optionsError && (
             <div style={{ marginBottom: 8, color: '#b00020' }}>{optionsError}</div>
           )}
+          {submitCount > 0 && !isValid && (
+            <div     style={{ marginBottom: 8 }}>
+              {/* Please fix the validation errors. */}
+            </div>
+          )}
 
           <div className="modal-row">
-            <label>Group Name <span className="required">*</span></label>
-            <input
-              type="text"
-              value={groupName}
-              onChange={(e) => setGroupName(e.target.value)}
-              required
-              placeholder="Enter group name"
-            />
+            <label>
+              Group Name <span className="required">*</span>
+              <InfoTooltip id="group-name-tooltip">
+               Group name should contain maximum 75 characters
+              </InfoTooltip>
+            </label>
+            <div className={`field ${showGroupNameError ? 'has-error' : ''}`}>
+             <input
+                  type="text"
+                  value={values.groupName}
+                  onChange={(e) => setFieldValue("groupName", e.target.value)}
+                  maxLength={75}
+                  className={showGroupNameError ? "error" : ""}
+                />
+            </div>
+            {showGroupNameError && (
+              <div className="error-message">{errors.groupName}</div>
+            )}
           </div>
           <div className="modal-row">
             <label>Email ID <span className="required">*</span></label>
             <div className="email-input-section">
-              <input
-                type="email"
-                value={emailInput}
-                onChange={(e) => setEmailInput(e.target.value)}
-                className="email-input"
-                placeholder="Enter email (use ; to add multiple)"
-              />
+              <div className={`field ${showEmailsError ? 'has-error' : ''}`} style={{ flex: 1 }}>
+                <input
+                  type="text"
+                  value={values.emailInput}
+                  onChange={(e) => {
+                    const val = (e.target.value || '').replace(/\s+/g, '');
+                    setFieldValue('emailInput', val);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === ' ') e.preventDefault();
+                  }}
+                  onPaste={(e) => {
+                    const text = (e.clipboardData?.getData('text') || '').replace(/\s+/g, '');
+                    e.preventDefault();
+                    setFieldValue('emailInput', `${values.emailInput || ''}${text}`);
+                  }}
+                  className={`email-input ${showEmailsError ? 'error' : ''}`}
+                  // placeholder="Enter email"
+                />
+              </div>
               <div className="email-buttons">
                 <button
                   type="button"
                   className="email-add"
-                  onClick={handleAddEmail}
+                  onClick={() => {
+                    const raw = values.emailInput || '';
+                    const parts = raw.split(';').map((s) => s.trim()).filter(Boolean);
+                    if (parts.length === 0) return;
+                    const invalid = parts.filter((e) => /\s/.test(e) || !emailRegex.test(e));
+                    if (invalid.length > 0) {
+                      setFieldError('emails', 'Email addresses cannot contain spaces and must be valid');
+                      return;
+                    }
+                    const current = Array.isArray(values.emails) ? values.emails : [];
+                    const validNew = parts.filter((e) => !current.includes(e));
+                    if (validNew.length > 0) setFieldValue('emails', [...current, ...validNew]);
+                    setFieldValue('emailInput', '');
+                  }}
                   disabled={(function(){
-                    const raw = (emailInput || '').trim();
+                    const raw = (values.emailInput || '').trim();
                     if (!raw) return true;
                     const parts = raw.split(';').map((s)=>s.trim()).filter(Boolean);
                     if (parts.length === 0) return true;
-                    return !parts.some((p)=> emailRegex.test(p) && !emails.includes(p));
+                    return !parts.some((p)=> emailRegex.test(p) && !(values.emails||[]).includes(p) && !/\s/.test(p));
                   })()}
                 >
                   +
@@ -405,16 +401,25 @@ const EditEmailGroup = ({ groupId, groupName: initialGroupName, onClose, onSave 
                 <button
                   type="button"
                   className="email-remove"
-                  onClick={handleRemoveEmail}
+                  onClick={() => {
+                    if (selectedEmailIndex !== null) {
+                      const updated = (values.emails || []).filter((_, i) => i !== selectedEmailIndex);
+                      setFieldValue('emails', updated);
+                      setSelectedEmailIndex(null);
+                    }
+                  }}
                   disabled={selectedEmailIndex === null}
                 >
                   −
                 </button>
               </div>
             </div>
-            {emails.length > 0 && (
+            {showEmailsError && (
+              <div className="error-message">{errors.emailInput || errors.emails}</div>
+            )}
+            {(values.emails || []).length > 0 && (
               <div className="email-list">
-                {emails.map((email, idx) => (
+                {values.emails.map((email, idx) => (
                   <div
                     key={idx}
                     className={`email-item ${selectedEmailIndex === idx ? 'selected' : ''}`}
@@ -428,33 +433,41 @@ const EditEmailGroup = ({ groupId, groupName: initialGroupName, onClose, onSave 
           </div>
           <div className="modal-row">
             <label>Threshold <span className="required">*</span></label>
-            <select
-              value={threshold}
-              onChange={(e) => setThreshold(e.target.value)}
-              required
-              className="custom-select"
-              disabled={optionsLoading || thresholdOptions.length === 0}
-            >
-              <option value="">{optionsLoading ? 'Loading...' : 'Select'}</option>
-              {thresholdOptions.map((t) => (
-                <option key={t} value={t}>{t}</option>
-              ))}
-            </select>
+            <div className={`threshold-email-template-select ${showThresholdError ? 'has-error' : ''}`}> 
+              <SingleSelectDropdown
+                options={[{ value: '', label: optionsLoading ? 'Loading...' : 'Select' }, ...thresholdOptions.map(t => ({ value: t, label: t }))]}
+                value={values.threshold ? { value: values.threshold, label: values.threshold } : null}
+                onChange={(opt) => setFieldValue('threshold', opt ? opt.value : '')}
+                isInvalid={showThresholdError}
+                usePortal={true}
+                portalZIndex={6000}
+              />
+            </div>
+            {showThresholdError && (
+              <div className="invalid-feedback d-block">{errors.threshold}</div>
+            )}
           </div>
           <div className="modal-row">
             <label>Zones <span className="required">*</span></label>
-            <MultiSelectDropdown
-              options={zoneOptions}
-              selectedValues={zones}
-              onChange={setZones}
-              placeholder={optionsLoading ? 'Loading...' : 'Select zones'}
-            />
+            <div className={`field ${showZonesError ? 'has-error' : ''}`}>
+              <MultiSelectDropdown
+                options={zoneOptions}
+                value={values.zones}
+                onChange={(newZones) => setFieldValue('zones', newZones)}
+                placeholder={optionsLoading ? 'Loading...' : 'Select zones'}
+                isInvalid={showZonesError}
+                error={showZonesError ? String(errors.zones) : ''}
+              />
+            </div>
           </div>
-          <div className="modal-actions">
-            <button type="button" className="cancel-btn" onClick={onClose} disabled={saving}>Cancel</button>
-            <button type="submit" className="save-btn" disabled={saving || optionsLoading}>{saving ? 'Saving...' : 'Save'}</button>
+          <div className="modal-actions modal-actions-center">
+            <button type="button" className="btn btn-primary btn-sm" onClick={onClose} disabled={saving}>Cancel</button>
+            <button type="submit" className="btn btn-primary btn-sm actv" disabled={saving || isSubmitting}>{saving ? 'Saving...' : 'Save'}</button>
           </div>
-        </form>
+            </FormikForm>
+            );
+          }}
+        </Formik>
       </div>
     </div>
   );

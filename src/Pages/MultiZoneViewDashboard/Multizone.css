@@ -1,0 +1,320 @@
+.occupancy-container {
+  background: #f7f8fb;
+  min-height: 100vh;
+  /*padding: 20px 30px;*/
+  font-family: "Inter", sans-serif;
+}
+
+.occupancy-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /*margin-bottom: 15px;*/
+  padding: 25px 35px;
+}
+
+.occupancy-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  display: flex;
+  align-items: center;
+}
+
+.badge-dot {                                                                                                                                  
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 6px;
+  background: #22c55e;
+  border-radius: 50%;
+}
+
+.zone-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+/* Table Header */
+.occupancy-table {
+ /* background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);*/
+  overflow: hidden;
+  padding: 0 30px;
+}
+
+.occupancy-table-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1.25fr 1fr 1fr;
+  padding: 15px 18px;
+  background: #f3f4f6;
+  font-weight: 500;
+  color: #17181E;
+  font-size: 16px;
+  text-align: center;
+}
+
+.occupancy-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1.25fr 1fr 1fr;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fff;
+  text-align: center;
+  font-size: 16px;
+  color: #404252;
+}
+
+.occupancy-row:hover {
+  /*background: #f9fafb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);*/
+}
+
+/* Columns */
+.zone-name {
+  font-weight: 500;
+  color: #111827;
+}
+
+.percentage {
+  font-weight: 600;
+}
+
+.percentage.safe {
+  color: #25B27A;
+}
+.percentage.almost {
+  color: #FFB700;
+}
+.percentage.full {
+  color: #F35F5F;
+}
+.percentage.empty {
+  color: #009EEE;
+}
+
+.chart-cell {
+  height: 76px;
+  width: 300px;
+  margin:0 auto;
+}
+
+.no-chart {
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+/* Status Badge */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #fff;
+  font-weight: 400;
+  border-radius: 10px;
+  padding: 7px 12px;
+  font-size: 15px;
+  width:100%;
+}
+
+.status-badge.safe {
+  background: #25B27A;
+}
+.status-badge.almost {
+  background: #FFB700;
+}
+.status-badge.full {
+  background: #F35F5F;
+}
+.status-badge.empty {
+  background: #009EEE;
+}
+
+/* Loader + Error */
+.loader-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+
+.error-text {
+  text-align: center;
+  color: #ef4444;
+  font-weight: 500;
+  margin-top: 30px;
+}
+
+/* Footer */
+.occupancy-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 25px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.footer-text span {
+  color: #0ea5e9;
+  font-weight: 600;
+}
+/* Table scroll */
+.occupancy-table-wrapper {
+  height: calc(100vh - 222px); /* adjust */
+  overflow-y: auto;
+}
+.loader-wrap {
+  height: calc(100vh - 157px);
+  border-radius: 12px;
+  background: #FFF;
+  box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+  margin: 0 35px 15px;  
+}
+
+.no-data-dashboard {
+    height: calc(100vh - 157px);
+    border-radius: 12px;
+    background: #FFF;
+    box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+    width: auto; 
+}
+
+/* Header sticky */
+/* .occupancy-table-header {
+  display: flex;
+  font-weight: bold;
+  background: #f5f5f5;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 8px 0;
+  width: 100%;
+} */
+
+/* Row layout + border */
+/* .occupancy-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding: 8px 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+} */
+
+
+/* Occupancy page wrapper */
+.occupancy-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* full viewport height */
+}
+
+/* Scrollable content */
+.occupancy-content {
+  flex: 1;           /* takes all space above footer */
+  overflow-y: auto;  /* enables scrolling */
+  padding: 16px;
+}
+
+/* Footer fixed at bottom */
+.footerContainer {
+  flex-shrink: 0;
+  height: 60px; /* adjust footer height */
+  /*background: #f8f8f8;
+  border-top: 1px solid #ddd;*/
+}
+
+
+/* Custom CSS */
+
+.occupancy-row {
+  border-radius: 12px;
+  background: #FFF;
+  box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+  margin: 0 5px 15px;
+}
+.occupancy-table-header {
+  border-radius: 12px;
+  background: #FFF;
+  box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+   margin: 0 5px 15px;
+}
+.zone-lbl, .zone-name {
+  text-align: left;
+}
+.occupancy-table-header > div {
+  padding: 5px 10px;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.occupancy-row > div {
+  padding: 5px 10px;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.moduleTitle h2 {
+  color: #17181E;
+  margin-bottom: 0;
+  font-size: 26px;
+}
+
+.occupancy-table-header > div, .occupancy-row > div.status-badge {
+ /* color:#fff;*/
+}
+
+.footerContainer {
+  width:100%;
+  /*position: absolute;
+  bottom:0;*/
+  height: 50px;
+}
+
+.projectTitle .panel-title {
+  font-size: 26px;
+  margin-bottom: 0;
+  padding: 0;
+}
+.projectTitle .panel-title:hover {
+  color: #17181E;
+}
+.projectTitle .panel-title,
+.zone-filter label {
+  margin: 0;
+}
+.zone-filter label {
+  color:#404252;
+}
+.msd__header:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.5px rgba(59, 130, 246, .25);
+}
+
+.footer {
+  padding: 10px 35px;
+}
+
+.recharts-wrapper:focus-visible {
+  outline: none;
+}
+
+.hour-trend-lbl {
+ /* max-width: 300px;*/
+}
+
+.zone-filter {
+  width:271px;
+}
+
+
+.recharts-wrapper svg:focus {
+  outline: none; /* remove default outline for all focus */
+  border: none !important;
+}

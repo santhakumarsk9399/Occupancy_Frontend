@@ -4,6 +4,7 @@ import EditSMSGroup from "./EditSMSGroup";
 import DeleteSMSGroup from "./DeleteSMSGroup";
 import "./EmailTab.css";
 import DataTable from "react-data-table-component";
+import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 // Prefer environment variable for API base, fallback to known dev host
 const API_BASE = import.meta.env.VITE_API_URL || "http://delbi2dev.deloptanalytics.com:3000";
@@ -32,7 +33,6 @@ const SMSGroupTable = () => {
     {
       name: "GROUP(S)NAME",
       selector: (row) => row.name,
-      sortable: true,
     },
   ];
 
@@ -163,7 +163,7 @@ const SMSGroupTable = () => {
     await fetchGrid();
   setSuccess(`Group "${groupData?.groupName ?? ""}" added`);
    toast.success("Group Added Successfully", {
-          position: "top-center",
+          position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -176,7 +176,7 @@ const SMSGroupTable = () => {
       console.error("Failed to create SMS group:", err);
       const msg = err?.message || "Failed to create group";
       setError(msg);
-      toast.error(msg, { position: "top-center" });
+      toast.error(msg, { position: "top-right" });
     } finally {
       setLoading(false);
     }
@@ -191,7 +191,7 @@ const SMSGroupTable = () => {
     const nameForMsg = updatedData?.groupname || updatedData?.groupName || updatedData?.name || "";
   setSuccess(`Group "${nameForMsg}" updated`);
    toast.success("Group Updated Successfully", {
-          position: "top-center",
+          position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -203,7 +203,7 @@ const SMSGroupTable = () => {
     } catch (e) {
       // fetchGrid already sets error; also surface a toast
       const msg = e?.message || "Failed to update group";
-      toast.error(msg, { position: "top-center" });
+      toast.error(msg, { position: "top-right" });
     } finally {
       setLoading(false);
       setShowEditModal(false);
@@ -289,7 +289,7 @@ const SMSGroupTable = () => {
   await fetchGrid();
   setSuccess(`Group "${payload.groupname}" deleted`);
    toast.success("Group Name Deleted Successfully", {
-          position: "top-center",
+          position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -302,7 +302,7 @@ const SMSGroupTable = () => {
       console.error("Failed to delete SMS group:", err);
       const msg = err?.message || "Failed to delete group";
       setError(msg);
-      toast.error(msg, { position: "top-center" });
+      toast.error(msg, { position: "top-right" });
     } finally {
       setLoading(false);
       setShowDeleteModal(false);
@@ -338,18 +338,20 @@ const SMSGroupTable = () => {
             className="edit-btn"
             disabled={!selectedGroup}
             onClick={() => selectedGroup && openEditModal(selectedGroup)}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
           >
-            Edit Group
+             Edit Group
           </button>
           <button
             className="delete-btn"
             disabled={!selectedGroup}
             onClick={() => selectedGroup && openDeleteModal(selectedGroup)}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
           >
-            Delete Group
+             Delete Group
           </button>
-          <button className="add-btn" onClick={() => setShowAddModal(true)}>
-            + Add Group
+          <button className="add-btn" onClick={() => setShowAddModal(true)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+             Add Group
           </button>
         </div>
       </div>
@@ -372,8 +374,8 @@ const SMSGroupTable = () => {
             },
           ]}
           pagination
-          paginationPerPage={10}
-          paginationRowsPerPageOptions={[ 10, 15]}
+          paginationPerPage={5}
+          paginationRowsPerPageOptions={[5, 10, 15]}
         />
       </div>
 

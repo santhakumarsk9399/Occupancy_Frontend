@@ -114,8 +114,10 @@
   margin: 5px 0 5px;
 }
 .Dash_TopSection {
-    padding: 25px;
+    padding: 1px;
     margin-top: 10px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
 }
 
 
@@ -129,9 +131,9 @@
   border-radius: 10px;
   color: #404252;
   font-size: 14px;
-  border: 0;
+  border: 1px solid #fff;
   box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
-  padding: 10px 16px;
+  padding: 9px 16px;
   background: #FFF;
 }
 .tabsec_dash .nav-tabs .nav-link.active {
@@ -183,16 +185,42 @@
     background-color: #D8564B;
     border:1px solid #D8564B;
     color: #fff;
-    padding: 8px 16px;
+    padding: 7px 16px;
     border-radius: 8px;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 
 .btn.btn-danger:hover, .modal-footer .delete:hover {
-  color:#EE5548;
-  background:rgba(216, 86, 75, 0.2);
-  border:1px solid #D8564B;
+  color:#fff;
+  background:#A8433A;
+  border:1px solid #A8433A;
+
+}
+.filters_dashboard {
+    background: #2162CD !important;
+    color: white !important;
+}
+.sc-gvqKNf.cvFfSA {
+
+	border-bottom: 1px solid rgba(0, 0, 0, .12);
+
+    min-height: 200px;
+
+}
+.logs-container .log-card .no-data-container {
+
+	border: 1px solid rgba(0, 0, 0, .12);
+
+    height: 30vh;
+
+    margin-top: 20px;
+
+    padding: 50px;
+}
+.threshold-page .threshold-sec {
+
+	padding: 24px;
 
 }

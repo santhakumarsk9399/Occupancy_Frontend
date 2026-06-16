@@ -1,0 +1,21 @@
+.dropdown-item {
+  width: 100%;
+  padding: 8px 12px;
+  background: white;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background: #f0f0f0;
+}
+/* span.exportoptionLabel {
+    padding-left: 10px;
+} */
+.custom-focus-btn:hover {
+  background-color: #0b5ed7 !important; 
+  color: #fff !important;           
+  box-shadow: none !important; 
+  border-color: #0b5ed7 !important;
+}

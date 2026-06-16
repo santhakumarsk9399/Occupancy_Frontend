@@ -21,8 +21,8 @@ const UserPage = () => {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showView, setShowView] = useState(false);
-  const [zoneQuery, setZoneQuery] = useState(""); // ✅ separate zone search
-  const [userQuery, setUserQuery] = useState(""); // ✅ separate user search
+  const [zoneQuery, setZoneQuery] = useState("");
+  const [userQuery, setUserQuery] = useState("");
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [users, setUsers] = useState(null);
   const [editUser, seteditUser] = useState(null);
@@ -32,13 +32,14 @@ const UserPage = () => {
   const [getUserProfile, setUserProfile] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-
+  const [canAddUser, setCanAddUser] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL;
   const token = sessionStorage.getItem("token");
   const vid = sessionStorage.getItem("vid");
   const MainUsername = sessionStorage.getItem("username");
   const role = sessionStorage.getItem("role");
-
+  const userAddView =
+    sessionStorage.getItem("setUserLimit") === "true";
   const tableWrapperRef = useRef(null);
   const hasFetchedRef = useRef(false);
 
@@ -89,6 +90,7 @@ const UserPage = () => {
       setUserProfile(profiledata.data);
       setZoneOptions(formattedZones);
       setUsers(userRes.data?.users);
+      setCanAddUser(userRes?.data);
     } catch (err) {
       console.log(err);
     } finally {
@@ -168,9 +170,17 @@ const UserPage = () => {
     setShowProfileModal(true);
   };
 
-  // Add and Update data using api call
   const handleAddOrUpdate = async (formData) => {
     setIsSaving(true);
+
+    let operation = "Insert";
+    if (editUser) {
+      operation = "Update";
+    }
+    if (formData?.userblock) {
+      operation = "UpdateBlock";
+    }
+
     const payload = {
       username: formData?.username,
       mainusername: MainUsername,
@@ -180,44 +190,33 @@ const UserPage = () => {
       useraddress: formData?.useraddress,
       healthmail: Number(formData?.receiveHealthMail),
       userblock: Number(formData?.userblock),
-      zonename: formData?.selectedZones.map((zone) => zone.label).join(","),
-      selected:
-        formData?.userblock === true
-          ? "UpdateBlock"
-          : editUser
-          ? "Update"
-          : "Insert",
+      zonename: formData?.selectedZones?.map((z) => z.label).join(",") || "",
+      selected: operation,
     };
+
     try {
       const response = await axios.post(
         `${API_URL}/settings/users/createOrUpdateUser`,
         payload,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log(response?.data?.message, "response");
-      fetchUsers();
-      if (response?.data?.success === "true") {
-        showSuccess(response?.data?.message || "User saved successfully.");
+
+      const success = String(response?.data?.success).toLowerCase() === "true";
+      const message = response?.data?.message;
+
+      if (success) {
+        showSuccess(message || "User saved successfully.");
         fetchUsers();
+        seteditUser(null);
         setShowModal(false);
-      } else if (!response) {
-        showError("Failed to save user.");
-        setShowModal(true);
       } else {
-        showSuccess(response?.data?.message || "User Updated successfully.");
-        fetchUsers();
-        setShowModal(false);
+        showError(message || "Failed to save user.");
       }
-      seteditUser(null);
     } catch (error) {
-      console.log(error);
-      showError(
-        error
-          ? error?.response?.data?.message
-          : "Failed to save user. Please try again."
-      );
+      const msg =
+        error?.response?.data?.message ||
+        "Failed to save user. Please try again.";
+      showError(msg);
     } finally {
       setIsSaving(false);
     }
@@ -225,6 +224,7 @@ const UserPage = () => {
 
   const UpdateProfile = async (formData) => {
     setIsSaving(true);
+
     const payload = {
       username: formData?.username,
       mainusername: MainUsername,
@@ -241,21 +241,18 @@ const UserPage = () => {
       const response = await axios.post(
         `${API_URL}/settings/users/createOrUpdateUser`,
         payload,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (response?.data?.success === "true") {
         showSuccess("User Profile Updated successfully.");
         fetchUsers();
-        setShowModal(false);
+        setShowProfileModal(false);
       } else if (!response) {
         showError("Failed to Updated User Profile.");
         setShowModal(true);
       } else {
         showSuccess("User Profile Updated successfully.");
         fetchUsers();
-        setShowModal(false);
       }
       setUserProfile(null);
     } catch (error) {
@@ -265,23 +262,23 @@ const UserPage = () => {
           ? error?.response?.data?.message
           : "Failed to update user profile. Please try again."
       );
+      setShowModal(true);
     } finally {
       setIsSaving(false);
     }
   };
 
-  // ✅ Separate filters for zones and users
   const filteredProducts =
     users != null
       ? users.filter((user) =>
-          user.username.toLowerCase().includes(userQuery.toLowerCase())
-        )
+        user.username.toLowerCase().includes(userQuery.toLowerCase())
+      )
       : [];
 
   const filteredZones = Array.isArray(getUserProfile?.allZones)
     ? getUserProfile.allZones.filter((zone) =>
-        zone.zonename?.toLowerCase().includes(zoneQuery.toLowerCase())
-      )
+      zone.zonename?.toLowerCase().includes(zoneQuery.toLowerCase())
+    )
     : [];
 
   // Table columns
@@ -351,7 +348,10 @@ const UserPage = () => {
       },
     },
   };
-
+  console.log(getUserProfile);
+  console.log(role , canAddUser)
+  // console.log(role !== "Viewer" && canAddUser == true);
+  console.log(role !== "Viewer" && canAddUser?.isUserLimit)
   return (
     <>
       {isLoading && <Loader />}
@@ -435,17 +435,18 @@ const UserPage = () => {
               </Tab.Pane>
 
               {/* Users Tab */}
-              {role !== "Viewer" && (
-                <Tab.Pane eventKey="users">
-                  <div className="UserTable_TopSection" ref={tableWrapperRef}>
-                    <div className="UserTable_Section">
-                      <div className="searchandBtSection">
-                        <div className="searchbarsec">
-                          <SearchBar
-                            placeholder="Search Users..."
-                            onSearch={setUserQuery}
-                          />
-                        </div>
+              {/* {role !== "Viewer" && ( */}
+              <Tab.Pane eventKey="users">
+                <div className="UserTable_TopSection" ref={tableWrapperRef}>
+                  <div className="UserTable_Section">
+                    <div className="searchandBtSection">
+                      <div className="searchbarsec">
+                        <SearchBar
+                          placeholder="Search Users..."
+                          onSearch={setUserQuery}
+                        />
+                      </div>
+                      {role !== "Viewer" && (
                         <div className="buttonsSections">
                           <div className="p-0">
                             <>
@@ -476,14 +477,27 @@ const UserPage = () => {
                                 icon={<FaPlus />}
                                 disabled={!selectedRowId}
                               />
-                              <Buttons
-                                text="Add User"
-                                type="button"
-                                size="md"
-                                variant="primary"
-                                onClick={handleAddUser}
-                                icon={<FaPlus />}
-                              />
+                              {/* {role !== "Viewer" && userAddView && (
+                                <Buttons
+                                  text="Add User"
+                                  type="button"
+                                  size="md"
+                                  variant="primary"
+                                  onClick={handleAddUser}
+                                  icon={<FaPlus />}
+                                />
+                              )} */}
+                              {role !== "Viewer" && canAddUser?.isUserLimit && (
+                                <Buttons
+                                  text="Add User"
+                                  type="button"
+                                  size="md"
+                                  variant="primary"
+                                  onClick={handleAddUser}
+                                  icon={<FaPlus />}
+                                />
+                              )}
+
                             </>
                             <UserFormModal
                               show={showModal}
@@ -507,36 +521,37 @@ const UserPage = () => {
                               user={selectedUser}
                               zones={userZones}
                             />
-                            <EditProfile
-                              show={showProfileModal}
-                              handleClose={() => setShowProfileModal(false)}
-                              onSave={UpdateProfile}
-                              selectedMainuser={getUserProfile}
-                              isSaving={isSaving}
-                            />
                           </div>
                         </div>
-                      </div>
-                      <div style={{ maxHeight: "400px", overflowY: "scroll" }}>
-                        <DataTable
-                          columns={columns}
-                          data={filteredProducts}
-                          onRowClicked={(row) => setSelectedRowId(row.sl)}
-                          highlightOnHover
-                          pointerOnHover
-                          selectableRowsHighlight
-                          conditionalRowStyles={conditionalRowStyles}
-                          pagination
-                          paginationPerPage={5}
-                          paginationRowsPerPageOptions={[5, 10, 15]}
-                          responsive
-                          customStyles={customStyles}
-                        />
-                      </div>
+                      )}
+                      <EditProfile
+                        show={showProfileModal}
+                        handleClose={() => setShowProfileModal(false)}
+                        onSave={UpdateProfile}
+                        selectedMainuser={getUserProfile}
+                        isSaving={isSaving}
+                      />
+                    </div>
+                    <div style={{ maxHeight: "400px", overflowY: "scroll" }}>
+                      <DataTable
+                        columns={columns}
+                        data={filteredProducts}
+                        onRowClicked={(row) => setSelectedRowId(row.sl)}
+                        highlightOnHover
+                        pointerOnHover
+                        selectableRowsHighlight
+                        conditionalRowStyles={conditionalRowStyles}
+                        pagination
+                        paginationPerPage={5}
+                        paginationRowsPerPageOptions={[5, 10, 15]}
+                        responsive
+                        customStyles={customStyles}
+                      />
                     </div>
                   </div>
-                </Tab.Pane>
-              )}
+                </div>
+              </Tab.Pane>
+              {/* )} */}
             </Tab.Content>
           </Tab.Container>
         </div>

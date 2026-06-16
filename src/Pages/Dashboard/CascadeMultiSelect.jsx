@@ -128,7 +128,9 @@ function CascadeSelectorModal({
                 <Button  className="btn-cancel"variant="secondary" onClick={onClose}>
                   Cancel
                 </Button>
-                <Button className="btn-apply" variant="primary" onClick={handleSubmit}>
+             <Button
+                            variant="primary btn-sm actv"
+                onClick={handleSubmit}>
                   Apply
                 </Button>
               </Modal.Footer>

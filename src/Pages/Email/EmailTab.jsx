@@ -12,7 +12,7 @@ const EmailTab = () => {
         <Tab.Container defaultActiveKey="users">
           <Nav variant="tabs">
             <Nav.Item>
-              <Nav.Link eventKey="users">Email</Nav.Link>
+              <Nav.Link eventKey="users">SMTP</Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link eventKey="zones">Email Group</Nav.Link>
@@ -25,7 +25,9 @@ const EmailTab = () => {
             </Tab.Pane>
 
             <Tab.Pane eventKey="users">
-              <EmailForm />
+              <div className="mt-3">
+                <EmailForm />
+              </div>
             </Tab.Pane>
           </Tab.Content>
         </Tab.Container>

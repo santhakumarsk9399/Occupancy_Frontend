@@ -9,16 +9,18 @@ const customStyles = {
   rows: { highlightOnHoverStyle: { backgroundColor: '#eef2ff' } },
 };
 
+
+
 const ThresholdsTable = ({ thresholds, selectedRow, onSelectedChange }) => {
   const columns = useMemo(() => [
     { name: 'SL', selector: (row, i) => row.sl ?? i + 1, width: '70px' },
-    { name: 'THRESHOLD(S) NAME', selector: row => row.name, sortable: true },
-  { name: 'THRESHOLD START', selector: row => row.start, sortable: true, cell: row => <div style={{ textAlign: 'right' }}>{row.start}</div> },
-  { name: 'THRESHOLD END', selector: row => row.end, sortable: true, cell: row => <div style={{ textAlign: 'right' }}>{row.end}</div> },
-  { name: 'DURATION (SEC)', selector: row => row.duration, sortable: true, cell: row => <div style={{ textAlign: 'right' }}>{row.duration}</div> },
+    { name: 'THRESHOLD(S) NAME', selector: row => row.name },
+    { name: 'THRESHOLD START', selector: row => row.start, cell: row => <div style={{ textAlign: 'right' }}>{row.start}</div> },
+    { name: 'THRESHOLD END', selector: row => row.end, cell: row => <div style={{ textAlign: 'right' }}>{row.end}</div> },
+    { name: 'DURATION (SEC)', selector: row => row.duration, cell: row => <div style={{ textAlign: 'right' }}>{row.duration}</div> },
   ], []);
 
-    const customStyles = {
+  const customStyles = {
     headCells: {
       style: {
         backgroundColor: "#ffffff",
@@ -59,7 +61,7 @@ const ThresholdsTable = ({ thresholds, selectedRow, onSelectedChange }) => {
 
   return (
     // <div className="thresholds-table-container">
-    <div style={{ maxHeight: "550px", overflowY: "scroll" }}>
+    <div style={{ maxHeight: "650px", overflowY: "scroll" }}>
       <DataTable
         columns={columns}
         data={thresholds}
@@ -72,6 +74,8 @@ const ThresholdsTable = ({ thresholds, selectedRow, onSelectedChange }) => {
           style: { backgroundColor: '#eef2ff' }
         }]}
         pagination
+        paginationPerPage={10}
+        paginationRowsPerPageOptions={[10, 15, 20]}
       />
     </div>
   );

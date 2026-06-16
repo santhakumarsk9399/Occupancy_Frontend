@@ -1,55 +1,56 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { Modal, Button, Image } from "react-bootstrap";
+import resetImage from "../../Components/Assets/reset.png";
 import "./ResetCountModal.css";
 import "../../Components/Styles/CustomButtons.css";
 
+// Confirmation popup: if confirmed, reset count to 0
+// onSubmit will receive (resetCount, zone, username)
 const ResetCountModal = ({ show, zoneName = "", zone = null, onCancel, onSubmit }) => {
-  const [value, setValue] = useState("");
-
-  useEffect(() => {
-    if (show) setValue("");
-  }, [show]);
-
-  if (!show) return null;
-
-  const handleSubmit = () => {
-    // Pass number or null if invalid. Also provide the zone so parent can use modal's zone even if selection cleared.
-    const num = value === "" ? null : Number(value);
-    // Wrap zone in an object if present to avoid colliding with numeric-only callers
-    if (zone) {
-      onSubmit?.(num, zone);
-    } else {
-      onSubmit?.(num);
-    }
+  const handleConfirm = () => {
+    const username = sessionStorage.getItem('username') || 'Occupancy';
+    if (zone) onSubmit?.(0, zone, username); else onSubmit?.(0, null, username);
   };
 
   return (
-    <div className="popup-overlay">
-      <div className="reset-modal">
-        <div className="reset-header">
-          <h3>
-            <strong>Reset Count:</strong>&nbsp;{zoneName}
-          </h3>
-          <button className="close-btn" onClick={onCancel} aria-label="Close">
-            ×
-          </button>
-        </div>
-        <div className="reset-body">
-          <label htmlFor="resetCountInput">Enter the In Count before reset Count?</label>
-          <input
-            id="resetCountInput"
-            type="number"
-            className="reset-input"
-            placeholder="Enter count"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-          />
-        </div>
-        <div className="reset-footer">
-          <button className="btn-soft-outline" onClick={onCancel}>Cancel</button>
-          <button className="btn-primary-gradient" onClick={handleSubmit}>Submit</button>
-        </div>
-      </div>
-    </div>
+    <Modal show={show} onHide={onCancel} centered backdrop="static" size="md">
+      <Modal.Header closeButton>
+        <Modal.Title>Reset Count</Modal.Title>
+      </Modal.Header>
+      <Modal.Body className="text-center reset-count-body">
+        <Image src={resetImage} alt="Reset" className="reset-count-image mb-3" />
+        <h5 className="mt-2">The Counts will be reset to '<strong>0</strong>' {zoneName ? ` for "${zoneName}"` : ""}. Do you want to continue?</h5>
+      </Modal.Body>
+      <Modal.Footer className="justify-content-center" style={{ gap:16 }}>
+        <Button
+          onClick={onCancel}
+          disabled={false}
+          style={{
+            background:'#fff',
+            color:'#1d4ed8',
+            border:'1px solid #1d4ed8',
+            minWidth:100,
+            fontWeight:500,
+            borderRadius:8
+          }}
+        >
+          Cancel
+        </Button>
+        <Button
+          onClick={handleConfirm}
+          style={{
+            background:'#1d4ed8',
+            color:'#fff',
+            border:'1px solid #1d4ed8',
+            minWidth:100,
+            fontWeight:500,
+            borderRadius:8
+          }}
+        >
+          Reset
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 

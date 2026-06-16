@@ -19,7 +19,7 @@ import Email_active from "../Components/Assets/Email_Active.png";
 import Email_Inactive from "../Components/Assets/Email_Inactive.png";
 import Logs_active from "../Components/Assets/Logs_Active.png";
 import Logs_Inactive from "../Components/Assets/Logs_Inactive.png";
-
+import { BsGrid3X3GapFill } from "react-icons/bs";
 
 import Dash_active from "../Components/Assets/Dashboard_active.png";
 import Dash_Inactive from "../Components/Assets/Dashboard_Inactive.png";
@@ -28,6 +28,7 @@ import Historical_Inactive from "../Components/Assets/Historical_Inactive.png";
 import Predictions_active from "../Components/Assets/Prediction_active.png";
 import Predictions_Inactive from "../Components/Assets/Prediction_Inactive.png";
 import SubmenuIcons from "./CommonComponents/submenuIcons";
+import vendorAcitive from "../Components/Assets/vendor-blue.png";
 export const sidebarConfig = {
   dashboard: {
     label: "Dashboard",
@@ -42,17 +43,24 @@ export const sidebarConfig = {
       {
         path: "/historicalAnalytics",
         label: "Historical Analytics",
-      roles: ["Admin","Operator","Viewer"],
+        roles: ["Admin","Operator","Viewer"],
         iconActive: Historical_active,
         iconInActive: Historical_Inactive,
       },
-      // {
-      //   path: "/predictions",
-      //   label: "Predictions",
-      //   roles: ["Admin","Operator","Viewer"],
-      //   iconActive: Predictions_active,
-      //   iconInActive: Predictions_Inactive,
-      // },
+      {
+        path: "/HeatmapDashboard",
+        label: "Heatmap Dashboard",
+        roles: ["Admin","Operator","Viewer"],
+        iconActive: Predictions_active,
+        iconInActive: Predictions_Inactive,
+      },
+      {
+        path: "/HealthDashboard",
+        label: "Health Dashboard",
+        roles: ["Admin", "Operator", "Viewer"],
+        iconActive: Predictions_active,
+        iconInActive: Predictions_Inactive,
+      }
     ],
   },
   settings: {
@@ -94,11 +102,38 @@ export const sidebarConfig = {
         iconInActive: Email_Inactive,
       },
       {
+        path: "/email",
+        label: "Email",
+        roles: ["Admin"],
+        iconActive: Email_active,
+        iconInActive: Email_Inactive,
+      },
+      {
         path: "/logs",
         label: "Logs",
        roles: ["Admin","Operator","Viewer"],
         iconActive: Logs_active,
         iconInActive: Logs_Inactive,
+      },
+      {
+        path: "/SettingsHeatmap",
+        label: "Heatmap",
+        roles: ["Admin", "Operator", "Viewer"],
+        iconActive: Predictions_active,
+        iconInActive: Predictions_Inactive,
+      },
+
+    ],
+  },
+  licensing: {
+    label: "Licensing",
+    menus: [
+      {
+        label: "Vendors",
+        path: "/licensing",
+        roles: ["Licensing"],
+        iconActive: vendorAcitive,
+        iconInActive: vendorAcitive,
       },
     ],
   },

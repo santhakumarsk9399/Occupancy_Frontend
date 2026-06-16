@@ -66,22 +66,59 @@
   margin-top: 16px;
 }
 
-.cancel-btn,
-.submit-btn {
-  padding: 8px 16px;
-  border-radius: 6px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
+/* Unify with form button styles */
+.popup-box .cancel-btn, .popup-box .save-btn { 
+  border:1px solid #2162CD; 
+  color:#2162CD; 
+  background:#fff; 
+  border-radius:8px; 
+  font-size:14px; 
+  font-weight:500; 
+  height:36px; 
+  display:inline-flex; 
+  align-items:center; 
+  padding:0 18px; 
+  cursor:pointer; 
+  transition:background .15s ease; 
+}
+.popup-box .save-btn { 
+  background:#2162CD; 
+  color:#fff; 
+  border:1px solid transparent; 
+  box-shadow:0 1px 1px rgba(0,0,0,0.02);
+}
+.popup-box .cancel-btn:hover { background:#E9EFFA; }
+.popup-box .save-btn:hover { background:#1E55B3; }
+.popup-box .cancel-btn:disabled, .popup-box .save-btn:disabled { opacity:.55; cursor:not-allowed; background:#f3f4f6; color:#9ca3af; border-color:#e5e7eb; }
+/* Override disabled style specifically for save to keep contrast */
+.popup-box .save-btn:disabled { background:#9ca3af; color:#fff; border:1px solid transparent; }
+.popup-box .hint { font-size:12px; color:#535862; margin-top:4px; }
+
+
+/* smtp-popup CSS */
+
+.smtp-popup .popup-box {
+  width: 540px; 
+  padding: 28px 30px 32px;
+  border-radius: 12px;
+} 
+
+.smtp-popup .popup-body label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
 }
 
-.cancel-btn {
-  background-color: white;
-  border: 1px solid #ccc;
-  color: #007bff;
+.smtp-popup .popup-body input {   
+  padding: 8px 12px;    
+  border-radius: 8px;
 }
 
-.submit-btn {
-  background-color: #007bff;
-  color: white;
+.smtp-popup .popup-header h3 {
+  font-size: 20px;
+  font-weight: 700;   
+}
+
+.smtp-popup .close-btn {   
+  font-size: 24px;
 }

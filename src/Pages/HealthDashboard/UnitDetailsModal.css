@@ -1,0 +1,680 @@
+/* =============================================
+   Unit Details Modal — Updated Design
+   ============================================= */
+
+.unit-details-modal .modal-dialog {
+  max-width: 1100px;
+  height: 90vh;             /* ← BOTH modals fixed to 90% viewport height */
+}
+
+.unit-details-modal .modal-content {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+  height: 100%;             /* ← fill the dialog */
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', sans-serif;
+}
+
+.unit-details-modal .modal-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #ebebeb;
+  padding: 18px 28px;
+  flex-shrink: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.unit-details-modal .modal-title {
+  font-size: 20px;
+  font-weight: 500;
+  color: #1a1a2e;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Inter', sans-serif;
+}
+
+.modal-date {
+  font-size: 15px;
+  font-weight: 500;
+  color: #f97316;
+  font-family: 'Inter', sans-serif;
+}
+
+.unit-details-modal .btn-close {
+  opacity: 0.4;
+  transition: opacity 0.2s;
+}
+.unit-details-modal .btn-close:hover {
+  opacity: 0.9;
+}
+
+/* Body fills the rest of the modal height */
+.unit-details-modal .modal-body {
+  padding: 24px 28px;
+  background-color: #f6f7fc;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Content column fills body */
+.unit-details-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  font-family: 'Inter', sans-serif;
+}
+
+/* =============================================
+   Stats Cards
+   ============================================= */
+.unit-stats-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.unit-stat-card {
+  position: relative;
+  padding: 18px 20px 16px;
+  border-radius: 12px;
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  font-family: 'Inter', sans-serif;
+}
+
+.stat-icon-top {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+}
+
+.stat-icon-img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
+}
+
+.unit-stat-card.visitors-in {
+  background: linear-gradient(135deg, #e8f8f0 0%, #d4f5e4 100%);
+  border: 1px solid #b8ecd4;
+}
+.unit-stat-card.visitors-in .stat-icon-top { color: #22c55e; }
+
+.unit-stat-card.visitors-out {
+  background: linear-gradient(135deg, #fef2f2 0%, #fde8e8 100%);
+  border: 1px solid #fbbebe;
+}
+.unit-stat-card.visitors-out .stat-icon-top { color: #ef4444; }
+
+.unit-stat-card.process-time {
+  background: linear-gradient(135deg, #fff8ee 0%, #feecd4 100%);
+  border: 1px solid #fdd49a;
+}
+.unit-stat-card.process-time .stat-icon-top { color: #f97316; }
+
+.unit-stat-card.mac-address {
+  background: linear-gradient(135deg, #f0f3ff 0%, #e4e9ff 100%);
+  border: 1px solid #c7d0f8;
+}
+.unit-stat-card.mac-address .stat-icon-top { color: #6b7fee; }
+
+.stat-value {
+  font-size: 26px;
+  font-weight: 400;
+  color: #1a1a2e;
+  line-height: 1.1;
+  margin-bottom: 2px;
+  font-family: 'Inter', sans-serif;
+}
+
+.stat-value--sm {
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 4px;
+  font-family: 'Inter', sans-serif;
+}
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: #6b7280;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-family: 'Inter', sans-serif;
+}
+
+/* =============================================
+   Schedule Section
+   ============================================= */
+.unit-schedule-section {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px 20px 14px;
+  border: 1px solid #e5e7eb;
+  flex-shrink: 0;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+}
+
+.schedule-legend-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+}
+
+.legend-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.legend-color.online  { background-color: #22c55e; }
+.legend-color.no-info { background-color: #4361ee; }
+
+.schedule-loading {
+  text-align: center;
+  padding: 20px;
+  color: #6b7280;
+  font-family: 'Inter', sans-serif;
+}
+.schedule-loading p {
+  margin-top: 10px;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+}
+.schedule-empty {
+  text-align: center;
+  padding: 20px;
+  color: #9ca3af;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+}
+
+/* =============================================
+   Chart Layout
+   ============================================= */
+.schedule-chart-outer {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  width: 100%;
+  overflow: visible;
+  font-family: 'Inter', sans-serif;
+}
+
+.schedule-labels-col {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 68px;
+  gap: 4px;
+}
+
+.schedule-row-label {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 400;
+  color: #4361ee;
+  flex-shrink: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.schedule-row-label.clickable {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+  user-select: none;
+}
+.schedule-row-label.clickable:hover { color: #2246cc; }
+
+.schedule-row-label.no-info-label {
+  color: #4361ee;
+  font-size: 12px;
+}
+
+.schedule-axis-spacer-label {
+  height: 28px;
+}
+
+.schedule-scroll-area {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+.schedule-scroll-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+}
+
+.schedule-bars-row {
+  display: flex;
+  gap: 1px;
+  height: 52px;
+  width: 100%;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.schedule-bar {
+  flex: 1;
+  height: 100%;
+  min-width: 0;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: filter 0.12s ease, opacity 0.12s ease;
+}
+
+.schedule-bar:hover {
+  filter: brightness(1.15);
+  opacity: 0.88;
+}
+
+.schedule-axis-row {
+  height: 28px;
+  position: relative;
+  width: 100%;
+}
+
+.schedule-axis-label {
+  position: absolute;
+  top: 6px;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: #9ca3af;
+  font-weight: 500;
+  white-space: nowrap;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  font-family: 'Inter', sans-serif;
+}
+
+/* =============================================
+   Global Tooltip
+   ============================================= */
+.schedule-tooltip {
+  position: fixed;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1a1a2e;
+  color: #f9fafb;
+  border-radius: 8px;
+  padding: 8px 12px;
+  pointer-events: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.28);
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+  animation: tooltipFadeIn 0.1s ease;
+}
+
+@keyframes tooltipFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.tooltip-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tooltip-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: 'Inter', sans-serif;
+}
+
+.tooltip-time {
+  font-size: 12px;
+  font-weight: 500;
+  color: #f9fafb;
+  font-family: 'Inter', sans-serif;
+}
+
+.tooltip-reason {
+  font-size: 11px;
+  color: #9ca3af;
+  font-family: 'Inter', sans-serif;
+}
+
+/* =============================================
+   Map Section  — grows to fill leftover space
+   ============================================= */
+.unit-map-section {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  flex: 1;                  /* ← absorbs the remaining height */
+  display: flex;
+  flex-direction: column;
+  min-height: 260px;
+  box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+  font-family: 'Inter', sans-serif;
+}
+
+.map-tabs {
+  display: flex;
+  background-color: #ffffff;
+  padding: 0 4px;
+  border-bottom: 1px solid #e5e7eb;
+  flex-shrink: 0;
+}
+
+.map-tab {
+  padding: 10px 22px;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-family: 'Inter', sans-serif;
+}
+
+.map-tab:hover {
+  color: #1a1a2e;
+  background-color: #f6f7fc;
+}
+
+.map-tab.active {
+  color: #4361ee;
+  border-bottom-color: #4361ee;
+  font-weight: 500;
+}
+
+.map-container {
+  width: 100%;
+  flex: 1;                  /* ← fill remaining map section height */
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* =============================================
+   Zone Modal — Filter + Table
+   ============================================= */
+.health-filter-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, .12);
+  border-radius: 8px;
+  padding: 9px 14px;
+  transition: border-color 0.2s;
+  flex-shrink: 0;           /* filter never shrinks */
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 16px;
+}
+
+.health-filter-input-wrapper:focus-within {
+  border-color: #4361ee;
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+
+.filter-icon {
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+.health-filter-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  color: #1a1a2e;
+  font-family: 'Inter', sans-serif;
+}
+
+.health-filter-input::placeholder {
+  color: #9ca3af;
+}
+
+/* Table container grows to fill all leftover height */
+.health-table-container {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, .12);
+  overflow-y: auto;
+  flex: 1;                  /* ← this is the key — fills remaining space */
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+}
+
+.health-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+}
+
+.health-table thead tr {
+  background: #fafbfc;
+  border-bottom: 1px solid rgba(0, 0, 0, .12);
+}
+
+.health-table thead th {
+  padding: 12px 18px;
+  background-color: #fafbfc;
+  color: #181D27;
+  font-weight: 400;
+  font-size: 14px;
+  text-transform: none;
+  text-align: left;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  font-family: 'Inter', sans-serif;
+}
+
+.health-table tbody tr {
+  border-bottom: 1px solid rgba(0, 0, 0, .12);
+  transition: background 0.15s ease;
+  min-height: 48px;
+  font-family: 'Inter', sans-serif;
+}
+
+.health-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.health-table tbody tr:hover {
+  background: #E9EFFA;
+}
+
+.health-table tbody td {
+  padding: 10px 15px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #181D27;
+  vertical-align: middle;
+  font-family: 'Inter', sans-serif;
+}
+
+.health-table tbody td:first-child,
+.health-table thead th:first-child {
+  width: 56px;
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.health-table tbody td:nth-child(2) {
+  font-weight: 400;
+  color: #1a1a2e;
+}
+
+.health-table tbody td:last-child {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* =============================================
+   Zone Details Modal — Header
+   ============================================= */
+.mall-details-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 16px;
+  font-family: 'Inter', sans-serif;
+}
+
+.mall-details-title {
+  font-size: 11px;
+  font-weight: 500;
+  color: #9ca3af;
+  text-transform: none;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+  font-family: 'Inter', sans-serif;
+}
+
+.mall-details-name {
+  font-size: 20px;
+  font-weight: 500;
+  color: #1a1a2e;
+  font-family: 'Inter', sans-serif;
+}
+
+.mall-status-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f6f7fc;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 6px 14px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.mall-status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.mall-status-dot.online  { background-color: #22c55e; box-shadow: 0 0 0 2px #bbf7d0; }
+.mall-status-dot.offline { background-color: #ef4444; box-shadow: 0 0 0 2px #fecaca; }
+.mall-status-dot.unknown { background-color: #9ca3af; box-shadow: 0 0 0 2px #e5e7eb; }
+
+.mall-status-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  font-family: 'Inter', sans-serif;
+}
+
+/* =============================================
+   Responsive
+   ============================================= */
+@media (max-width: 1100px) {
+  .unit-stats-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .unit-details-modal .modal-dialog {
+    max-width: 95%;
+    margin: 10px auto;
+    height: auto;
+  }
+
+  .unit-details-modal .modal-content {
+    height: auto;
+  }
+
+  .unit-details-modal .modal-body {
+    flex: none;
+  }
+
+  .unit-details-content {
+    flex: none;
+  }
+
+  .unit-stats-cards {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .schedule-row-label {
+    width: 52px;
+    font-size: 11px;
+    height: 42px;
+  }
+
+  .schedule-labels-col {
+    width: 52px;
+  }
+
+  .schedule-bars-row {
+    height: 42px;
+  }
+
+  .unit-map-section {
+    flex: none;
+    min-height: 260px;
+  }
+
+  .map-container {
+    height: 240px;
+  }
+
+  .health-table-container {
+    flex: none;
+    min-height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .unit-stats-cards {
+    grid-template-columns: 1fr;
+  }
+}

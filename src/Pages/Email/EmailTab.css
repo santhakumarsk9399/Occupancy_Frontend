@@ -1,3 +1,23 @@
+/* Inline error styling shared by Add/Edit Email modals */
+.field {
+  display: flex;
+  align-items: center;
+}
+
+.field .error-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+  color: #d32f2f; /* red */
+  font-weight: 700;
+  font-size: 12px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid #d32f2f;
+  line-height: 1;
+}
 /* Email Add Section Styles */
 .email-id-field {
   display: flex;
@@ -160,7 +180,7 @@
   background: white;
   padding: 0;
   border-radius: 12px;
-  width: 700px;
+  /* width: 700px; */
   max-width: 95%;
   max-height: 95vh;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
@@ -231,6 +251,19 @@
   font-size: 14px;
   background: white;
   transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Unified validation error appearance */
+.error-message {
+  font-size: 13px;
+  line-height: 1.3;
+  margin-top: 4px;
+  font-weight: 500;
+  color: #d32f2f;
+}
+
+input.error, select.error, .custom-select.error {
+  border-color: #d32f2f !important;
 }
 
 .modal-row input:focus,
@@ -324,6 +357,12 @@
   padding-right: 40px;
 }
 
+/* Threshold select specific (taller & full width) */
+select.threshold-select {
+  height: 48px;
+  width: 100%;
+}
+
 .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -331,6 +370,11 @@
   margin-top: 32px;
   padding-top: 24px;
   border-top: 1px solid #f1f5f9;
+}
+
+/* Centered variant for modal action buttons (used in Add/Edit Email Group) */
+.modal-actions-center {
+  justify-content: center !important;
 }
 
 .cancel-btn {
@@ -369,6 +413,15 @@
 .save-btn:disabled {
   background: #9ca3af;
   cursor: not-allowed;
+}
+
+/* Remove colored background for reused threshold-style select inside Email modals */
+.email-modal .threshold-email-template-dropdown.no-bg {
+  background: #ffffff !important;
+}
+
+.email-modal .threshold-email-template-dropdown.no-bg:disabled {
+  background: #f5f5f5 !important;
 }
 
 /* Multiselect Dropdown Styles */
@@ -568,15 +621,16 @@
 .email-form-bg {
   display: flex;
   justify-content: center;
+  background: #f6f7fc;
   /* width: 100%; */
 }
 
 .email-form {
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
-  padding: 32px;
-  /* max-width: 480px; */
+  box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+  padding: 40px 50px;
+  max-width: 800px; 
   width: 100%;
 }
 
@@ -589,12 +643,22 @@
 .email-form input[type="text"],
 .email-form input[type="email"],
 .email-form input[type="password"] {
-  width: 100%;
+/*  width: 100%;
   padding: 8px;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   margin-bottom: 16px;
-  font-size: 1rem;
+  font-size: 1rem;*/
+
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #E2E4E9;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #17181E;
+
 }
 
 .form-row {
@@ -693,7 +757,7 @@
 .edit-btn,
 .delete-btn,
 .add-btn {
-  padding: 8px 20px;
+  padding: 7px 20px;
   border-radius: 8px;
   border: 1px solid transparent;
   font-size: 1rem;
@@ -851,7 +915,7 @@
   padding: 8px;
   width: 100%;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 10px;
 }
 
 /* Multi-select dropdown (zones) styling */
@@ -1069,11 +1133,115 @@ select:invalid {
   min-height: 73vh;
   background: #f7f8fc;
   font-family: 'Inter', Arial, sans-serif;
-  margin: 19px;
+  margin: 18px 30px;
   padding: 0;
 }
-
 .tabsec {
   margin-top: 8px;
+}
+.sms-tabcontent {
+  margin-top: 17px;
+}
+
+.sms-modal input {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #E2E4E9;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #17181E;
+}
+
+.modal-row label {
+  font-weight: 400;
+  margin-bottom: 5px;
+  color: #404252;
+  font-size: 14px;
+}
+.sms-modal .custom-select {
+    padding: 5px 12px;
+    border: 1px solid #E2E4E9;
+    border-radius: 8px;
+}
+.sms-modal .msd__header {
+  padding: 8px 12px 7px;
+  border: 1px solid #E2E4E9;
+  border-radius: 8px;
+}
+.sms-modal .modal-header {
+    padding: 20px 25px 5px;
+}
+.sms-modal .modal-form {
+    padding: 0 24px 24px;
+}
+.sms-modal .modal-actions {
+    margin-top: 0;
+    padding-top: 8px;
+    border-top: 0;
+    padding-bottom: 8px;
+    justify-content: center;
+}
+.sms-modal .email-add, .sms-modal .email-remove {
+  line-height: 1;
+}
+.sms_email-container .tabsec .nav-tabs .nav-item:first-child .nav-link {
+  margin-left:0;
+}
+
+.emailtab-content {  
+  margin-top: 18px;
+}
+
+.emailtab-content .modal-row label {
+  margin-bottom: 0;
+}
+
+.react-select__menu label.dropdown-item {
+  margin-bottom: 0;
+}
+
+.edit-btn:hover, .delete-btn:hover, .add-btn:hover {
+   background-color: #2162CD;
+   border-color: #2162CD;
+   color: #fff;
+   box-shadow: none;
+}
+
+
+.modal-footer .btn-primary:hover, .modal-footer .btn-primary:focus,
+.modal-actions .btn-primary:hover, .modal-actions .btn-primary:focus
+ {
+   background-color: #BACEF0;
+   border-color: #2162CD;
+   color: #2162CD;
+   box-shadow: none;
+}
+
+.btn-primary.actv:hover, .btn-primary.actv:focus {
+    background:#174692;
+    color:#fff;
+}
+
+/* Unified danger button for destructive actions */
+.danger-btn { background:#dc3545; color:#fff; border:1px solid #dc3545; border-radius:8px; font-size:14px; font-weight:500; height:36px; padding:0 20px; cursor:pointer; transition:background .15s ease; }
+.danger-btn:hover { background:#b71f2e; }
+.danger-btn:disabled { opacity:.55; cursor:not-allowed; background:#f3f4f6; color:#9ca3af; border-color:#e5e7eb; }
+
+/* Delete email modal size override to match zone delete modal (md) */
+.delete-email-modal { width:520px; max-width:95%; }
+
+.bg-white.border.p-3.tab-content {
+    box-shadow: none !important;
+    font-family: 'Inter';
+    margin-top: 20px !important;
+}
+
+.btn.btn-danger:hover, .modal-footer .delete:hover, .modal-footer .btn.btn-danger:hover{
+  color:#fff;
+  background:#A8433A;
+  border:1px solid #A8433A;
+
 }
 

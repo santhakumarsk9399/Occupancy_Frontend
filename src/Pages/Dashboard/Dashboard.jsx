@@ -22,7 +22,7 @@ const DashboardPage = () => {
   const [selectedCitiesData, setselectedCitiesData] = useState([]);
   const [selectedZonesData, setselectedZonesData] = useState([]);
   const [zones, setZones] = useState([]);
-  const [pageLoading, setPageLoading] = useState(true); // ✅ only for first load
+  const [pageLoading, setPageLoading] = useState(true); 
   const [appliedFilters, setAppliedFilters] = useState({
     countries: [],
     cities: [],
@@ -41,10 +41,9 @@ const DashboardPage = () => {
 
     try {
       let payload = { vid, username, country: "", city: "", zone: "" };
-      const response = await axios.post(
-        `${API_URL}/dashboard/dashboard1filter/getSelectedZones`,
-        payload,
-        { headers: { Authorization: `Bearer ${token}` } }
+      const response = await axios.get(
+        `${API_URL}/dashboard/dashboardFilter/getSelectedZones`,
+        { headers: { Authorization: `Bearer ${token}` }, params: payload }
       );
 
       const zoneData = response.data?.data; // Expecting { selectedZones: [...] }
@@ -56,17 +55,25 @@ const DashboardPage = () => {
           .map((s) => s.trim())
           .filter(Boolean);
       } else if (typeof raw === "string") {
-        normalizedZones = raw.split(",").map((s) => s.trim()).filter(Boolean);
+        normalizedZones = raw
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean);
       }
       setZones(normalizedZones);
 
-      const zoneNames = zoneData ? zoneData.selectedZones : ""; // keep original shape for API call
-      let dashpayload = { selectedZones: zoneNames };
+      const zoneNames = zoneData?.selectedZones || [];
+      const selectedZoneStr = zoneNames.join(",");
+      const dashpayload = {
+        selectedZones: selectedZoneStr,
+      };
 
-      const sendRes = await axios.post(
-        `${API_URL}/dashboard/dashboard1/generateDashboardData`,
-        dashpayload,
-        { headers: { Authorization: `Bearer ${token}` } }
+      const sendRes = await axios.get(
+        `${API_URL}/dashboard/getDashboard1Data`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          params: dashpayload,
+        }
       );
 
       setDashboardData(sendRes.data?.data || []);
@@ -81,7 +88,7 @@ const DashboardPage = () => {
   // Fetch only when Dashboard 1 tab is active; poll every 15s while active
   const dash1FirstLoadRef = useRef(false);
   useEffect(() => {
-    if (activeTab !== 'Dash1') return; // only active tab
+    if (activeTab !== "Dash1") return; // only active tab
     // First activation: show loader; later activations silent refresh
     const first = !dash1FirstLoadRef.current;
     handleZones(first);
@@ -94,11 +101,22 @@ const DashboardPage = () => {
 
   const filters = async () => {
     try {
-      let payload = { vid, username, country: "", city: "", zone: "" };
-      const res = await axios.post(
-        `${API_URL}/dashboard/dashboard1filter/filters`,
-        payload,
-        { headers: { Authorization: `Bearer ${token}` } }
+      const payload = {
+        vid,
+        username,
+        country: "",
+        city: "",
+        zone: "",
+      };
+
+      const res = await axios.get(
+        `${API_URL}/dashboard/dashboardFilter/filters`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: payload,
+        }
       );
       setCountriesData(
         (res.data?.allFilters?.countries || []).map((c) => ({
@@ -160,7 +178,7 @@ const DashboardPage = () => {
 
     try {
       let response = await axios.post(
-        `${API_URL}/dashboard/dashboard1filter/updateFilterSettings`,
+        `${API_URL}/dashboard/dashboardFilter/updateFilters`,
         payload,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -202,7 +220,10 @@ const DashboardPage = () => {
       />
 
       <div className="tabsec_dash">
-        <Tab.Container activeKey={activeTab} onSelect={(k) => setActiveTab(k || "Dash1")}>        
+        <Tab.Container
+          activeKey={activeTab}
+          onSelect={(k) => setActiveTab(k || "Dash1")}
+        >
           <Nav variant="tabs">
             <Nav.Item>
               <Nav.Link eventKey="Dash1">Dashboard 1</Nav.Link>
@@ -219,35 +240,41 @@ const DashboardPage = () => {
             <Tab.Pane eventKey="Dash1">
               <div className="Dash_TopSection">
                 <div className="Dash_Section">
-                  <div style={{ maxHeight: "650px" }}>
+                  <div>
                     <div className="mt-1">
-                      <CustomCard title="" size="md" style={{background:"white"}}>
-                        {pageLoading ? (
-                          // Loader only on first page load
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              height: "250px",
-                              background: "rgba(250,250,250,0.7)",
-                              borderRadius: "12px",
-                            }}
-                          >
-                            <Spinner
-                              animation="border"
-                              variant="primary"
-                              style={{ width: "2rem", height: "2rem" }}
-                            />
-                            <p className="mt-3 text-muted">Loading chart...</p>
-                          </div>
-                        ) : dashboardData && dashboardData.length > 0 ? (
+                      {pageLoading ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "90vh",
+                            // background: "rgba(250,250,250,0.7)",
+                            borderRadius: "12px",
+                          }}
+                        >
+                          <Spinner
+                            animation="border"
+                            variant="primary"
+                            style={{ width: "2rem", height: "2rem" }}
+                          />
+                          <p className="mt-3 text-muted">Loading chart...</p>
+                        </div>
+                      ) : dashboardData && dashboardData.length > 0 ? (
+                        <CustomCard
+                          title=""
+                          size="md"
+                          style={{ background: "white",padding:"10px" }}
+                        >
                           <LiveOccupancyChart2 data={dashboardData} />
-                        ) : (
-                          <NoData />
-                        )}
-                      </CustomCard>
+                        </CustomCard>
+                      ) : (
+                        <div className="dash3NodataDiv">
+                          {" "}
+                          <NoData name="no-data-container" />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

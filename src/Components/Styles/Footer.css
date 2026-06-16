@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-   position: sticky;
+  position: sticky;
   bottom: 0;
   z-index: 100;
   margin: 0;
@@ -28,4 +28,9 @@ footer.d-flex.justify-content-between.align-items-center.footer {
     background: #f6f7fc !important;
     border: none;
     box-shadow: none;
+}
+
+.clock_icon {
+    position:relative;
+    top:-2px;
 }

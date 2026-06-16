@@ -19,7 +19,7 @@ const SMSTab = () => {
             </Nav.Item>
           </Nav>
 
-          <Tab.Content className="bg-white border p-3">
+          <Tab.Content className="sms-tabcontent">
             <Tab.Pane eventKey="zones">
               {/* Group list/table pane */}
               <SMSGroupTable />

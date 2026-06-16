@@ -4,17 +4,18 @@
   display: flex;
   flex-direction: column;
   background: #f8f9fc;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   overflow: hidden;
+  max-width: 1850px;
+  margin: 0 auto;
+  padding: 0 25px;
 }
 
 .single_dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px;
-  /* background: #fff; */
-  /* border-bottom: 1px solid #e5e7eb; */
+  padding: 20px 24px 10px;
 }
 
 .dashboard-title {
@@ -31,16 +32,18 @@
 
 .zone-selector label {
   font-size: 14px;
-  color: #4a5568;
+  margin-bottom: 0;
+  color: #404252;
 }
 
 .zone-select {
-  padding: 6px 12px;
+  padding: 6px 12px 6px 6px;
   border-radius: 6px;
   border: 1px solid #d1d5db;
   font-size: 14px;
   background: #fff;
   cursor: pointer;
+  width: 225px;
 }
 
 .error-banner {
@@ -55,8 +58,9 @@
 .dash3-stat-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 20px;
   padding: 20px 24px 0;
+  margin-top: 0;
 }
 
 .dash3-stat-card,
@@ -64,11 +68,11 @@
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
-  padding: 16px;
+  padding: 30px;
   display: flex;
-  flex-direction: column;
+  /*flex-direction: column;*/
   justify-content: center;
-  align-items: center;
+  align-items: start;
   min-height: 110px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   transition: transform 0.1s ease;
@@ -76,25 +80,26 @@
 
 .dash3-stat-card:hover,
 .dash3-side-card:hover {
-  transform: translateY(-2px);
+  /*transform: translateY(-2px);*/
 }
 
 .dash3-stat-main {
-  font-size: 32px;
+  font-size: 40px;
   font-weight: 700;
-  color: #1f2937;
+  color: #404252;
 }
 
 .dash3-stat-label {
   margin-top: 6px;
-  font-size: 13px;
-  color: #6b7280;
+  font-size: 16px;
+  color: #404252;
+  font-weight: 400;
 }
 
 .cardsec1 {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .dash3-status-badge {
@@ -102,28 +107,42 @@
   color: #fff;
   font-size: 18px;
   font-weight: 600;
-  padding: 20px 16px;
+  padding: 30px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 0px;
+  justify-content: left;
 }
 
-.badge-safe { background: #16a34a; }
-.badge-almost { background: #f59e0b; }
-.badge-full { background: #dc2626; }
-.badge-empty { background: #3b82f6; }
+.badge-safe {
+  background: #16a34a;
+}
+.badge-almost {
+  background: #f59e0b;
+}
+.badge-full {
+  background: #dc2626;
+}
+.badge-empty {
+  background: #009EEE;
+}
 
 .badge-icon {
   width: 36px;
   height: 36px;
-  margin-bottom: 8px;
+  margin-bottom: 0;
 }
 
 .dash3-status-text {
-  font-size: 18px;
+  font-size: 30px;
+  font-weight: 500;
+  text-align: left;
 }
 
 .dash3-bottom-row {
   display: grid;
-  grid-template-columns: 2.5fr 1fr;
+  grid-template-columns: 3.5fr 1fr;
   gap: 20px;
   padding: 20px 24px;
   flex: 1;
@@ -142,10 +161,11 @@
 
 .dash3-chart-section h3 {
   text-align: center;
-  font-size: 20px;
-  font-weight: 600;
-  color: #111827;
-  margin-bottom: 12px;
+  font-size: 24px;
+  font-weight: 500;
+  color: #17181e;
+  margin-bottom: 15px;
+  padding-top: 10px;
 }
 
 .spinner {
@@ -159,45 +179,65 @@
   display: flex;
   justify-content: center;
   gap: 40px;
-  margin-top: 16px;
-  font-size: 14px;
-  font-weight: 500;
+  margin-top:30px;
+  font-size: 16px;
+  font-weight: 300;
+  margin-bottom: 0;
 }
 
-.dash3-in { color: #16a34a; }
-.dash3-out { color: #dc2626; }
+.dash3-in {
+  color: #25b27a;
+}
+.dash3-out {
+  color: #f35f5f;
+}
 
 .dash3-side-grid {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
+  width: 100%;
 }
 
 .dash3-side-card {
-  background: #fff;
+  /* background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 14px;
   display: flex;
   flex-direction: column;
   gap: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);*/
+
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 50px 35px;
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: start;
+  min-height: 110px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.1s ease;
 }
 
 .dash3-side-main {
-  font-size: 26px;
+  font-size: 42px;
   font-weight: 700;
-  color: #1f2937;
+  color: #404252;
 }
 
 .dash3-side-label {
-  font-size: 13px;
-  color: #6b7280;
+  margin-top: 6px;
+  font-size: 16px;
+  color: #404252;
+  font-weight: 400;
 }
 
 .dash3-icon {
-  width: 28px;
-  height: 28px;
+  width: 42px;
+  height: 42px;
 }
 
 .dashboard-footer {
@@ -213,6 +253,7 @@
 
 .animated-number {
   display: inline-block;
+  font-weight: 600;
 }
 
 .dash3-hr-suffix {
@@ -221,15 +262,28 @@
 }
 
 @media (max-width: 1200px) {
-  .dash3-stat-grid { grid-template-columns: repeat(2, 1fr); }
-  .dash3-bottom-row { grid-template-columns: 1fr; }
-  .dash3-side-grid { flex-direction: row; justify-content: space-between; }
-  .dash3-side-card { flex: 1; }
+  .dash3-stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dash3-bottom-row {
+    grid-template-columns: 1fr;
+  }
+  .dash3-side-grid {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .dash3-side-card {
+    flex: 1;
+  }
 }
 
 @media (max-width: 768px) {
-  .dash3-stat-grid { grid-template-columns: 1fr; }
-  .dash3-side-grid { flex-direction: column; }
+  .dash3-stat-grid {
+    grid-template-columns: 1fr;
+  }
+  .dash3-side-grid {
+    flex-direction: column;
+  }
 }
 /* dashboard.css */
 
@@ -310,3 +364,124 @@ select.form-select:focus {
   }
 }
 
+/* */
+.dashboard-projectTitle h3 {
+  font-weight: 800;
+  font-size: 28px;
+}
+.dashboard-projectTitle h3 span {
+  background: #9ce79b;
+  color: #202224;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 20px;
+  position: relative;
+  top: -10px;
+  margin-left: 5px;
+}
+
+.dashboard-title h2 {
+  color: #17181e;
+  font-size: 30px;
+}
+.dashboard-title h2 span {
+  font-weight: 400;
+  font-size: 20px;
+}
+.total-icon {
+  margin-right: 5px;
+  position: relative;
+  top: -2px;
+}
+/* Dashboard.css */
+
+/* Remove the ugly black outline for mouse/click but keep keyboard-visible focus using :focus-visible */
+.dash3-chart-wrap :focus {
+  outline: none; /* remove default outline for all focus */
+  border: none !important;
+}
+
+/* Show a subtle outline only for keyboard focus (accessible) */
+.dash3-chart-wrap :focus-visible {
+  outline: 2px solid rgba(29, 78, 216, 0.35);
+  outline-offset: 2px;
+  box-shadow: none;
+    border: none !important;
+}
+
+/* Target Recharts wrappers and SVG explicitly just in case */
+.dash3-chart-wrap .recharts-wrapper,
+.dash3-chart-wrap svg,
+.dash3-chart-wrap .recharts-surface {
+  outline: none !important;
+  box-shadow: none !important;
+    border: none !important;
+}
+.dash3-chart-wrap *:focus {
+  outline: none !important;
+  box-shadow: none !important;
+    border: none !important;
+}
+/* remove ugly mouse click outline but keep keyboard focus visible */
+.dash3-chart-section :focus {
+  outline: none;
+  
+}
+
+/* show subtle focus only for keyboard users */
+.dash3-chart-section :focus-visible {
+  outline: 2px solid rgba(29, 78, 216, 0.18);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+/* explicitly clear outline on Recharts wrappers & svg */
+.dash3-chart-section .recharts-wrapper,
+.dash3-chart-section svg,
+.dash3-chart-section .recharts-surface {
+  outline: none !important;
+  box-shadow: none !important;
+}
+.center-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 83vh; /* adjust as per layout */
+  text-align: center;
+  font-size: 1.6rem;
+  color: #374151;
+  background-color: #f6f7fc;
+  border-radius: 8px;
+}
+
+/* single view */
+.singleviewBodySec .dash3-bottom-row {
+  margin-top: 2px;
+}
+.singleviewBodySec .dash3-stat-grid {
+  padding: 10px 24px 0;
+}
+.single_dashboard-header {
+    padding: 10px 24px 10px;
+}
+.single_dashboard-header .userinfo_single {
+  margin-bottom: 7.5px;
+}
+.singleviewBodySec .dash3-stat-card, .singleviewBodySec .dash3-status-badge {
+  padding: 30px;
+}
+.singleviewBodySec .dash3-stat-label {
+    margin-top: 4px;
+}
+.singleviewBodySec .chart-container {
+  padding: 10px;    
+}
+.singleviewBodySec .dash3-chart-footer {  
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+.single_dashboard-header .dashboard-projectTitle h3 {
+    font-weight: 800;
+    font-size: 30px;
+}

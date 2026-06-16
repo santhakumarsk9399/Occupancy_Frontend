@@ -45,7 +45,6 @@ const getTypeFromStatus = (status) => {
   return "Low"; // Default fallback
 };
 
-// Base (unmemoized) implementation
 const LiveOccupancyChart2Base = ({ data }) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -70,7 +69,7 @@ const LiveOccupancyChart2Base = ({ data }) => {
     [categorizedData]
   );
 
-  // ✅ Legend states are independent for page & modal
+  // ✅ Legend states for page and modal
   const [visibleTypesPage, setVisibleTypesPage] = useState({
     Low: true,
     Medium: true,
@@ -81,6 +80,17 @@ const LiveOccupancyChart2Base = ({ data }) => {
     Medium: true,
     High: true,
   });
+
+  // ✅ Reset only modal legends when popup closes
+  useEffect(() => {
+    if (!showModal) {
+      setVisibleTypesModal({
+        Low: true,
+        Medium: true,
+        High: true,
+      });
+    }
+  }, [showModal]);
 
   const filteredDataPage = useMemo(
     () => categorizedData.filter((item) => visibleTypesPage[item.type]),
@@ -99,11 +109,27 @@ const LiveOccupancyChart2Base = ({ data }) => {
         data={data}
         margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
       >
-        <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+        <CartesianGrid
+          strokeDasharray="3 3"
+          vertical={false}
+          stroke="#e5e7eb"
+        />
         <XAxis
           dataKey="ZoneName"
           height={80}
           tick={{ fontSize: 12 }}
+          tickFormatter={(value) => {
+            let total = data?.length || 0;
+            if (!value) return "";
+            if (total > 15) return value.substring(0, 5) + "...";
+            if (total > 8) return value.substring(0, 8) + "...";
+            if (total > 3 && value?.length > 20)
+              return value.substring(0, 20) + "...";
+            if (total <= 3 && value?.length > 30)
+              return value.substring(0, 30) + "...";
+            if (total <= 3 && value?.length > 20) return value;
+            return value;
+          }}
           label={{
             value: "ZONES",
             position: "insideBottom",
@@ -119,7 +145,7 @@ const LiveOccupancyChart2Base = ({ data }) => {
           dataKey="Occupancy"
           radius={[4, 4, 0, 0]}
           barSize={70}
-          isAnimationActive={false} /* prevent full redraw animation */
+          isAnimationActive={false}
         >
           <LabelList
             dataKey="Occupancy"
@@ -130,7 +156,7 @@ const LiveOccupancyChart2Base = ({ data }) => {
         </Bar>
       </BarChart>
     </ResponsiveContainer>
-  );
+  );1
 
   return (
     <div className="live-chart-wrapper">
@@ -182,16 +208,17 @@ const LiveOccupancyChart2Base = ({ data }) => {
           </label>
         ))}
       </div>
+
       <div className="update-text">
-        <p className="update-text_sub">Note : Counts are updated every 15 seconds</p>
+        <p className="update-text_sub">
+          Note : Counts are updated every 15 seconds
+        </p>
       </div>
-      {/* Full-screen Modal */}
+
+      {/* ✅ Full-screen Modal */}
       {showModal && (
         <div
           className="chart-modal-overlay"
-          // onClick={(e) => {
-          //   if (e.target.classList.contains("chart-modal-overlay")) setShowModal(false);
-          // }}
           onClick={(e) => e.stopPropagation()}
         >
           <div className="chart-modal">
@@ -205,14 +232,15 @@ const LiveOccupancyChart2Base = ({ data }) => {
               </button>
             </div>
             <div className="modal-body">
-              <ChartMarkup height={550} data={filteredDataModal} />
-
+              <ChartMarkup height={650} data={filteredDataModal} />
               <div className="checkbox-legend below-chart">
                 {["Low", "Medium", "High"].map((type) => (
                   <label key={type} className="legend-checkbox">
                     <input
-                      type="checkbox"
-                      className={`legend-checkbox-input ${type.toLowerCase()}`}
+                      // type="checkbox"
+                      // className={`legend-checkbox-input ${type.toLowerCase()}`}
+                    type="checkbox"
+                     className="legend-checkbox"
                       checked={!!visibleTypesModal[type]}
                       onChange={() =>
                         setVisibleTypesModal((prev) => ({
@@ -233,7 +261,7 @@ const LiveOccupancyChart2Base = ({ data }) => {
   );
 };
 
-// Custom comparator: avoid re-render if zone list & key metrics unchanged
+// ✅ Custom comparator: avoid re-render if data unchanged
 const areEqual = (prevProps, nextProps) => {
   const a = prevProps.data || [];
   const b = nextProps.data || [];
@@ -242,7 +270,6 @@ const areEqual = (prevProps, nextProps) => {
   for (let i = 0; i < a.length; i++) {
     const pa = a[i];
     const pb = b[i];
-    // Compare stable identifiers & displayed metrics
     if (
       pa.ZoneName !== pb.ZoneName ||
       pa.Occupancy !== pb.Occupancy ||
@@ -251,7 +278,7 @@ const areEqual = (prevProps, nextProps) => {
       return false;
     }
   }
-  return true; // no meaningful change
+  return true;
 };
 
 const LiveOccupancyChart2 = React.memo(LiveOccupancyChart2Base, areEqual);

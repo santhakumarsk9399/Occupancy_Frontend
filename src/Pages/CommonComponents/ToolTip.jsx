@@ -21,7 +21,7 @@ const SmoothTooltip = ({ active, payload, coordinate }) => {
   }, [active, payload, coordinate]);
 
   if (!tooltipData) return null;
-console.log(tooltipData)
+  // console.log(tooltipData);
   const zoneType = tooltipData.type?.toLowerCase() || "low";
 
   return (
@@ -36,20 +36,50 @@ console.log(tooltipData)
         pointerEvents: "none",
       }}
     >
-      <div className="tooltip-line">
-        In: <span className="tooltip-count">{tooltipData.Incount}</span>
-      </div>
-      <div className="tooltip-line">
-        Out: <span className="tooltip-count">{tooltipData.Outcount}</span>
-      </div>
-      <div className="tooltip-line">
-        Occupancy:{" "}
-        <span className="tooltip-count">{tooltipData.Occupancy}</span>
-      </div>
-      <div className="tooltip-line">
-        Zone Name:{" "}
-        <span className="tooltip-count">{tooltipData.ZoneName}</span>
-      </div>
+      {tooltipData.Incount && (
+        <div className="tooltip-line">
+          In: <span className="tooltip-count">{tooltipData.Incount}</span>
+        </div>
+      )}
+      {tooltipData.Outcount && (
+        <div className="tooltip-line">
+          Out: <span className="tooltip-count">{tooltipData.Outcount}</span>
+        </div>
+      )}
+      {tooltipData.Occupancy && (
+        <div className="tooltip-line">
+          Occupancy:{" "}
+          <span className="tooltip-count">{tooltipData.Occupancy}</span>
+        </div>
+      )}
+      {tooltipData.Totalvisitors && (
+        <div className="tooltip-line">
+          Total Visitors:{" "}
+          <span className="tooltip-count">{tooltipData.Totalvisitors}</span>
+        </div>
+      )}
+            {tooltipData.Counts && (
+        <div className="tooltip-line">
+          Total Visitors:{" "}
+          <span className="tooltip-count">{tooltipData.Counts}</span>
+        </div>
+      )}
+      {tooltipData.ZoneName && (
+        <div className="tooltip-line">
+          Zone Name:{" "}
+          <span className="tooltip-count">{tooltipData.ZoneName}</span>
+        </div>
+      )}
+      {tooltipData.hour && (
+        <div className="tooltip-line">
+          Hours: <span className="tooltip-count">{tooltipData.hour}</span>
+        </div>
+      )}
+          {tooltipData.techzone && (
+        <div className="tooltip-line">
+          Zone Name: <span className="tooltip-count">{tooltipData.techzone}</span>
+        </div>
+      )}
     </div>
   );
 };

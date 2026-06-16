@@ -125,7 +125,7 @@ const SMSForm = () => {
     <div>
   <div className="ms_email-form-bg">
         <form onSubmit={handleSubmit} className="sms_email-form">
-          <div className="form-row">
+          <div className="form-row1">
             <div>
               <label>SMS URL *</label>
               <input
@@ -147,10 +147,10 @@ const SMSForm = () => {
             </div>
           )}
           <div className="form-actions">
-            <button type="button" className="cancel-btn" onClick={handleCancel}>
+            <button type="button" className="btn btn-primary btn-sm" onClick={handleCancel}>
               Cancel
             </button>
-            <button type="submit" className="save-btn" disabled={submitting}>
+            <button type="submit" className="btn btn-primary btn-sm actv" disabled={submitting}>
               {submitting ? "Saving..." : "Save"}
             </button>
           </div>

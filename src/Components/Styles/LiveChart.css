@@ -234,5 +234,30 @@ p.update-text_sub {
     font-size: 12px;
     font-family: 'Inter';
     color: #5B5D6B;
-    font-weight: 300;
+    font-weight: 600;
+    font-style: normal;
+    padding-top: 10px;
 }
+/* LiveChart.css (add at bottom) */
+
+/* remove default outline for mouse clicks but keep keyboard-visible focus */
+.live-chart-wrapper :focus { outline: none; border: none !important; }
+.live-chart-wrapper :focus-visible {
+  outline: 2px solid rgba(29,78,216,0.18); /* subtle keyboard focus */
+  outline-offset: 2px;
+  border: none !important;
+}
+
+/* Target Recharts wrappers and svg explicitly */
+.live-chart-wrapper .recharts-wrapper,
+.live-chart-wrapper svg,
+.live-chart-wrapper .recharts-surface,
+.live-chart-wrapper .custom-bar-chart {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* If you want to remove *all* outlines (not recommended for keyboard users) */
+/* .live-chart-wrapper *:focus { outline: none !important; box-shadow: none !important; } */
+

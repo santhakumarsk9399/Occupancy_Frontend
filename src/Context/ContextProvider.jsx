@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     // Restore user from localStorage
     const name = sessionStorage.getItem("username");
     const role = sessionStorage.getItem("role");
-    console.log(name);
+    // console.log(name);
     if (name && role) {
       setUser({ name, role });
     } else {
@@ -24,7 +24,9 @@ export const AuthProvider = ({ children }) => {
   const login = (name, role) => {
     const names = sessionStorage.getItem("username");
     const roles = sessionStorage.getItem("role");
-    setUser({ name: names, role: roles });
+    // setUser({ name: names, role: roles });
+    setUser({ name: names, role: roles?.trim() });
+
    
   };
   const logout = () => {

@@ -1,30 +1,41 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { fetchZones, fetchDashboard } from './api';
-import { useInactivityAutoAdvance } from './hooks';
+
+import React, { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import {
   XAxis,
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  ReferenceLine,
   CartesianGrid,
   Area,
-  AreaChart
-} from 'recharts';
-import './Dashboard.css';
+  Line,
+  AreaChart,
+} from "recharts";
 
-// Icons
-import OccupancyIcon from '../../components/Assets/dashboard/sv_occupancy.svg';
-import CapacityIcon from '../../components/Assets/dashboard/sv_capcity.svg';
-import PercentageIcon from '../../components/Assets/dashboard/sv_percentage.svg';
-import SafeIcon from '../../components/Assets/dashboard/sv_safetoenter.svg';
-import AlmostFullIcon from '../../components/Assets/dashboard/sv_allmostfull.svg';
-import FullIcon from '../../components/Assets/dashboard/sv_full.svg';
-import EmptyIcon from '../../components/Assets/dashboard/sv_empty.svg';
-import RemainingCapacityIcon from '../../components/Assets/dashboard/sv_remainingcapacity.svg';
-import PeakOccIcon from '../../components/Assets/dashboard/sv_peakoccupancy.svg';
-import PeakHourIcon from '../../components/Assets/dashboard/sv_peakhour.svg';
-import Footer from '../CommonComponents/Footer';
+import "./Dashboard.css";
+import { Spinner } from "react-bootstrap";
+// Assets
+import OccupancyIcon from "../../components/Assets/dashboard/sv_occupancy.svg";
+import CapacityIcon from "../../components/Assets/dashboard/sv_capcity.svg";
+import PercentageIcon from "../../components/Assets/dashboard/sv_percentage.svg";
+import SafeIcon from "../../components/Assets/dashboard/sv_safetoenter.svg";
+import AlmostFullIcon from "../../components/Assets/dashboard/sv_allmostfull.svg";
+import FullIcon from "../../components/Assets/dashboard/sv_full.svg";
+import EmptyIcon from "../../components/Assets/dashboard/sv_empty.svg";
+import RemainingCapacityIcon from "../../components/Assets/dashboard/sv_remainingcapacity.svg";
+import PeakOccIcon from "../../components/Assets/dashboard/sv_peakoccupancy.svg";
+import PeakHourIcon from "../../components/Assets/dashboard/sv_peakhour.svg";
+import TotalInIcon from "../../components/Assets/dashboard/total-in.svg";
+import TotalOutIcon from "../../components/Assets/dashboard/total-out.svg";
+import Footer from "../CommonComponents/Footer";
+import SingleSelectDropdown from "../CommonComponents/SingleSelectDropdown";
+import Loader from "../CommonComponents/Loader";
+import NoData from "../CommonComponents/NoDataAvailable";
+import usernameicon from "../../Components/Assets/username_Icon.svg";
+import Icon from "../CommonComponents/icon";
+import "../../Components/Styles/NoData.css";
+
+// create worker via Vite-friendly syntax. If you use CRA, change path accordingly.
+const WorkerUrl = new URL("./webWorker.jsx", import.meta.url).href;
 
 export default function Dashboard() {
   const [token, setToken] = useState(null);
@@ -32,182 +43,429 @@ export default function Dashboard() {
   const [zoneIndex, setZoneIndex] = useState(0);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
+  const [username, setUsername] = useState("");
+  const workerRef = useRef(null);
 
   const activeZone = zones[zoneIndex];
 
-  useInactivityAutoAdvance({
-    items: zones,
-    activeIndex: zoneIndex,
-    onAdvance: setZoneIndex,
-    inactivityMs: 10000
-  });
-
-  // 🔑 Load token + zones from sessionStorage (set during login)
+  /* ----------------------------
+     Load token + zones on mount
+  -----------------------------*/
   useEffect(() => {
     let mounted = true;
+
     (async () => {
       try {
-        const userData = JSON.parse(sessionStorage.getItem('userData'));
+        const userData = JSON.parse(sessionStorage.getItem("userData"));
         if (!userData?.token) {
-          throw new Error('Missing session token, please log in again');
+          throw new Error("Missing session token, please log in again");
         }
-
         if (!mounted) return;
+
         setToken(userData.token);
+        setUsername(userData.user.username || "");
 
-        const z = await fetchZones(userData.token, userData.user.vid, userData.user.username);
-        if (!mounted) return;
-        setZones(z);
+        // create worker
+        const w = new Worker(WorkerUrl, { type: "module" });
+        workerRef.current = w;
+
+        // worker message handler
+        w.onmessage = (ev) => {
+          const msg = ev.data || {};
+          if (msg.type === "dashboard") {
+            setData(msg.data);
+            setLoading(false);
+            setRefreshing(false);
+            setError(null);
+          } else if (msg.type === "zones") {
+            // zones array from worker
+            setZones((prev) => {
+              try {
+                if (JSON.stringify(prev) !== JSON.stringify(msg.zones)) {
+                  return msg.zones;
+                }
+              } catch {
+                return msg.zones;
+              }
+              return prev;
+            });
+            // keep zoneIndex within bounds
+            setZoneIndex((prevIndex) => {
+              if (!msg.zones || msg.zones.length === 0) return 0;
+              return Math.min(prevIndex, msg.zones.length - 1);
+            });
+          } else if (msg.type === "error") {
+            setError(msg.error || "Unknown error from worker");
+            setRefreshing(false);
+            setLoading(false);
+          }
+        };
+
+        w.onerror = (err) => {
+          console.error("Worker error:", err);
+          setError("Internal worker error");
+        };
+
+        // initialize worker with base info & start loops
+        w.postMessage({
+          type: "init",
+          base: import.meta.env.VITE_API_URL || "",
+          token: userData.token,
+          vid: userData.user.vid,
+          username: userData.user.username,
+          activeZone: null, // initial — zones will arrive from worker
+        });
       } catch (e) {
         if (mounted) setError(e.message);
       }
     })();
-    return () => { mounted = false; };
+
+    return () => {
+      mounted = false;
+      // terminate worker on unmount
+      if (workerRef.current) {
+        workerRef.current.postMessage({ type: "stop" });
+        workerRef.current.terminate();
+        workerRef.current = null;
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const loadData = useCallback(
-    async (zone) => {
-      if (!token || !zone) return;
-      setLoading(true);
-      setError(null);
-      try {
-        const d = await fetchDashboard(token, zone);
-        setData(d);
-      } catch (e) {
-        setError(e.message);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [token]
+  /* -----------------------------------------------------
+     When activeZone changes (user selection or rotation),
+     tell worker to switch to that zone immediately.
+     The worker will abort previous dashboard fetch if any,
+     and fetch the new zone immediately and then continue polling.
+  ------------------------------------------------------*/
+  useEffect(() => {
+    if (!workerRef.current) return;
+
+    // send setActiveZone (worker will fetch immediately)
+    const zone = activeZone || null;
+    workerRef.current.postMessage({ type: "setActiveZone", activeZone: zone });
+
+    // set loading / refreshing UI flags
+    setRefreshing(true);
+  }, [activeZone]);
+
+  /* -----------------------------------------------------
+     Keep worker token/user updated if token/user changes.
+  ------------------------------------------------------*/
+  useEffect(() => {
+    if (!workerRef.current) return;
+    if (token) {
+      workerRef.current.postMessage({ type: "setToken", token });
+    }
+  }, [token]);
+
+  /* -----------------------------------------------------
+     Auto-rotate zones every 15s — kept same as before.
+     This changes zoneIndex which triggers worker to fetch new zone.
+  ------------------------------------------------------*/
+  useEffect(() => {
+    if (!zones.length) return;
+
+    const id = setInterval(() => {
+      setZoneIndex((prev) => (prev + 1) % zones.length);
+    }, 15000);
+
+    return () => clearInterval(id);
+  }, [zones.length]);
+
+  // Dropdown options (unchanged)
+  const zoneOptions = useMemo(
+    () => zones.map((z, i) => ({ value: i, label: z })),
+    [zones]
   );
 
-  // Load dashboard when zone changes
-  useEffect(() => {
-    loadData(activeZone);
-  }, [activeZone, loadData]);
-
-  // Auto-refresh every 10s
-  useEffect(() => {
-    if (!token || !activeZone) return;
-    const id = setInterval(() => loadData(activeZone), 10000);
-    return () => clearInterval(id);
-  }, [token, activeZone, loadData]);
-
   const hourly = useMemo(() => data?.hourlyData || [], [data]);
-  const status = data?.peakStats?.Status || '';
-  const statusLower = status.toLowerCase();
-  let badgeCls = 'badge-safe';
-  if (statusLower.includes('full')) badgeCls = 'badge-full';
-  else if (statusLower.includes('almost') || statusLower.includes('high')) badgeCls = 'badge-almost';
-  else if (statusLower.includes('empty')) badgeCls = 'badge-empty';
+  const status = data?.peakStats?.Status || "";
+  const statusLower = status;
+  let badgeCls = "badge-safe";
+  if (statusLower.includes("Almost Full")) badgeCls = "badge-almost";
+  else if (statusLower.includes("Full")) badgeCls = "badge-full";
+  else if (statusLower.includes("Empty")) badgeCls = "badge-empty";
+  else if (statusLower.includes("Safe to Enter")) badgeCls = "badge-safe";
 
   return (
     <div className="dashboard-wrapper">
       <div className="single_dashboard-header">
-        <div className='dashboard-projectTitle'>
-          <h3>Occupancy 2.0</h3>
+        <div className="dashboard-projectTitle">
+          <h3 className="mb-0">
+            Occupancy Solution<span>2.0</span>
+          </h3>
         </div>
+
         <div className="dashboard-title">
-          SEZ Zone1 Occupancy
+          <h2 className="mb-0">{activeZone || "--"}</h2>
         </div>
-        <div className="zone-selector">
-          <label>Zone</label>
-          <select
-            className="zone-select"
-            value={zoneIndex}
-            onChange={(e) => setZoneIndex(Number(e.target.value))}
-            disabled={!zones.length}
+        <div className="zoneuserSection">
+          <div className="usernameSec">
+            <div className="userinfo_single">
+              <Icon img={usernameicon} Img_width="34px" Img_height="34px" />
+              <span className="sidebar_username_single">{username}</span>
+            </div>
+          </div>
+          <div className="zone-selector">
+            <label>Zone</label>
+            <SingleSelectDropdown
+              options={zoneOptions}
+              value={zoneOptions.find((o) => o.value === zoneIndex) || null}
+              onChange={(option) => setZoneIndex(option ? option.value : 0)}
+              placeholder="Select Zone"
+              className="singlezoneDropdown"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="singleviewBodySec">
+        {error ? (
+          <div className="datareason center-message">
+            <p>{error === "Dashboard API failed: Failed to fetch" ? "Server Disconnect.. Contact IT":error}</p>
+          </div>
+        ) : loading ? (
+          <div
+            style={{
+              height: "83vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
-            {zones.map((z, i) => (
-              <option key={z} value={i}>{z}</option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      {error && <div className="error-banner">{error}</div>}
-
-      {/* Stats Grid */}
-      <div className="dash3-stat-grid">
-        <StatCard icon={OccupancyIcon} label="Live Occupancy">
-          <AnimatedNumber value={data?.liveStats?.LiveOccupancy} />
-        </StatCard>
-        <StatCard icon={CapacityIcon} label="Max Capacity">
-          <AnimatedNumber value={data?.capacityStats?.Maxcapacity} />
-        </StatCard>
-        <StatCard icon={PercentageIcon} label="Percentage ">
-          <AnimatedNumber value={data?.liveStats?.Percentage} suffix="%" />
-        </StatCard>
-        <div className={`dash3-status-badge ${badgeCls}`}>
-          <img
-            src={
-              statusLower.includes('safe') ? SafeIcon :
-              statusLower.includes('almost') || statusLower.includes('high') ? AlmostFullIcon :
-              statusLower.includes('full') ? FullIcon :
-              statusLower.includes('empty') ? EmptyIcon :
-              SafeIcon
-            }
-            alt={status || 'status'}
-            className="dash3-icon badge-icon"
-          />
-          <div className="dash3-status-text">
-            {status ? (statusLower.includes('safe') ? 'Safe to Enter' : status) : '...'}
+            <Loader />
           </div>
-        </div>
+        ) : !data ? (
+          <div className="datareason center-message">
+            <NoData name="no-data-container" />
+          </div>
+        ) : data?.zoneStatus === "Go Live" ? (
+          // ✅ Normal Dashboard Data
+          <>
+            <div className="dash3-stat-grid">
+              <StatCard icon={OccupancyIcon} label="Live Occupancy">
+                <AnimatedNumber value={data?.liveStats?.LiveOccupancy || 0} />
+              </StatCard>
+              <StatCard icon={CapacityIcon} label="Max Capacity">
+                <AnimatedNumber value={data?.capacityStats?.Maxcapacity || 0} />
+              </StatCard>
+              <StatCard icon={PercentageIcon} label="Percentage">
+                <AnimatedNumber
+                  value={data?.liveStats?.Percentage || 0}
+                  suffix="%"
+                />
+              </StatCard>
+
+              {/* Status Badge */}
+              <div className={`dash3-status-badge ${badgeCls}`}>
+                <img
+                  src={
+                    statusLower.includes("safe to enter")
+                      ? SafeIcon
+                      : statusLower.includes("almost full") ||
+                        statusLower.includes("high")
+                        ? AlmostFullIcon
+                        : statusLower.includes("full")
+                          ? FullIcon
+                          : statusLower.includes("empty")
+                            ? EmptyIcon
+                            : SafeIcon
+                  }
+                  alt={status || "status"}
+                  className="dash3-icon badge-icon"
+                />
+                <div className="dash3-status-text">
+                  {status
+                    ? statusLower.includes("safe")
+                      ? "Safe to Enter"
+                      : status
+                    : "..."}
+                </div>
+              </div>
+            </div>
+
+            {/* Chart + Side Stats */}
+            <div className="dash3-bottom-row">
+              {/* Chart Section */}
+              <div className="dash3-chart-section">
+                <h3>Hourly Trends</h3>
+                <div className="chart-container">
+                  <ResponsiveContainer width="100%" height={440}>
+                    <AreaChart data={hourly || []}>
+                      <defs>
+                        <linearGradient id="fill2" x1="0" y1="0" x2="0" y2="1">
+                          <stop
+                            offset="10%"
+                            stopColor="#1d4ed8"
+                            stopOpacity={0.18}
+                          />
+                          <stop
+                            offset="95%"
+                            stopColor="#1d4ed8"
+                            stopOpacity={0}
+                          />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        vertical={false}
+                        stroke="#e5e7eb"
+                      />
+                      <XAxis
+                        dataKey="Hours"
+                        tick={{ fontSize: 12 }}
+                        interval={0}
+                        angle={-25}
+                        textAnchor="end"
+                        height={60}
+                        tickFormatter={(value) => {
+                          const [h, m] = (value || "").split(":");
+                          return m === "00" ? `${h}:00` : "";
+                        }}
+                        label={{
+                          value: "HOURS",
+                          position: "insideBottom",
+                          fill: "#4b5563",
+                          fontSize: 13,
+                          fontWeight: 600,
+                        }}
+                      />
+                      <YAxis
+                        tick={{ fontSize: 12 }}
+                        width={60}
+                        label={{
+                          value: "COUNTS",
+                          angle: -90,
+                          position: "insideLeft",
+                          fill: "#4b5563",
+                          fontSize: 13,
+                          fontWeight: 600,
+                        }}
+                      />
+                      <Tooltip
+                        content={({ active, payload, label }) => {
+                          if (active && payload && payload.length) {
+                            const val = payload[0].value;
+                            return (
+                              <div
+                                style={{
+                                  background: "#fff",
+                                  border: "1px solid #d1d5db",
+                                  borderRadius: 8,
+                                  padding: "8px 10px",
+                                  fontSize: 13,
+                                }}
+                              >
+                                <div>
+                                  <strong>Hour:</strong> {label}
+                                </div>
+                                <div>
+                                  <strong>Live Occupancy:</strong> {val}
+                                </div>
+                              </div>
+                            );
+                          }
+                          return null;
+                        }}
+                        cursor={{ strokeDasharray: "4 4", stroke: "#111827" }}
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="LiveOccupancy"
+                        stroke="#1d4ed8"
+                        fill="url(#fill2)"
+                        strokeWidth={3}
+                        dot={{ r: 4 }}
+                        activeDot={{ r: 6 }}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke="#1d4ed8"
+                        strokeWidth={2}
+                        dot={{
+                          r: 4,
+                          fill: "#1d4ed8",
+                          stroke: "#fff",
+                          strokeWidth: 2,
+                        }}
+                        activeDot={{ r: 6 }}
+                        isAnimationActive={true}
+                        animationDuration={800}
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+
+                  {refreshing && <div className="chart-overlay">Updating…</div>}
+                </div>
+
+                {/* Chart Footer */}
+                <div className="dash3-chart-footer">
+                  <span>
+                    <img
+                      src={TotalInIcon}
+                      width="22"
+                      height="22"
+                      className="total-icon"
+                      alt="in"
+                    />
+                    Total In:{" "}
+                    <strong className="dash3-in">
+                      <AnimatedNumber value={data?.totals?.Totalin || 0} />
+                    </strong>
+                  </span>
+                  <span>
+                    <img
+                      src={TotalOutIcon}
+                      width="22"
+                      height="22"
+                      className="total-icon"
+                      alt="out"
+                    />
+                    Total Out:{" "}
+                    <strong className="dash3-out">
+                      <AnimatedNumber value={data?.totals?.Totalout || 0} />
+                    </strong>
+                  </span>
+                </div>
+              </div>
+
+              {/* Side Grid */}
+              <div className="dash3-side-grid">
+                <StatSideCard
+                  icon={RemainingCapacityIcon}
+                  label="Remaining Capacity"
+                >
+                  <AnimatedNumber
+                    value={data?.capacityStats?.Remainingcapacity || 0}
+                  />
+                </StatSideCard>
+                <StatSideCard icon={PeakOccIcon} label="Peak Occupancy">
+                  <AnimatedNumber value={data?.peakStats?.Peakoccupancy || 0} />
+                </StatSideCard>
+                <StatSideCard icon={PeakHourIcon} label="Peak Hour">
+                  {data?.peakStats?.Peakhour ?? "--"}{" "}
+                  <span className="dash3-hr-suffix">Hr</span>
+                </StatSideCard>
+              </div>
+            </div>
+          </>
+        ) : data?.zoneStatus ===
+          "The process time for this zone hasn't started yet" ? (
+          <div className="datareason center-message">
+            <p className="no-data-text">The process time for this zone hasn’t started yet</p>
+          </div>
+        ) : (
+          <div className="datareason center-message">
+            <NoData />
+          </div>
+        )}
       </div>
 
-      {/* Chart + Side Stats */}
-      <div className="dash3-bottom-row">
-        <div className="dash3-chart-section">
-          <h3>Hourly Trends</h3>
-          {loading && <div className="spinner" />}
-          {!loading && (
-            <ResponsiveContainer width="100%" height={340}>
-              <AreaChart data={hourly} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="fill2" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="10%" stopColor="#1d4ed8" stopOpacity={0.18}/>
-                    <stop offset="95%" stopColor="#1d4ed8" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                <XAxis dataKey="Hours" tick={{ fontSize: 12 }} interval={0} angle={-25} textAnchor="end" height={60} />
-                <YAxis tick={{ fontSize: 12 }} width={60} />
-                <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid #e2e8f0' }}
-                         labelFormatter={(l) => `Hour: ${l}`}
-                         formatter={(v) => [v, 'Live Occupancy']}
-                />
-                <ReferenceLine
-                  x={hourly[Math.min(hourly.length - 1, 10)]?.Hours}
-                  stroke="#111827" strokeDasharray="4 4"
-                />
-                <Area type="monotone" dataKey="LiveOccupancy"
-                      stroke="#1d4ed8" fill="url(#fill2)" strokeWidth={3}
-                      dot={{ r: 4 }} activeDot={{ r: 6 }}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          )}
-          <div className="dash3-chart-footer">
-            <span>Total In: <strong className="dash3-in"><AnimatedNumber value={data?.totals?.Totalin} /></strong></span>
-            <span>Total Out: <strong className="dash3-out"><AnimatedNumber value={data?.totals?.Totalout} /></strong></span>
-          </div>
-        </div>
-        <div className="dash3-side-grid">
-          <StatSideCard icon={RemainingCapacityIcon} label="Remaining Capacity">
-            <AnimatedNumber value={data?.capacityStats?.Remainingcapacity} />
-          </StatSideCard>
-          <StatSideCard icon={PeakOccIcon} label="Peak Occupancy">
-            <AnimatedNumber value={data?.peakStats?.Peakoccupancy} />
-          </StatSideCard>
-          <StatSideCard icon={PeakHourIcon} label="Peak Hour">
-            {data?.peakStats?.Peakhour ?? '--'} <span className="dash3-hr-suffix">Hr</span>
-          </StatSideCard>
-        </div>
-      </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
@@ -237,7 +495,7 @@ function StatSideCard({ icon, label, children }) {
   );
 }
 
-function AnimatedNumber({ value, duration = 600, suffix = '' }) {
+function AnimatedNumber({ value, duration = 600, suffix = "" }) {
   const [display, setDisplay] = useState(value ?? 0);
   const prevRef = React.useRef(value ?? 0);
 
@@ -261,7 +519,12 @@ function AnimatedNumber({ value, duration = 600, suffix = '' }) {
     requestAnimationFrame(step);
   }, [value, duration]);
 
-  return value == null
-    ? <span className="animated-number">--</span>
-    : <span className="animated-number">{display}{suffix}</span>;
+  return value == null ? (
+    <span className="animated-number">--</span>
+  ) : (
+    <span className="animated-number">
+      {display}
+      {suffix}
+    </span>
+  );
 }

@@ -11,7 +11,10 @@ const routeTitles = {
   "/threshold": "Threshold",
   "/sms": "SMS",
   "/email": "Email",
-  "/logs": "Logs"
+  "/logs": "Logs",
+  "/licensing": "Vendors",
+  "/SettingsHeatmap":"Heatmap"
+  // "/HeatmapDashboard":"Heatmap - Overview"
 };
 
 const Header = ({ location }) => {

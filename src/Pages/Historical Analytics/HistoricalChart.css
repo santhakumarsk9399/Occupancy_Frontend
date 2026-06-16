@@ -1,0 +1,500 @@
+.analytics-container {
+  padding: 1px;
+  border-radius: 12px;
+     margin: 10px 20px;
+}
+.analytics-container_chart
+{
+    background: #ffffff;
+     margin: 15px 10px;
+     padding: 20px;
+     border-radius: 12px;
+}
+.analytics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.enlarge-btn {
+  border: none;
+  background: #f5f5f5;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.enlarge-btn:hover {
+  background: #007bff;
+  color: #fff;
+}
+
+/* Make modal wide and centered */
+.enlarge-modal {
+  max-width: 90% !important;   /* Increase modal width */
+     /* Center horizontally */
+}
+
+.enlarge-modal .modal-dialog {
+  width: 90% !important;       /* Set width */
+  margin: auto !important;     /* Ensure center */
+}
+
+.enlarge-modal .modal-content {
+  height: 85vh;                /* Increase height */
+  display: flex;
+  flex-direction: column;
+}
+
+.enlarge-modal .modal-body {
+  flex: 1;
+  padding: 10px;
+  display: flex;
+}
+
+.enlarge-chart-wrapper {
+  width: 100%;
+  height: 100%;
+}
+.closepopup_historical {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+}
+
+.close-btn_historical {
+  background: #f5f5f5;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease-in-out;
+}
+
+.close-btn_historical:hover {
+  background: #e63946;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+
+/* custom styles */
+
+/* Dashboard 1*/
+
+.historyDashmain .tabsec_dash {
+  padding: 10px;   
+  margin: 7.5px 10px 10px 10px;
+  border-radius: 12px;   
+}
+
+.historyDashmain .analytics-container {
+  padding: 0;
+  border-radius: 12px;
+  margin: 10px 7.5px;
+}
+
+.analytics-container_chart {
+  background: #ffffff;
+  margin: 5px 0;
+  padding: 25px;
+  border-radius: 12px;
+    box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+}
+
+.Historical_Dash_TopSection {
+  padding: 0;
+  margin-top: 15px;
+  background-color: #f6f7fc;
+}
+
+.Historical_Dash_Section .dash3-stat-card, 
+.Historical_Dash_Section .dash3-status-badge {
+  padding: 22.5px 25px;
+}
+
+.Historical_Dash_Section .dash3-stat-label { 
+  margin-top: 0;
+}
+
+.recharts-wrapper.custom-bar-chart:focus, .recharts-wrapper.custom-bar-chart:focus-visible,
+.recharts-responsive-container:focus, .recharts-responsive-container:focus-visible,
+.chart-wrapper:focus, .chart-wrapper:focus-visible,
+.analytics-container_chart:focus, .analytics-container_chart:focus-visible, 
+.analytics-header:focus, .analytics-header:focus-visible, 
+.recharts-responsive-container > div:focus, .recharts-responsive-container > div:focus-visible,
+.custom-bar-chart svg:focus, .custom-bar-chart svg:focus-visible {
+  outline: none;
+}
+
+.analytics-container .dash3-stat-card {
+  border-radius: 15px;
+  box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+  border:0;
+}
+
+.analytics-container .analytics-container_chart {
+  box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+  padding: 25px 25px 10px;
+}
+
+.Historical_Dash_Section .dash3-stat-main_historical {
+  color: #404252;
+  font-size: 32px;
+}
+
+.Historical_Dash_Section .cardsec1 { 
+  gap: 6px;
+}
+
+.Historical_Dash_Section .filter-dropdown {
+  padding: 6px 7px 6px 7px;
+  border: 1px solid #D2D4DA;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #404252;
+}
+
+.Historical_Dash_Section .date-input {
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid #D2D4DA;
+  font-size: 14px;
+  width: 180px;
+  color: #404252;
+}
+
+.Historical_Dash_Section .filteroptions span {
+  font-weight: 500;
+}
+
+.Historical_Dash_Section .filteroptions .custom-date {
+  gap: 0;
+}
+
+.Historical_Dash_Section .filteroptions .custom-date .date-input:focus {
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 .10rem rgba(13, 110, 253, .15);
+}
+
+.Historical_Dash_Section .enlarge-btn {
+  background: transparent;
+  padding: 4px 8px;
+  border-radius: 6px;
+  line-height: 26px;
+}
+.Historical_Dash_Section .enlarge-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+
+.historical-modal .modal-content .modal-header {
+  padding: 24px 24px 0;
+}
+
+.historical-modal .modal-content .modal-body {
+  padding: 16px 16px 0;
+}
+
+
+/* Dashboard 2 */
+
+.historical-dash2 .filter-dropdown {
+    padding: 6px 6px;
+    border: 1px solid #D2D4DA;
+    border-radius: 8px; 
+    color: #404252;
+}
+/* .historical-dash2 .filteroptions span {
+    color: #404252;
+} */
+.historical-dash2 .date-input {
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid #D2D4DA;
+  font-size: 14px;
+  width: 180px;
+  color: #404252;
+}
+
+.historical-dash2 .date-input:focus {
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 .10rem rgba(13, 110, 253, .15);
+}
+
+.historical-dash2 .filter-bar {
+  border-radius: 12px;
+  /* margin: 10px 7.5px 5px; */
+  margin: 1px;
+}
+
+.historical-dash2 .dash2-table-head {
+  border-radius: 12px;
+  margin: 6px 0.5px;
+  border:0;
+  box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+  font-size: 15px;
+}
+
+.historical-dash2 .dash2-row {
+  margin: 6px 0.5px;
+  border:0;
+}
+
+.dash2-row .historical-dash2-icon > div {
+    text-align: center;
+    border-radius: 100%;
+    border: 1px solid rgba(23, 24, 30, 0.40);
+    box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    padding: 4px;
+    display: flex;
+    margin: 0 auto;
+}
+
+
+/* Dashboard2 modal */
+
+.historical-dash2-modal .dash3-modal-header {  
+  align-items: center !important;
+  margin-bottom: 0;
+}
+
+.historical-dash2-modal .dash3-stat-card {
+  border-radius: 20px;
+  border: 1px solid rgba(226, 228, 233, 0.75);
+  background: #FFF;
+  box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+  padding: 25px 25px;
+}
+
+.historical-dash2-modal .analytics-container_chart {
+  border-radius: 20px;
+  border: 1px solid rgba(226, 228, 233, 0.75);
+  background:  #FFF;
+  box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+  margin-bottom: 0;
+  padding: 25px 25px 10px;
+}
+.historical-dash2-modal .dash3-stat-label {
+  margin-top: 1px;
+  font-size: 15px;
+  color: #404252;
+  font-weight: 500;
+}
+
+.historical-dash2-modal .selectedDate .date-val {
+  font-size: 18px;
+  font-weight: 500;
+  position: relative;
+  top: 2px;
+}
+
+.historical-dash2-modal .cal-icon {
+  position: relative;
+  top: -1px;
+}
+
+.historical-dash2-modal .cal-label {
+  font-size: 14px;
+  font-weight: 300;
+  color: #404252;
+}
+
+.dash3-modal-header h2 {    
+  font-size: 28px;   
+  color: #17181e;
+  font-weight: 600;
+}
+
+.historical-dash2-modal .zone-label {
+  font-size: 14px;   
+  color: #404252
+}
+
+.historical-dash2-modal .custom-dropdown .dropdown-header {
+  border-radius: 8px;
+  min-height: 34px;
+  padding: 5px 10px;
+  border-color: #D2D4D9;
+  color: #17181E;
+}
+
+.dropdown-list {
+  border-radius: 8px;
+}
+
+.dropdown-item.selected, .dropdown-item.selected:hover  {  
+  background-color: #2162CD;
+  color: #fff;
+}
+
+.dropdown-item:hover {   
+    background-color: #E9EFFA;
+    color: #2162CD;
+    font-weight: 500;
+}
+
+.historical-dash2-modal .dash3-stat-main {
+    color: #404252;
+    font-size: 34px;
+}
+/* Force modal to always center */
+.enlarge-modal.modal-dialog {
+  position: fixed;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+
+  max-width: 100% !important;
+  width: 90% !important;
+  height: auto;
+  margin: 0 !important;
+}
+
+.enlarge-modal .modal-content {
+  height: 85vh; /* Adjust height as needed */
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+}
+.histChartSec {
+    margin: 20px 0px;
+    padding: 20px 10px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+}
+.dash3-modal.historicalData {
+    background: #f6f7fc;
+}
+
+/* ---------- Modal: custom width + perfect centering ---------- */
+/* Put this at the END of your CSS file (after bootstrap) */
+
+.historical-modal,
+.historical-modal .modal {
+  z-index: 2000 !important;
+}
+
+/* Target the dialog specifically when dialogClassName="enlarge-modal" is set */
+.modal-dialog.enlarge-modal {
+  /* custom width you want */
+  width: 100% !important;        /* change to 70% or "1200px" if you prefer fixed */
+  max-width: 1400px !important; /* cap max width */
+  margin: 0 !important;         /* remove bootstrap top margin that pushes it down */
+
+  /* fixed positioning for true viewport centering */
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+
+  /* ensure it sits above content */
+  z-index: 2050 !important;
+}
+
+/* Modal content sizing */
+.modal-dialog.enlarge-modal .modal-content {
+  height: 85vh;            /* height of modal content area; adjust as needed */
+  border-radius: 12px;
+  overflow: hidden;        /* prevent overflow issues with the chart */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make modal body flexible so charts can expand */
+.modal-dialog.enlarge-modal .modal-body {
+  flex: 1;
+  padding: 10px;
+  overflow: hidden;
+}
+
+/* Chart wrapper in the modal should fill the body */
+.enlarge-chart-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Backdrop: ensure it covers viewport properly */
+.modal-backdrop.show {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 1040 !important;
+}
+
+/* Responsive: full screen on small screens */
+@media (max-width: 768px) {
+  .modal-dialog.enlarge-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
+    transform: none !important;
+    position: fixed !important;
+    margin: 0 !important;
+  }
+
+  .modal-dialog.enlarge-modal .modal-content {
+    height: 100vh;
+    border-radius: 0;
+  }
+
+  .modal-dialog.enlarge-modal .modal-body {
+    padding: 6px;
+  }
+}
+.enlarge-chart-wrapper , .chart-wrapper :focus { outline: none; border: none !important; }
+.enlarge-chart-wrapper , .chart-wrapper :focus-visible {
+  outline: 2px solid rgba(29,78,216,0.18); /* subtle keyboard focus */
+  outline-offset: 2px;
+  border: none !important;
+}
+
+/* Target Recharts wrappers and svg explicitly */
+.enlarge-chart-wrapper , .chart-wrapper .recharts-wrapper,
+.enlarge-chart-wrapper svg, .chart-wrapper
+.enlarge-chart-wrapper , .chart-wrapper.recharts-surface,
+.enlarge-chart-wrapper , .chart-wrapper.custom-bar-chart {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+span.hrtext {
+    padding: 10px;
+    font-size: 20px;
+    font-weight: 400;
+}
+.analytics-header.histor_dash2 {
+    display: flex;
+    justify-content: center;
+}
+h5.analytics-header.histor_dash2_label {
+    font-size: 24px;
+    font-weight: 500;
+}
+/* .tab-content>.active
+ {
+    display: block;
+    background: #f6f7fc;
+} */

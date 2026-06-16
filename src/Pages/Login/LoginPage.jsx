@@ -46,20 +46,29 @@ const VerifyUser = async (e) => {
 
   try {
     const Result = await axios.post(`${API_URL}/auth/login`, values);
- console.log(Result)
+     console.log(Result)
     if (Result?.data?.success) {
       let user = Result?.data?.user?.username||"";
       let vid = Result?.data?.user?.vid||"";
       let role = Result.data?.user?.role || "";
-      let token = Result?.data?.token?.token;
+      let token = Result?.data?.token?.token || "";
+      let userLimit = Result?.data?.user?.userLimit || false;
        console.log(user)
       sessionStorage.setItem("token", token);
       sessionStorage.setItem("role", role);
       sessionStorage.setItem("username", user);
       sessionStorage.setItem("vid", vid);
+      sessionStorage.setItem("setUserLimit", userLimit);
 
       login(user, role);
-      navigate("/liveOccupancy", { replace: true });
+
+      const roleLower = role?.toLowerCase();
+      if (roleLower === "licensing") {
+        navigate("/licensing", { replace: true });
+      } else {
+        navigate("/liveOccupancy", { replace: true });
+      }
+      
 
       // reset form + errors
       setValues({ username: "", password: "" });
@@ -89,43 +98,14 @@ const onChangeHandler = (e) => {
   }));
 };
 
-  // const ValidateFields = (name, value) => {
-  //   const error = errors;
-  //   switch (name) {
-  //     case "username":
-  //       if (!value) {
-  //         error.NameError = "Name field is required";
-  //         error.CatchError = "";
-  //       } else {
-  //         error.NameError = "";
-  //       }
-  //       break;
-  //     case "password":
-  //       if (!value) {
-  //         error.PassError = "Password field is required";
-  //         error.CatchError = "";
-  //         // validForm.passwordValid = false;
-  //       } else {
-  //         error.PassError = "";
-  //         // validForm.passwordValid = true;
-  //       }
-  //       break;
-
-  //     default:
-  //       break;
-  //   }
-
-  //   // toCheckErrorsAndValid(validForm);
-  //   setError({ ...error });
-  //   // console.log(error, "errors");
-  // };
   return (
     <div>
       <div className="Login_BgPage">
         <div className="login_Container">
           {/* Your login form components go here */}
           <div className="OccupancyHeader">
-            <img src={logoicon} width="225px" />
+            <h2 className="panel-title clickable-title">Occupancy Solution<span className="version">2.0</span></h2>
+            {/* <img src={logoicon} width="225px" /> */}
           </div>
           <form
             onSubmit={(e) => {

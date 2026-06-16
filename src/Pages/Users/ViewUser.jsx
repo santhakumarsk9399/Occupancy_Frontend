@@ -33,7 +33,7 @@ const ViewUser = ({ show, handleClose, user }) => {
       : [];
 
   const columns = [
-    { name: "SL", selector: (row) => row.SL, width: "100px" },
+    { name: "SL", selector: (row) => row.sl, width: "100px" },
     { name: "ZONE NAME", selector: (row) => row.zonename },
   ];
 

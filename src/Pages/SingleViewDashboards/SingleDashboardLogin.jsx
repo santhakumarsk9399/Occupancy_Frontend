@@ -21,7 +21,8 @@ const SingleView = () => {
         const params = getQueryParams();
         // const username = params.get("username");
         // const password = params.get("password");
-         const key = params.get("key");
+        const key = params.get("key");
+        const ViewDash = params.get("view")
           // console.log(key,"key")
         if (!key) {
           setError("Missing key in URL");
@@ -38,7 +39,14 @@ const SingleView = () => {
 
         // Save user session
         sessionStorage.setItem("userData", JSON.stringify({ token, user }));
-        navigate("/singlezoneDashboard");
+        if (ViewDash === "multizone")
+        {
+         navigate("/MultizonesView");
+        }
+        else {
+          navigate("/singlezoneDashboard");
+        }
+        
       } catch (err) {
         console.error("Error in flow:", err);
 

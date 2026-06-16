@@ -110,7 +110,7 @@ const DeleteUserModal = ({ show, handleClose, user, onDelete }) => {
           },
         }
       );
-      showSuccess(response.data ?response.data?.message+"!!!":"User Deleted Successfully");
+      showSuccess(response.data ?response.data?.message:"User Deleted Successfully");
       onDelete(response);
       handleClose();
     } catch (error) {

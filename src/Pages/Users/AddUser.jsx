@@ -13,6 +13,7 @@ import * as Yup from "yup";
 import MultiSelectDropdown from "../CommonComponents/MultiSelectDropDown";
 import SingleSelectDropdown from "../CommonComponents/SingleSelectDropdown";
 import "../../Components/Styles/UsersPage.css";
+
 /**
  * Reusable tiny info icon that shows a tooltip on hover.
  */
@@ -81,8 +82,11 @@ const UserFormModal = ({
     confirmPassword: editingUser?.password || "",
     usertype:
       editingUser?.usertype || (userTypes.length > 0 ? userTypes[0].value : ""),
-    selectedZones:
-      safeMappedZones.map((z) => ({ label: z.zonename, value: z.SL })) || [],
+    selectedZones: editingUser
+      ? Zones.filter((zone) =>
+          safeMappedZones.some((z) => z.zonename === zone.label)
+        )
+      : [],
     useraddress: editingUser?.address || "",
     receiveHealthMail:
       editingUser?.healthMail === true || editingUser?.healthMail === "true",
@@ -100,46 +104,36 @@ const UserFormModal = ({
       .max(20, "Username cannot exceed 20 characters")
       .required("Username is required"),
 
-useremailid: Yup.string()
-  .required("Email is required")
-  .test(
-    "no-spaces",
-    "Spaces are not allowed",
-    (value) => {
-      if (!value) return false;
-      return !/\s/.test(value); // ❌ Rejects any whitespace character
-    }
-  )
-  .test(
-    "valid-emails",
-    "Enter valid email addresses separated by semicolons",
-    (value) => {
-      if (!value) return false;
-
-      const emails = value.split(";").map((e) => e.trim()).filter(Boolean);
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      return (
-        emails.length > 0 &&
-        emails.every((email) => emailRegex.test(email))
-      );
-    }
-  )
-  .test(
-    "no-duplicates",
-    "Duplicate emails are not allowed",
-    (value) => {
-      if (!value) return true;
-
-      const emails = value
-        .split(";")
-        .map((e) => e.trim().toLowerCase())
-        .filter(Boolean);
-
-      const unique = new Set(emails);
-      return emails.length === unique.size;
-    }
-  ),
+    useremailid: Yup.string()
+      .required("Email is required")
+      .test("no-spaces", "Spaces are not allowed", (value) => {
+        if (!value) return false;
+        return !/\s/.test(value);
+      })
+      .test(
+        "valid-emails",
+        "Enter valid email addresses separated by semicolons",
+        (value) => {
+          if (!value) return false;
+          const emails = value
+            .split(";")
+            .map((e) => e.trim())
+            .filter(Boolean);
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return (
+            emails.length > 0 && emails.every((email) => emailRegex.test(email))
+          );
+        }
+      )
+      .test("no-duplicates", "Duplicate emails are not allowed", (value) => {
+        if (!value) return true;
+        const emails = value
+          .split(";")
+          .map((e) => e.trim().toLowerCase())
+          .filter(Boolean);
+        const unique = new Set(emails);
+        return emails.length === unique.size;
+      }),
 
     password: Yup.string()
       .matches(
@@ -172,15 +166,23 @@ useremailid: Yup.string()
         validationSchema={validationSchema}
         enableReinitialize={true}
         onSubmit={async (values, { resetForm }) => {
-          // Sanitize a couple of fields before submit
           const payload = {
             ...values,
             username: values.username.trim(),
             useraddress: values.useraddress?.trim() || "",
           };
-          await onSave(payload);
-          resetForm();
-          handleClose();
+
+          try {
+            const response = await onSave(payload);
+
+            // ✅ Only close modal if API returns success: true
+            if (response?.success) {
+              resetForm();
+              handleClose();
+            }
+          } catch (error) {
+            console.error("Error saving user:", error);
+          }
         }}
       >
         {({
@@ -324,9 +326,6 @@ useremailid: Yup.string()
                 <Form.Group as={Col} className="mb-3 user">
                   <Form.Label>
                     Zones <RequiredIcon />
-                    {/* <InfoTooltip id="tt-zones">
-                      <div>• Select at least one zone</div>
-                    </InfoTooltip> */}
                   </Form.Label>
                   <MultiSelectDropdown
                     className="multi-select-container"
@@ -346,12 +345,7 @@ useremailid: Yup.string()
               </Row>
 
               <Form.Group className="mb-1 user">
-                <Form.Label>
-                  Address
-                  {/* <InfoTooltip id="tt-address">
-                    <div>• Up to 100 characters</div>
-                  </InfoTooltip> */}
-                </Form.Label>
+                <Form.Label>Address</Form.Label>
                 <Form.Control
                   as="textarea"
                   rows={2}

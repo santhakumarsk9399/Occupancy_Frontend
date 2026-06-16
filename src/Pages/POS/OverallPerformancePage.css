@@ -1,0 +1,216 @@
+/* ── Page ───────────────────────────────────────────────────────────────── */
+.op-page {
+  min-height: 100vh;
+  background: #f0f2f7;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 20px;
+  font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif;
+}
+
+/* ── Card ───────────────────────────────────────────────────────────────── */
+.op-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.07);
+  padding: 20px 22px 14px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+/* ── Top Bar ────────────────────────────────────────────────────────────── */
+.op-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.op-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.3px;
+}
+
+.op-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ── Filter Buttons ─────────────────────────────────────────────────────── */
+.op-filters {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.op-filter-btn {
+  padding: 6px 16px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.op-filter-btn:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.op-filter-btn.active {
+  background: #dbeafe;
+  color: #2563eb;
+  font-weight: 600;
+  border-color: transparent;
+}
+
+/* ── Expand Button ──────────────────────────────────────────────────────── */
+.op-expand-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.op-expand-btn:hover {
+  background: #f3f4f6;
+}
+
+/* ── Legend ─────────────────────────────────────────────────────────────── */
+.op-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  padding-top: 10px;
+}
+
+.op-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+
+.op-legend-item.off {
+  opacity: 0.45;
+}
+
+.op-legend-item:hover {
+  opacity: 0.8;
+}
+
+.op-legend-check {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 2px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.op-legend-label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #374151;
+  white-space: nowrap;
+}
+
+/* ── Tooltip ────────────────────────────────────────────────────────────── */
+.op-tooltip {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  font-family: inherit;
+  min-width: 180px;
+}
+
+.op-tooltip__header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 6px;
+}
+
+.op-tooltip__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.op-tooltip__name {
+  font-weight: 600;
+  color: #111827;
+  font-size: 12px;
+}
+
+.op-tooltip__row {
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.op-tooltip__row b {
+  color: #111827;
+}
+
+/* ── Modal overlay ──────────────────────────────────────────────────────── */
+.op-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+  backdrop-filter: blur(2px);
+}
+
+.op-modal {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  padding: 24px 28px 18px;
+  width: 100%;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow: auto;
+  animation: op-modal-in 0.2s ease;
+}
+
+@keyframes op-modal-in {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}

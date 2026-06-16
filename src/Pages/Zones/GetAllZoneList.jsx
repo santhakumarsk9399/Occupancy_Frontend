@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import DataTable from "react-data-table-component";
 import "../../Components/Styles/Table.css";
 import { Tab, Nav, Table, Button, Form } from "react-bootstrap";
@@ -34,16 +34,27 @@ export default function GetAllZoneList() {
   const [showServiceArea, setShowServiceArea] = useState(false);
   const [serviceAreaZone, setServiceAreaZone] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  // Track previous modal open state to trigger refresh when all modals close
+  const prevAnyModalOpenRef = useRef(false);
 
   const columns = [
     {
       name: "SL",
-      selector: (row) => row.id,
+  selector: (row) => row.id,
+  width: '70px', // match Thresholds table narrow SL column
     },
     {
       name: "Zone(s) Name",
       selector: (row) => row.zoneName,
     },
+    //  {
+    //   name: "Start Time",
+    //   selector: (row) => row.country + ","+ row.city,
+    // },
+    //  {
+    //   name: "End Time",
+    //   selector: (row) => row.country + ","+ row.city,
+    // },
     {
       name: "Address",
       selector: (row) => row.country + ","+ row.city,
@@ -58,7 +69,7 @@ export default function GetAllZoneList() {
             zones.zoneName.toLowerCase().includes(query.toLocaleLowerCase())
         )
       : [];
-console.log(filteredProducts)
+// console.debug('Filtered zones count:', filteredProducts.length);
   // ----------------- Detect click outside table and reset selected row-----------------------------
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -136,74 +147,79 @@ console.log(filteredProducts)
   //-------------------------Stored in local storage + API load-----------------------------------------------------
   const LOCAL_KEY = "zone_data";
 
-  // Load grid from API; fallback to localStorage on failure
-  useEffect(() => {
+  // Fetch zones (extracted so we can call on-demand when modals close)
+  const fetchZones = useCallback(async () => {
     let cancelled = false;
-    const fetchZones = async () => {
-      setIsLoading(true);
-      try {
-        const token = sessionStorage.getItem("token");
-        const res = await fetch(`${API_BASE}/settings/zones/getZones`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-          },
-          body: JSON.stringify({ vid: 4 }),
-        });
-        if (!res.ok) {
-          const text = await res.text();
-          throw new Error(text || `Request failed with ${res.status}`);
-        }
-        const data = await res.json();
-        // API returns: { success, message, zones: [[{ SL, "Zone(s)name", Address }, ...]] }
-        const nested = Array.isArray(data?.zones) ? data.zones : [];
-        const flat = nested.flat().filter(Boolean);
-        const mapped = flat.map((item) => {
-          const addr = String(item?.Address || "");
-          let country = "";
-          let city = "";
-          if (addr.includes(",")) {
-            const parts = addr.split(",");
-            country = (parts[0] || "").trim();
-            city = parts.slice(1).join(",").trim();
-          } else {
-            country = addr.trim();
-          }
-          return {
-            id: Number(item?.SL) || undefined,
-            zoneName: item?.["Zone(s)name"] || item?.zoneName || "",
-            country,
-            city,
-          };
-        });
-        if (!cancelled) {
-          setZones(mapped);
-          // Persist for offline/fallback
-          try { localStorage.setItem(LOCAL_KEY, JSON.stringify(mapped)); } catch (_) {}
-        }
-      } catch (err) {
-        console.error("Failed to load zones:", err);
-        if (!cancelled) {
-          // Fallback: try localStorage
-          try {
-            const item = localStorage.getItem(LOCAL_KEY);
-            const stored = item ? JSON.parse(item) : [];
-            setZones(Array.isArray(stored) ? stored : []);
-          } catch (_) {
-            setZones([]);
-          }
-        }
-      } finally {
-        if (!cancelled) setIsLoading(false);
+    setIsLoading(true);
+    try {
+      const token = sessionStorage.getItem("token");
+      const res = await fetch(`${API_BASE}/settings/zones/getZones`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ vid: 4 }),
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || `Request failed with ${res.status}`);
       }
-    };
-
-    fetchZones();
-    return () => {
-      cancelled = true;
-    };
+      const data = await res.json();
+      const nested = Array.isArray(data?.zones) ? data.zones : [];
+      const flat = nested.flat().filter(Boolean);
+      const mapped = flat.map((item) => {
+        const addr = String(item?.Address || "");
+        let country = "";
+        let city = "";
+        if (addr.includes(",")) {
+          const parts = addr.split(",");
+          country = (parts[0] || "").trim();
+            city = parts.slice(1).join(",").trim();
+        } else {
+          country = addr.trim();
+        }
+        return {
+          id: Number(item?.SL) || undefined,
+          zoneName: item?.["Zone(s)name"] || item?.zoneName || "",
+          country,
+          city,
+        };
+      });
+      if (!cancelled) {
+        setZones(mapped);
+        try { localStorage.setItem(LOCAL_KEY, JSON.stringify(mapped)); } catch (_) {}
+      }
+    } catch (err) {
+      console.error("Failed to load zones:", err);
+      try {
+        const item = localStorage.getItem(LOCAL_KEY);
+        const stored = item ? JSON.parse(item) : [];
+        setZones(Array.isArray(stored) ? stored : []);
+      } catch (_) {
+        setZones([]);
+      }
+    } finally {
+      if (!cancelled) setIsLoading(false);
+    }
+    return () => { cancelled = true; };
   }, []);
+
+  // Initial load
+  useEffect(() => { fetchZones(); }, [fetchZones]);
+
+  // Refetch whenever any modal transitions from open -> all closed
+  useEffect(() => {
+    const anyOpen = showModal || showEditModal || showDelete || showReset || showServiceArea;
+    if (prevAnyModalOpenRef.current && !anyOpen) {
+      // A modal just closed -> refresh zones list
+  fetchZones();
+  // Also clear any selected row so table returns to neutral state
+  setSelectedRowId(null);
+  setSelectedZone({});
+    }
+    prevAnyModalOpenRef.current = anyOpen;
+  }, [showModal, showEditModal, showDelete, showReset, showServiceArea, fetchZones]);
 
   const saveToLocal = (data) => {
     localStorage.setItem(LOCAL_KEY, JSON.stringify(data));
@@ -233,7 +249,8 @@ console.log(filteredProducts)
       setZones(updated);
     }
 
-    saveToLocal(updated);
+  saveToLocal(updated);
+  // Zones will refetch automatically when modal closes
     console.log(updated);
     // setEditIndex(null);
   };
@@ -261,7 +278,7 @@ console.log(filteredProducts)
     setShowReset(true);
   };
 
-  const handleSubmitReset = async (resetCount, passedZone) => {
+  const handleSubmitReset = async (resetCount, passedZone, passedUsername) => {
     try {
       // Validate input & selection
       if (resetCount == null || Number.isNaN(Number(resetCount))) {
@@ -277,13 +294,14 @@ console.log(filteredProducts)
       }
 
       const token = sessionStorage.getItem("token");
+      const username = (passedUsername || sessionStorage.getItem('username') || 'Occupancy');
       const res = await fetch(`${API_BASE}/settings/zones/resetCountZone`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify({ resetCount: Number(resetCount), zonename: zoneToUse.zoneName }),
+        body: JSON.stringify({ username, resetCount: Number(resetCount), zonename: zoneToUse.zoneName }),
       });
 
       const data = await res.json().catch(() => ({}));
@@ -346,6 +364,7 @@ console.log(filteredProducts)
       setShowDelete(false);
       setSelectedRowId(null);
       setSelectedZone({});
+  // Zones will refetch automatically when modal closes
     } catch (err) {
   toast.error(err?.message || "Failed to delete zone", { position: "top-right" });
     }
@@ -392,7 +411,7 @@ console.log(filteredProducts)
     <div className="Usercontainer">
 
    
-        <div><p><span class="top-tab-head">Zone Lists</span></p></div>
+  <div><p><span className="top-tab-head">Zone Lists</span></p></div>
 
       <div className="tabsec">
         
