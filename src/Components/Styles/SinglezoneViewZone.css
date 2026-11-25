@@ -1,0 +1,285 @@
+/* ZoneDetailsPage.module.css */
+
+/* Modal Overlay */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: auto;
+  padding: 20px 32px;
+}
+
+/* Modal Container */
+.modal {
+  background: #f8f9fc;
+  width: 90%;
+  max-width: 1220px;
+  border-radius: 15px;
+  padding: 15px 25px 25px;
+  box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.25);
+  animation: dash3Pop 0.25s ease;
+}
+
+/* Modal Pop Animation */
+@keyframes dash3Pop {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Modal Header */
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 10px 0px;
+}
+
+.modalTitle {
+  font-size: 28px;
+  font-weight: 500;
+  color: #17181E;
+  margin: 0;
+}
+
+/* Close Button */
+.closeBtn {
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #4b5563;
+  padding: 4px;
+}
+.closeBtn:hover {
+  color: #111827;
+}
+
+/* Zone Select Dropdown */
+.zoneSelect {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #fff;
+}
+
+.zoneSelectLabel {
+  font-size: 15px;
+  font-weight: 500;
+  color: #374151;
+  font-family: 'Inter';
+}
+
+/* Top Section Layout */
+.topRow {
+  display: flex;
+  gap: 32px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+/* Stat Cards (Mini Cards) */
+.miniCards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  flex: 1;
+}
+.statCard {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 13px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 200px;
+}
+.statMain {
+  font-size: 30px;
+  font-weight: 600;
+  color: #1f2937;
+}
+.statLabel {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* Icon Styles */
+.iconWrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+}
+.icoGreen {
+  background: #e0f8ee;
+  color: #059669;
+}
+.icoIndigo {
+  background: #e5edff;
+  color: #1d4ed8;
+}
+.icoPurple {
+  background: #eee9ff;
+  color: #7e22ce;
+}
+.icoBlue {
+  background: #e6f0ff;
+  color: #2563eb;
+}
+.icoPink {
+  background: #ffe6f3;
+  color: #db2777;
+}
+
+/* Large Status Card */
+.statusLarge {
+  width: 360px;
+  background: #059669;
+  border-radius: 20px;
+  padding: 38px 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+  color: #fff;
+  font-weight: 600;
+}
+.statusText {
+  font-size: 24px;
+  line-height: 1.05;
+  padding-left: 15px;
+  font-weight: 400;
+}
+.statusIcon svg {
+  width: 38px;
+  height: 38px;
+}
+.badgeSafe { background: #059669; }
+.badgeAlmost { background: #f59e0b; }
+.badgeFull { background: #dc2626; }
+.badgeEmpty { background: #009eee; }
+
+/* Bottom Section */
+.bottomRow {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+/* Chart Section */
+.chartCard {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 28px 30px 16px;
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+}
+.chartTitle {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+}
+.chartSvg {
+  width: 100%;
+  height: 340px;
+}
+.chartFooter {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 10px;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* Side Cards */
+.sideStack {
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.sideCard {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 13px;
+  padding: 35px 30px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.10), 0 1px 2px rgba(16, 24, 40, 0.06);
+}
+.sideMain {
+  font-size: 30px;
+  font-weight: 600;
+  color: #1f2937;
+}
+.sideLabel {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+  padding-top: 5px;
+}
+
+/* Tooltip for Chart */
+.chartTooltip {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #111827;
+  pointer-events: none;
+  z-index: 10;
+  min-width: 150px;
+  font-weight: 500;
+}
+.chartTooltip strong {
+  font-weight: 600;
+  color: #374151;
+}
+
+/* Responsive Styles */
+@media (max-width: 1120px) {
+  .topRow, .bottomRow {
+    flex-direction: column;
+  }
+  .statusLarge, .sideStack {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 880px) {
+  .miniCards {
+    flex-direction: column;
+  }
+  .statCard {
+    width: 100%;
+  }
+}

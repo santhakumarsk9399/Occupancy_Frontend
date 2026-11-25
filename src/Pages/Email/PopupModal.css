@@ -1,0 +1,124 @@
+/* Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal Box */
+.popup-box {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.popup-header h3 {
+  margin: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.popup-body label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.popup-body input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.popup-body p {
+  font-size: 13px;
+  color: #555;
+}
+
+.popup-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* Unify with form button styles */
+.popup-box .cancel-btn, .popup-box .save-btn { 
+  border:1px solid #2162CD; 
+  color:#2162CD; 
+  background:#fff; 
+  border-radius:8px; 
+  font-size:14px; 
+  font-weight:500; 
+  height:36px; 
+  display:inline-flex; 
+  align-items:center; 
+  padding:0 18px; 
+  cursor:pointer; 
+  transition:background .15s ease; 
+}
+.popup-box .save-btn { 
+  background:#2162CD; 
+  color:#fff; 
+  border:1px solid transparent; 
+  box-shadow:0 1px 1px rgba(0,0,0,0.02);
+}
+.popup-box .cancel-btn:hover { background:#E9EFFA; }
+.popup-box .save-btn:hover { background:#1E55B3; }
+.popup-box .cancel-btn:disabled, .popup-box .save-btn:disabled { opacity:.55; cursor:not-allowed; background:#f3f4f6; color:#9ca3af; border-color:#e5e7eb; }
+/* Override disabled style specifically for save to keep contrast */
+.popup-box .save-btn:disabled { background:#9ca3af; color:#fff; border:1px solid transparent; }
+.popup-box .hint { font-size:12px; color:#535862; margin-top:4px; }
+
+
+/* smtp-popup CSS */
+
+.smtp-popup .popup-box {
+  width: 540px; 
+  padding: 28px 30px 32px;
+  border-radius: 12px;
+} 
+
+.smtp-popup .popup-body label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.smtp-popup .popup-body input {   
+  padding: 8px 12px;    
+  border-radius: 8px;
+}
+
+.smtp-popup .popup-header h3 {
+  font-size: 20px;
+  font-weight: 700;   
+}
+
+.smtp-popup .close-btn {   
+  font-size: 24px;
+}

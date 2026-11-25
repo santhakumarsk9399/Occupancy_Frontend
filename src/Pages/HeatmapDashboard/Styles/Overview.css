@@ -1,0 +1,218 @@
+/* ==========================================
+   OCCUPANCY PANEL
+========================================== */
+
+.occupancy-panel {
+    width: 270px;
+    background: #fff;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.Overview-panel-title {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+    margin-bottom: 15px;
+    font-family: "Inter", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1E293B;
+}
+
+/* ==========================================
+   CURRENT SHOWING
+========================================== */
+
+.current-showing-card {
+    margin-bottom: 20px;
+}
+
+.show-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px;
+    margin-bottom: 8px;
+    background: #F8FAFC;
+    border-radius: 14px;
+    transition: all 0.25s ease;
+}
+
+.show-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.info-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.mall {
+    background: #2563EB;
+}
+
+.floor {
+    background: #7C3AED;
+}
+
+.rotate {
+    background: #22C55E;
+}
+
+.info-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.info-content span {
+    font-size: 13px;
+    color: #6B7280;
+}
+
+/* .value-pill{
+
+    display:block;
+    max-width:165px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    padding:6px  2px;
+    border-radius:30px;
+    font-size:18px;
+    font-weight:700;
+    color:#fff;
+    padding-left:10px ;
+} */
+.value-pill {
+    display: block;
+
+    width: fit-content;
+    min-width: 60px;
+    max-width: 165px;
+
+    box-sizing: border-box;
+
+    padding: 6px 12px;
+    border-radius: 30px;
+
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+
+    color: #fff;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.value-pill.blue {
+    background: #2563EB;
+}
+
+.value-pill.purple {
+    background: #9333EA;
+}
+/* 
+.blue {
+    background: #DBEAFE;
+    color: #2563EB;
+} */
+
+/* .purple {
+    background: #EDE9FE;
+    color: #7C3AED;
+} */
+
+.rotate-box {
+    margin-top: 4px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #16A34A;
+    line-height: 1;
+}
+
+.info-content small {
+    margin-top: 4px;
+    font-size: 13px;
+    color: #64748B;
+}
+
+/* ==========================================
+   OCCUPANCY LEVELS
+========================================== */
+
+.occupancy-card {
+    background: #F8FAFC;
+    border-radius: 16px;
+    padding: 10px 18px;
+}
+
+.legend-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.legend-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all .2s ease;
+}
+
+.legend-row:hover {
+    transform: translateX(4px);
+}
+
+.legend-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 8px rgba(0,0,0,.12);
+}
+
+.legend-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.legend-range {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1E293B;
+}
+
+.legend-status {
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748B;
+}
+
+/* ==========================================
+   OPTIONAL FOOTER
+========================================== */
+
+.occupancy-note {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 12px;
+    color: #94A3B8;
+    line-height: 18px;
+}

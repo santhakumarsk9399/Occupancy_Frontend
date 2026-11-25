@@ -1,0 +1,21 @@
+
+.no-data-dashboard_multizone{
+   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height:90vh;
+  width: 100%;
+  text-align: center;
+  color: #666;
+  /* background: #ffffff;  */
+  border-radius: 12px;
+}
+.no-data-dashboard_multizone {
+    height: calc(100vh - 157px);
+    border-radius: 12px;
+    background: #FFF;
+    box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+    margin: 0 35px 15px;
+    width: auto; 
+}

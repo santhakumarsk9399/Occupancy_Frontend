@@ -1,0 +1,19 @@
+.mini-bars-chart{
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    height:34px;
+    gap:6px;
+    margin:8px 0;
+    }
+    
+    .bar{
+    width:10px;
+    border-radius:10px;
+    opacity:.9;
+    transition:.3s;
+    }
+    
+    .bar:hover{
+    transform:scaleY(1.1);
+    }

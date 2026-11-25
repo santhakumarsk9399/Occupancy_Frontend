@@ -1,0 +1,13 @@
+.threshold-page .thresholds-table-container { margin-top: 8px; }
+.threshold-page .card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border: 1px solid #eef2f7;
+}
+/* legacy styles removed in favor of react-data-table-component */
+/* Highlight selected row */
+.threshold-page .selected-row {
+  background: #e0e7ff;
+}

@@ -1,0 +1,104 @@
+/* Reuse overlay from Email popup */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.reset-modal {
+  background: #fff;
+  width: 520px;
+  max-width: calc(100% - 32px);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  padding: 20px 20px 16px;
+}
+
+.reset-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.reset-header h3 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.reset-body {
+  margin: 12px 0 8px;
+}
+
+.reset-body label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+.reset-input {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px 12px;
+  outline: none;
+}
+
+.reset-input:focus {
+  border-color: #2162CD;
+  box-shadow: 0 0 0 3px rgba(33, 98, 205, 0.15);
+}
+
+.reset-footer {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+/* Primary look from screenshot */
+.btn-primary-gradient {
+  background: linear-gradient(0deg, #1d4ed8, #2563eb);
+  color: #fff;
+  border: 1px solid #1e40af;
+  border-radius: 12px;
+  height: 36px;
+  padding: 6px 18px;
+}
+
+.btn-primary-gradient:hover {
+  filter: brightness(0.98);
+}
+
+/* Use global .btn-soft-outline from Components/Styles/CustomButtons.css to keep button appearance consistent */
+
+/* Image styling similar to delete popup (keep consistent sizing) */
+.reset-count-image {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+}
+.reset-modal-pop .modal-content{
+    padding: 8px 8px;
+    border-radius: 15px;
+}
+
+.reset-count-body.modal-body {
+    margin: 0;
+ }
+
+ 

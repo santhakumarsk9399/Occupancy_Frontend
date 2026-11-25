@@ -1,0 +1,16 @@
+.custom-react-select .react-select__control {
+  border-radius: 0.5rem;
+  border: 1px solid #ced4da;
+  min-height: 45px;
+  font-size: 1rem;
+  padding: 2px;
+}
+
+.custom-react-select .react-select__placeholder {
+  color: #6c757d;
+}
+
+.custom-react-select .react-select__control--is-focused {
+  box-shadow: none;
+  border-color: #86b7fe;
+}

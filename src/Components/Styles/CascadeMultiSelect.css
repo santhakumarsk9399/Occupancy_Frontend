@@ -1,0 +1,198 @@
+.msd {
+  position: relative;
+  width: 100%;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+/* Header (trigger) */
+.msd__header {
+  width: 100%;
+  min-width: 230px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 12px;
+  border: 1px solid #E2E4E9;
+  background: #ffffff;
+  border-radius: 8px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+
+.msd__header:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.25);
+}
+
+.msd__placeholder {
+  color: #6b7280;
+}
+.msd__placeholder.has {
+  color: #111827;
+}
+
+/* Arrow */
+.msd__arrow {
+  width: 0; height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid #6b7280;
+  transition: transform .15s ease;
+}
+.msd__arrow.up {
+  transform: rotate(180deg);
+}
+
+/* Menu panel */
+.msd__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.08);
+  z-index: 9999;
+  overflow: hidden;
+}
+
+/* Toolbar (Filter row) */
+.msd__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #f9fafb;
+  border-bottom: 1px solid #eef0f2;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  user-select: none;
+}
+.msd__icon { display: inline-flex; }
+.msd__chev {
+  margin-left: auto;
+  transform: rotate(0deg);
+  transition: transform .15s ease;
+}
+.msd__chev.open { transform: rotate(180deg); }
+
+/* Search row (shown when Filter opened) */
+.msd__searchrow {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eef0f2;
+  background: #fff;
+}
+.msd__search {
+  width: 100%;
+  height: 34px;
+  padding: 6px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  outline: none;
+}
+.msd__search:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+}
+
+/* Action row (Select All / Clear Selected Items) */
+.msd__actionrow {
+  padding: 8px 12px;
+  background: #ffffff;
+  border-bottom: 1px solid #eef0f2;
+}
+.msd__action {
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-weight: 700;
+  padding: 6px 0;
+  cursor: pointer;
+}
+.msd__action:hover { color: #111827; }
+.msd__action:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* Items list */
+.msd__list {
+  max-height: 240px;
+  overflow: auto;
+  background: #fff;
+}
+.msd__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  user-select: none;
+}
+.msd__item:hover {
+  background: #f3f4f6;
+}
+.msd__item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+.msd__label { color: #111827; }
+
+/* Empty state */
+.msd__empty {
+  padding: 14px 12px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Error state under control */
+.msd__error {
+  margin-top: 6px;
+  color: #dc2626;
+  font-size: 12px;
+}
+.msd--invalid .msd__header {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220,38,38,.12);
+}
+/* The dropdown list itself handles scrolling */
+.msd__list {
+  max-height: 240px; /* control dropdown list height */
+  overflow-y: auto;  /* vertical scroll only inside dropdown */
+  overflow-x: hidden;
+  background: #fff;
+}
+
+/* Hide scroll on outer popup if not needed */
+.modal-content, /* if using Bootstrap modal */
+.popup-content { /* or your popup container */
+  overflow: visible !important; 
+}
+.multi-select-container {
+  max-width: 100%;          /* fit inside parent */
+  white-space: nowrap;      /* keep items on one line */
+  overflow-x: auto;         /* enable horizontal scroll */
+  overflow-y: hidden;       /* hide vertical scroll */
+  padding-bottom: 4px;      /* little spacing for scroll */
+}
+
+
+.dashfilter-pop .modal-content .modal-header {
+    padding: 20px 25px 0px;
+}
+
+.dashfilter-pop .msd__header {
+    border-radius: 8px;
+}
+
+.dashfilter-pop .btn-cancel {
+  background:#E9EFFA;
+}
+
+.dashfilter-pop .btn-cancel, .dashfilter-pop .btn-apply {
+border-radius: 8px;
+}

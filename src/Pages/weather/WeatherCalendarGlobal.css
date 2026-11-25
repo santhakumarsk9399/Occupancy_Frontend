@@ -1,0 +1,64 @@
+:root {
+  --ink: #111827;
+  --ink-dim: #475569;
+  --ink-faint: #6B7280;
+
+  --bg: #F8FAFC;
+  --panel: #FFFFFF;
+  --panel-raised: #F1F5F9;
+  --line: #E2E8F0;
+  --line-soft: #CBD5E1;
+
+  --brass: #C99A4A;
+  --brass-soft: #D6B56D;
+
+  --aqi-good: #e6f7ec;
+  --aqi-moderate: #fff8e6;
+  --aqi-sensitive: #fff3ea;
+  --aqi-unhealthy: #fff0f0;
+  --aqi-very-unhealthy: #f5eefb;
+  --aqi-hazardous: #fff2f5;
+  --aqi-unknown: #eef2f6;
+
+  --font-display: "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", monospace;
+
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  color: var(--ink);
+  font-family: var(--font-body);
+  background: var(--bg);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+button {
+  font-family: inherit;
+}
+
+a {
+  color: var(--brass);
+}
+
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

@@ -1,0 +1,27 @@
+/* Toast Container Override - Force visibility */
+.Toastify__toast-container {
+  z-index: 99999 !important;
+  position: fixed !important;
+  top: 20px !important;
+  right: 20px !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.Toastify__toast {
+  z-index: 100000 !important;
+  position: relative !important;
+  min-height: 50px !important;
+  margin-bottom: 8px !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: flex !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.Toastify__toast-body {
+  padding: 12px !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+}

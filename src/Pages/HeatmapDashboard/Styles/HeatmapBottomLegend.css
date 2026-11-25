@@ -1,0 +1,47 @@
+.heatmap-bottom-legend{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-top:18px;
+
+    padding:18px 26px;
+
+    background:#fff;
+
+    border-radius:16px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.legend-card{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    flex:1;
+}
+
+.legend-dot{
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    flex-shrink:0;
+}
+
+.legend-content{
+    display:flex;
+    flex-direction:column;
+}
+
+.legend-title{
+    font-size:17px;
+    font-weight:600;
+    color:#1F2937;
+}
+
+.legend-range{
+    font-size:14px;
+    color:#6B7280;
+}

@@ -1,0 +1,3024 @@
+
+/* =========================================================
+   TITAN DASHBOARD - DESIGN 2
+   Clean final CSS
+   Reference: second design image
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Inter", "Segoe UI", Arial, Helvetica, sans-serif;
+    /* background: #f4f9fd; */
+    color: #101d4a;
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.titan-dashboard {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 0;
+    overflow: hidden;
+    /* background:
+        linear-gradient(135deg, #f8fcff 0%, #edf7fd 48%, #f8fcff 100%); */
+}
+
+/* =========================================================
+   BACKGROUND IMAGES
+   LEFT 50%  = FACTORY IMAGE
+   RIGHT 50% = TITAN LOGO
+   ========================================================= */
+
+.titan-background {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* =========================================================
+   BACKGROUND IMAGE VISIBILITY
+   ========================================================= */
+
+.titan-factory-watermark {
+  opacity: 0.73 !important;
+  pointer-events: none;
+}
+
+.titan-logo-watermark {
+  opacity: 0.73 !important;
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   CHART CARDS
+   Keep the chart area large, but allow background visibility
+   ========================================================= */
+
+.titan-chart-card {
+  background: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+}
+
+
+/* =========================================================
+   KPI CARDS
+   ========================================================= */
+
+.titan-kpi-card {
+  background: rgba(255, 255, 255, 0.82) !important;
+}
+
+
+/* =========================================================
+   SUMMARY BAR
+   ========================================================= */
+
+.titan-summary {
+  background: rgba(255, 255, 255, 0.82) !important;
+}
+
+
+/* =========================================================
+   FOOTER
+   Completely transparent
+   ========================================================= */
+
+.titan-footer {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-top: 1px solid rgba(20, 50, 90, 0.10);
+}
+
+
+/* =========================================================
+   MAIN PAGE
+   ========================================================= */
+
+.titan-dashboard {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   BACKGROUND LAYER
+   ========================================================= */
+
+.titan-dashboard::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -5;
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   CHART GRID
+   DO NOT REDUCE HEIGHT
+   ========================================================= */
+
+.chart-grid {
+  min-height: 500px;
+  height: 500px;
+  gap: 12px;
+}
+
+
+/* =========================================================
+   CHART CARD CONTENT
+   ========================================================= */
+
+.titan-chart-card {
+  min-height: 500px;
+  height: 500px;
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   CHART CONTAINER
+   ========================================================= */
+
+.chart-container {
+  height: calc(100% - 55px);
+  min-height: 420px;
+}
+
+
+/* =========================================================
+   FOOTER ALWAYS AT BOTTOM
+   ========================================================= */
+
+.titan-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.titan-main {
+  flex: 1;
+}
+
+.titan-footer {
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   REMOVE EXTRA WHITE SPACE
+   ========================================================= */
+
+.titan-main,
+.dashboard-content,
+.dashboard-container {
+  padding-bottom: 0 !important;
+}
+
+.chart-grid {
+  margin-bottom: 10px !important;
+}
+
+.titan-summary {
+  margin-bottom: 0 !important;
+}
+
+
+/* =========================================================
+   BACKGROUND SHOULD BE VISIBLE BEHIND EVERYTHING
+   ========================================================= */
+
+.titan-factory-watermark,
+.titan-logo-watermark {
+  position: fixed;
+  z-index: -1;
+}
+
+
+/* =========================================================
+   FACTORY IMAGE
+   LEFT SIDE
+   ========================================================= */
+
+.titan-factory-watermark {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.73 !important;
+}
+
+
+/* =========================================================
+   TITAN LOGO
+   RIGHT SIDE
+   ========================================================= */
+
+.titan-logo-watermark {
+  right: 0;
+  top: 0;
+  width: 52%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  opacity: 0.73 !important;
+}
+
+/* =========================================================
+   CONTENT MUST STAY ABOVE BACKGROUND
+   ========================================================= */
+
+.titan-dashboard-content {
+    position: relative;
+    z-index: 2;
+}
+
+
+/* =========================================================
+   HEADER / CARDS / CHARTS
+   KEEP WHITE AND READABLE OVER BACKGROUND
+   ========================================================= */
+
+.titan-header,
+.titan-kpi-grid,
+.titan-chart-grid,
+.titan-summary {
+    position: relative;
+    z-index: 2;
+}
+
+
+/* =========================================================
+   OPTIONAL - SLIGHTLY MORE TRANSPARENT CARDS
+   This allows the background to be visible around the
+   cards without affecting readability.
+   ========================================================= */
+
+.titan-kpi-card,
+.titan-chart-card,
+.titan-summary {
+    background: rgba(255, 255, 255, 0.96);
+}
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.titan-dashboard-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+
+    /* Footer is absolute, so leave space for it */
+    padding: 22px 34px 48px;
+
+    overflow: hidden;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.titan-header {
+    flex: 0 0 88px;
+    min-height: 88px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+}
+
+.titan-header-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    min-width: 0;
+}
+
+.titan-header-logo {
+    width: 120px;
+    height: 72px;
+    object-fit: contain;
+    object-position: center;
+    flex-shrink: 0;
+}
+
+.titan-header-left > div {
+    padding-top: 3px;
+}
+
+.titan-header h1 {
+    margin: 0;
+    font-size: 34px;
+    line-height: 1.08;
+    font-weight: 750;
+    color: #101d4a;
+    letter-spacing: -0.7px;
+}
+
+.titan-header p {
+    margin: 7px 0 0;
+    font-size: 15px;
+    line-height: 1.2;
+    color: #53678f;
+    font-weight: 400;
+}
+
+.titan-header-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-top: 14px;
+
+    font-size: 13px;
+    color: #52658d;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.titan-live {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 8px 14px;
+    border-radius: 22px;
+
+    background: #e8faf3;
+    color: #18ad76;
+
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.titan-live-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #19b67d;
+    flex-shrink: 0;
+}
+
+.titan-header-line {
+    color: #b9c7d8;
+}
+
+/* =========================================================
+   TOP KPI CARDS
+========================================================= */
+
+.titan-kpi-grid {
+    flex: 0 0 108px;
+    min-height: 108px;
+
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 13px;
+    margin-bottom: 12px;
+}
+
+.titan-kpi-card {
+    position: relative;
+
+    width: 100%;
+    height: 108px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+    padding: 15px 20px;
+
+    background: rgba(255, 255, 255, 0.97);
+    border: 1px solid #dce8f2;
+    border-radius: 11px;
+
+    box-shadow: 0 4px 14px rgba(70, 110, 150, 0.06);
+
+    overflow: hidden;
+}
+
+.titan-kpi-card::after {
+    content: "";
+    position: absolute;
+
+    width: 140px;
+    height: 92px;
+
+    right: -18px;
+    bottom: -48px;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+.titan-kpi-new::after {
+    background: #fff4df;
+    opacity: 0.73;
+}
+
+.titan-kpi-old::after {
+    background: #eee9ff;
+    opacity: 0.73;
+}
+
+.titan-kpi-cbc::after {
+    background: #def8f5;
+    opacity: 0.73;
+}
+
+.titan-kpi-warehouse::after {
+    background: #ffebe4;
+    opacity: 0.73;
+}
+
+.titan-kpi-icon {
+    position: relative;
+    z-index: 2;
+
+    width: 54px;
+    height: 54px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+}
+
+.titan-kpi-new .titan-kpi-icon {
+    background: #fff3dc;
+    color: #b77813;
+}
+
+.titan-kpi-old .titan-kpi-icon {
+    background: #eee8ff;
+    color: #641fe0;
+}
+
+.titan-kpi-cbc .titan-kpi-icon {
+    background: #ddf7f4;
+    color: #11a997;
+}
+
+.titan-kpi-warehouse .titan-kpi-icon {
+    background: #ffebe3;
+    color: #f05b24;
+}
+
+.titan-kpi-info {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+}
+
+.titan-kpi-label {
+    margin-bottom: 5px;
+
+    font-size: 13px;
+    line-height: 1.15;
+
+    color: #14204b;
+    font-weight: 500;
+}
+
+.titan-kpi-value {
+    font-size: 29px;
+    line-height: 1;
+
+    color: #101d4a;
+    font-weight: 750;
+    letter-spacing: -0.5px;
+}
+
+/* =========================================================
+   CHART GRID
+   The chart area uses the remaining viewport height.
+========================================================= */
+
+.titan-chart-grid {
+    flex: 1 1 auto;
+    min-height: 0;
+
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
+    gap: 13px;
+    margin-bottom: 12px;
+
+    overflow: hidden;
+}
+
+/* =========================================================
+   CHART CARDS
+========================================================= */
+
+.titan-chart-card {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 18px 25px;
+
+    background: rgba(255, 255, 255, 0.97);
+
+    border: 1px solid #dce8f2;
+    border-radius: 11px;
+
+    box-shadow: 0 4px 14px rgba(70, 110, 150, 0.05);
+
+    overflow: hidden;
+}
+
+.titan-chart-card h2 {
+    flex: 0 0 auto;
+
+    margin: 0;
+
+    font-size: 18px;
+    line-height: 1.2;
+
+    color: #101d4a;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+}
+
+.titan-chart-card h2 span {
+    font-size: 12px;
+    color: #53678f;
+    font-weight: 400;
+}
+
+/* =========================================================
+   DONUT SECTION
+========================================================= */
+
+.titan-distribution-body {
+    flex: 1 1 auto;
+    min-height: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 38px;
+
+    overflow: visible;
+}
+
+.titan-donut-wrapper {
+    position: relative;
+
+    width: 350px;
+    height: 350px;
+
+    flex: 0 0 350px;
+}
+
+/* Recharts SVG */
+.titan-donut-wrapper svg {
+    overflow: visible;
+}
+
+.titan-donut-center {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    pointer-events: none;
+}
+
+.titan-donut-center strong {
+    font-size: 40px;
+    line-height: 1;
+
+    color: #101d4a;
+    font-weight: 750;
+    letter-spacing: -0.7px;
+}
+
+.titan-donut-center span {
+    margin-top: 6px;
+
+    font-size: 13px;
+    line-height: 1.1;
+
+    color: #52658d;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   DONUT LEGEND
+========================================================= */
+
+.titan-distribution-legend {
+    display: flex;
+    flex-direction: column;
+
+    gap: 17px;
+
+    flex-shrink: 0;
+}
+
+.titan-distribution-item {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    font-size: 15px;
+    line-height: 1;
+
+    color: #18234b;
+
+    white-space: nowrap;
+}
+
+.titan-distribution-dot {
+    width: 15px;
+    height: 15px;
+
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.titan-distribution-zone {
+    min-width: 40px;
+    font-weight: 500;
+}
+
+.titan-distribution-percent {
+    color: #52658d;
+    font-weight: 400;
+}
+
+/* =========================================================
+   BAR CHART
+========================================================= */
+
+.titan-location-chart {
+    flex: 1 1 auto;
+
+    width: 100%;
+    min-height: 0;
+
+    margin-top: 7px;
+
+    overflow: visible;
+}
+
+.titan-location-chart svg {
+    overflow: visible;
+}
+
+.titan-location-legend {
+    flex: 0 0 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 38px;
+
+    font-size: 15px;
+    color: #52658d;
+}
+
+.titan-location-legend div {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.titan-gents-dot,
+.titan-ladies-dot {
+    width: 13px;
+    height: 13px;
+
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.titan-gents-dot {
+    background: #6652d9;
+}
+
+.titan-ladies-dot {
+    background: #2cc398;
+}
+
+/* =========================================================
+   BOTTOM SUMMARY
+========================================================= */
+
+.titan-summary {
+    flex: 0 0 94px;
+    min-height: 94px;
+    height: 94px;
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1px
+        1fr
+        1px
+        1.15fr
+        1px
+        1.2fr;
+
+    align-items: center;
+
+    padding: 7px 20px;
+
+    background: rgba(255, 255, 255, 0.97);
+
+    border: 1px solid #dce8f2;
+    border-radius: 11px;
+
+    box-shadow: 0 4px 14px rgba(70, 110, 150, 0.05);
+
+    overflow: hidden;
+}
+
+.titan-summary-item {
+    height: 100%;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+    padding: 0 20px;
+
+    overflow: hidden;
+}
+
+.titan-summary-icon {
+    width: 50px;
+    height: 50px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent !important;
+
+    font-size: 40px;
+    line-height: 1;
+}
+
+.titan-summary-icon svg {
+    width: 44px;
+    height: 44px;
+}
+
+.titan-summary-icon.purple {
+    color: #641fe0;
+}
+
+.titan-summary-icon.green {
+    color: #12bfa9;
+}
+
+.titan-summary-icon.orange {
+    color: #f26320;
+}
+
+.titan-summary-item span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-size: 12px;
+    line-height: 1.1;
+
+    color: #52658d;
+    white-space: nowrap;
+}
+
+.titan-summary-item strong {
+    display: block;
+
+    font-size: 30px;
+    line-height: 1;
+
+    color: #101d4a;
+    font-weight: 750;
+}
+
+.titan-summary-divider {
+    width: 1px;
+    height: 55px;
+
+    background: #d7e1ec;
+}
+
+.titan-overall {
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.titan-overall strong {
+    color: #20b783;
+}
+
+/* =========================================================
+   PROGRESS RING
+========================================================= */
+
+.titan-progress-ring {
+    width: 58px;
+    height: 58px;
+
+    flex-shrink: 0;
+}
+
+.titan-progress-ring svg {
+    width: 58px;
+    height: 58px;
+
+    transform: rotate(-90deg);
+}
+
+.titan-ring-bg {
+    fill: none;
+    stroke: #e2e6eb;
+    stroke-width: 6;
+}
+
+.titan-ring-progress {
+    fill: none;
+    stroke: #20b783;
+    stroke-width: 6;
+    stroke-linecap: round;
+
+    transition: stroke-dashoffset 0.4s ease;
+}
+
+/* =========================================================
+   FOOTER - REFERENCE DESIGN
+========================================================= */
+
+.titan-footer {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: 50;
+
+    width: 100%;
+    height: 52px;
+    min-height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 42px;
+
+    background: rgba(255, 255, 255, 0.98);
+
+    border-top: 1px solid #d7e0ea;
+
+    color: #637394;
+
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+}
+
+.titan-footer-left {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    height: 100%;
+}
+
+.titan-footer-right {
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+
+    height: 100%;
+}
+
+.titan-footer-copyright {
+    font-size: 12px;
+    color: #71809a;
+}
+
+.titan-footer-divider {
+    width: 1px;
+    height: 18px;
+
+    background: #d5dce5;
+}
+
+.titan-footer-delopt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 72px;
+}
+
+.titan-footer-delopt strong {
+    font-size: 13px;
+    font-weight: 700;
+
+    color: #687384;
+}
+
+.titan-footer-delopt small {
+    display: none;
+}
+
+.titan-footer-seal {
+    width: 27px;
+    height: 27px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.titan-footer-seal span {
+    width: 23px;
+    height: 23px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #8b929c;
+    border-radius: 50%;
+
+    font-size: 12px;
+}
+
+/* =========================================================
+   LARGE DESKTOP 1600+
+========================================================= */
+
+@media (min-width: 1601px) {
+
+    .titan-dashboard-content {
+        padding: 26px 42px 50px;
+    }
+
+    .titan-header {
+        flex-basis: 94px;
+        min-height: 94px;
+    }
+
+    .titan-header-logo {
+        width: 130px;
+        height: 78px;
+    }
+
+    .titan-header h1 {
+        font-size: 37px;
+    }
+
+    .titan-header p {
+        font-size: 16px;
+    }
+
+    .titan-kpi-grid {
+        flex-basis: 112px;
+        min-height: 112px;
+    }
+
+    .titan-kpi-card {
+        height: 112px;
+    }
+
+    .titan-chart-card {
+        padding: 20px 28px;
+    }
+
+    .titan-donut-wrapper {
+        width: 370px;
+        height: 370px;
+        flex-basis: 370px;
+    }
+
+    .titan-donut-center strong {
+        font-size: 44px;
+    }
+
+    .titan-summary {
+        flex-basis: 100px;
+        min-height: 100px;
+        height: 100px;
+    }
+
+    .titan-summary-item strong {
+        font-size: 32px;
+    }
+}
+
+/* =========================================================
+   1450 - 1600
+========================================================= */
+
+@media (min-width: 1450px) and (max-width: 1600px) {
+
+    .titan-dashboard-content {
+        padding: 22px 34px 48px;
+    }
+
+    .titan-header {
+        flex-basis: 88px;
+        min-height: 88px;
+    }
+
+    .titan-kpi-grid {
+        flex-basis: 108px;
+        min-height: 108px;
+    }
+
+    .titan-kpi-card {
+        height: 108px;
+    }
+
+    .titan-donut-wrapper {
+        width: 350px;
+        height: 350px;
+        flex-basis: 350px;
+    }
+}
+
+/* =========================================================
+   1200 - 1449
+========================================================= */
+
+@media (min-width: 1200px) and (max-width: 1449px) {
+
+    .titan-dashboard-content {
+        padding: 18px 28px 48px;
+    }
+
+    .titan-header {
+        flex-basis: 82px;
+        min-height: 82px;
+    }
+
+    .titan-header-logo {
+        width: 105px;
+        height: 65px;
+    }
+
+    .titan-header h1 {
+        font-size: 30px;
+    }
+
+    .titan-header p {
+        font-size: 13px;
+    }
+
+    .titan-kpi-grid {
+        flex-basis: 100px;
+        min-height: 100px;
+    }
+
+    .titan-kpi-card {
+        height: 100px;
+        padding: 13px 17px;
+        gap: 12px;
+    }
+
+    .titan-kpi-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .titan-kpi-label {
+        font-size: 12px;
+    }
+
+    .titan-kpi-value {
+        font-size: 27px;
+    }
+
+    .titan-chart-card {
+        padding: 15px 19px;
+    }
+
+    .titan-donut-wrapper {
+        width: 280px;
+        height: 280px;
+        flex-basis: 280px;
+    }
+
+    .titan-distribution-body {
+        gap: 20px;
+    }
+
+    .titan-distribution-item {
+        font-size: 13px;
+    }
+
+    .titan-location-legend {
+        font-size: 13px;
+    }
+
+    .titan-summary {
+        flex-basis: 86px;
+        min-height: 86px;
+        height: 86px;
+        padding: 6px 12px;
+    }
+
+    .titan-summary-item {
+        padding: 0 12px;
+        gap: 9px;
+    }
+
+    .titan-summary-icon {
+        width: 42px;
+        height: 42px;
+    }
+
+    .titan-summary-icon svg {
+        width: 37px;
+        height: 37px;
+    }
+
+    .titan-summary-item strong {
+        font-size: 27px;
+    }
+
+    .titan-progress-ring,
+    .titan-progress-ring svg {
+        width: 52px;
+        height: 52px;
+    }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1199px) {
+
+    .titan-dashboard {
+        height: auto;
+        min-height: 100vh;
+        overflow: auto;
+    }
+
+    .titan-dashboard-content {
+        height: auto;
+        min-height: 100vh;
+        overflow: visible;
+        padding-bottom: 55px;
+    }
+
+    .titan-chart-grid {
+        flex: none;
+        height: 500px;
+        min-height: 500px;
+    }
+
+    .titan-chart-card {
+        height: 500px;
+        min-height: 500px;
+    }
+
+    .titan-summary {
+        flex: none;
+        height: 105px;
+        min-height: 105px;
+    }
+
+    .titan-footer {
+        position: fixed;
+    }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .titan-dashboard-content {
+        padding: 15px 15px 60px;
+    }
+
+    .titan-header {
+        flex: none;
+        min-height: auto;
+        height: auto;
+
+        flex-direction: column;
+        gap: 12px;
+
+        margin-bottom: 15px;
+    }
+
+    .titan-header-left {
+        gap: 12px;
+    }
+
+    .titan-header-logo {
+        width: 78px;
+        height: 54px;
+    }
+
+    .titan-header h1 {
+        font-size: 23px;
+    }
+
+    .titan-header p {
+        font-size: 12px;
+    }
+
+    .titan-header-right {
+        padding-top: 0;
+        font-size: 11px;
+    }
+
+    .titan-kpi-grid {
+        flex: none;
+        min-height: auto;
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        height: auto;
+        margin-bottom: 14px;
+    }
+
+    .titan-kpi-card {
+        height: 100px;
+    }
+
+    .titan-chart-grid {
+        grid-template-columns: 1fr;
+        height: auto;
+        min-height: 0;
+        overflow: visible;
+    }
+
+    .titan-chart-card {
+        height: 430px;
+        min-height: 430px;
+    }
+
+    .titan-donut-wrapper {
+        width: 245px;
+        height: 245px;
+        flex-basis: 245px;
+    }
+
+    .titan-distribution-body {
+        gap: 18px;
+    }
+
+    .titan-distribution-item {
+        font-size: 12px;
+    }
+
+    .titan-location-legend {
+        font-size: 13px;
+    }
+
+    .titan-summary {
+        grid-template-columns: 1fr 1fr;
+        height: auto;
+        min-height: 150px;
+        gap: 8px;
+    }
+
+    .titan-summary-divider {
+        display: none;
+    }
+
+    .titan-footer {
+        height: auto;
+        min-height: 45px;
+
+        padding: 7px 12px;
+
+        flex-direction: column;
+        gap: 5px;
+
+        justify-content: center;
+    }
+
+    .titan-footer-left,
+    .titan-footer-right {
+        height: auto;
+    }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .titan-kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .titan-chart-card {
+        height: 420px;
+        min-height: 420px;
+        padding: 15px;
+    }
+
+    .titan-distribution-body {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .titan-donut-wrapper {
+        width: 220px;
+        height: 220px;
+        flex-basis: 220px;
+    }
+
+    .titan-distribution-legend {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px 15px;
+    }
+
+    .titan-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .titan-footer-right {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .titan-footer-delopt,
+    .titan-footer-seal {
+        display: none;
+    }
+}
+
+/* =========================================================
+   FINAL REFERENCE OVERRIDES
+   Desktop dashboard: match the supplied Design 2 reference
+========================================================= */
+
+@media (min-width: 1200px) {
+
+    .titan-dashboard-content {
+        /* Reserve a real visual area for the footer */
+        padding: 22px 34px 64px;
+    }
+
+    .titan-chart-card {
+        padding: 18px 26px;
+    }
+
+    .titan-chart-card h2 {
+        font-size: 19px;
+        line-height: 1.2;
+    }
+
+    /* Larger donut and more readable labels */
+    .titan-distribution-body {
+        gap: 24px;
+        align-items: center;
+        justify-content: center;
+        overflow: visible;
+    }
+
+    .titan-donut-wrapper {
+        width: 410px;
+        height: 410px;
+        flex: 0 0 410px;
+        position: relative;
+        overflow: visible;
+    }
+
+    .titan-donut-wrapper svg {
+        width: 100% !important;
+        height: 100% !important;
+        overflow: visible;
+    }
+
+    .titan-donut-center strong {
+        font-size: 44px;
+        font-weight: 750;
+    }
+
+    .titan-donut-center span {
+        font-size: 14px;
+        margin-top: 7px;
+    }
+
+    .titan-distribution-legend {
+        gap: 16px;
+    }
+
+    .titan-distribution-item {
+        gap: 11px;
+        font-size: 16px;
+    }
+
+    .titan-distribution-dot {
+        width: 16px;
+        height: 16px;
+    }
+
+    .titan-distribution-zone {
+        min-width: 42px;
+    }
+
+    .titan-distribution-percent {
+        font-size: 16px;
+    }
+
+    /* Recharts donut percentage labels */
+    .titan-donut-wrapper .recharts-pie-label-text {
+        font-size: 18px !important;
+        font-weight: 600 !important;
+    }
+
+    /* Taller / clearer stacked-chart legend */
+    .titan-location-legend {
+        flex: 0 0 42px;
+        height: 42px;
+        gap: 42px;
+        font-size: 16px;
+    }
+
+    .titan-gents-dot,
+    .titan-ladies-dot {
+        width: 14px;
+        height: 14px;
+    }
+
+    /* Make the chart labels easier to read */
+    .titan-location-chart .recharts-cartesian-axis-tick-value {
+        font-size: 13px;
+    }
+
+    /* Bottom summary closer to reference */
+    .titan-summary {
+        flex: 0 0 96px;
+        min-height: 96px;
+        height: 96px;
+        padding: 7px 24px;
+    }
+
+    .titan-summary-item {
+        padding: 0 24px;
+        gap: 15px;
+    }
+
+    .titan-summary-icon {
+        width: 54px;
+        height: 54px;
+    }
+
+    .titan-summary-icon svg {
+        width: 48px;
+        height: 48px;
+    }
+
+    .titan-summary-item span {
+        font-size: 12px;
+    }
+
+    .titan-summary-item strong {
+        font-size: 31px;
+    }
+
+    .titan-progress-ring,
+    .titan-progress-ring svg {
+        width: 62px;
+        height: 62px;
+    }
+
+    /* Footer: visibly taller like the reference */
+    .titan-footer {
+        height: 60px;
+        min-height: 60px;
+        padding: 0 42px;
+
+        border-top: 1px solid #d7e0ea;
+
+        font-size: 13px;
+        background: rgba(255, 255, 255, 0.98);
+    }
+
+    .titan-footer-copyright {
+        font-size: 13px;
+        color: #637394;
+    }
+
+    .titan-footer-right {
+        gap: 18px;
+        font-size: 13px;
+        color: #637394;
+    }
+
+    .titan-footer-divider {
+        height: 20px;
+    }
+}
+
+/* 1600px+ screens: use the larger reference proportions */
+@media (min-width: 1601px) {
+
+    .titan-dashboard-content {
+        padding: 24px 42px 66px;
+    }
+
+    .titan-chart-card {
+        padding: 20px 30px;
+    }
+
+    .titan-donut-wrapper {
+        width: 430px;
+        height: 430px;
+        flex-basis: 430px;
+    }
+
+    .titan-distribution-body {
+        gap: 26px;
+    }
+
+    .titan-donut-center strong {
+        font-size: 48px;
+    }
+
+    .titan-donut-center span {
+        font-size: 14px;
+    }
+
+    .titan-distribution-item,
+    .titan-distribution-percent {
+        font-size: 16px;
+    }
+
+    .titan-location-legend {
+        font-size: 16px;
+    }
+
+    .titan-summary {
+        flex-basis: 100px;
+        min-height: 100px;
+        height: 100px;
+    }
+
+    .titan-footer {
+        height: 62px;
+        min-height: 62px;
+    }
+}
+
+/* Keep the compact responsive design below desktop */
+@media (max-width: 1199px) {
+
+    .titan-dashboard-content {
+        padding-bottom: 62px;
+    }
+
+    .titan-footer {
+        height: 58px;
+        min-height: 58px;
+    }
+}
+
+@media (max-width: 800px) {
+
+    .titan-dashboard-content {
+        padding-bottom: 68px;
+    }
+
+    .titan-footer {
+        height: auto;
+        min-height: 48px;
+    }
+}
+/* =========================================================
+   TITAN DASHBOARD BACKGROUND
+   EXACTLY LIKE REFERENCE DESIGN 2
+
+   LEFT  = FACTORY IMAGE
+   RIGHT = TITAN LOGO
+========================================================= */
+
+.titan-background {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 0;
+
+    overflow: hidden;
+
+    pointer-events: none;
+    user-select: none;
+
+    background:
+        linear-gradient(
+            90deg,
+            #eaf5fb 0%,
+            #edf8fd 50%,
+            #f2faff 50%,
+            #edf8fd 100%
+        );
+}
+
+
+/* =========================================================
+   FACTORY IMAGE
+   LEFT HALF
+========================================================= */
+
+.titan-factory-watermark {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 50%;
+    height: 100%;
+
+    object-fit: cover;
+
+    object-position: center center;
+
+    /*
+       Reference image has a clearly visible factory
+       but still keeps the dashboard readable.
+    */
+    opacity: 0.73;
+
+    filter:
+        grayscale(18%)
+        brightness(1.08)
+        contrast(0.88)
+        saturate(0.72);
+
+    z-index: 1;
+
+    display: block;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   FACTORY SOFT FADE
+   Prevents a hard edge at 50%
+========================================================= */
+
+.titan-background::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 55%;
+    height: 100%;
+
+    z-index: 2;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(238, 248, 253, 0) 0%,
+            rgba(238, 248, 253, 0.02) 65%,
+            rgba(238, 248, 253, 0.45) 92%,
+            rgba(238, 248, 253, 0.82) 100%
+        );
+}
+
+
+/* =========================================================
+   TITAN LOGO
+   RIGHT HALF
+========================================================= */
+
+.titan-logo-watermark {
+    position: absolute;
+
+    right: 0;
+    top: 0;
+
+    width: 50%;
+    height: 100%;
+
+    object-fit: contain;
+
+    object-position: center center;
+
+    /*
+       Large logo exactly like reference.
+    */
+    padding:
+        5%
+        5%;
+
+    opacity: 0.73;
+
+    filter:
+        grayscale(10%)
+        brightness(1.05)
+        saturate(0.75);
+
+    z-index: 1;
+
+    display: block;
+
+    pointer-events: none;
+
+    user-select: none;
+}
+
+
+/* =========================================================
+   RIGHT SIDE SOFT LOGO AREA
+========================================================= */
+
+.titan-background::after {
+    content: "";
+
+    position: absolute;
+
+    right: 0;
+    top: 0;
+
+    width: 52%;
+    height: 100%;
+
+    z-index: 2;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(238, 248, 253, 0.72) 0%,
+            rgba(238, 248, 253, 0.18) 20%,
+            rgba(238, 248, 253, 0.02) 60%,
+            rgba(238, 248, 253, 0.08) 100%
+        );
+}
+
+
+/* =========================================================
+   DASHBOARD CONTENT
+   ALWAYS ABOVE BACKGROUND
+========================================================= */
+
+.titan-dashboard-content {
+    position: relative;
+
+    z-index: 5;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.titan-header {
+    position: relative;
+    z-index: 6;
+}
+
+
+/* =========================================================
+   KPI AREA
+========================================================= */
+
+.titan-kpi-grid {
+    position: relative;
+    z-index: 6;
+}
+
+
+/* =========================================================
+   CHART AREA
+========================================================= */
+
+.titan-chart-grid {
+    position: relative;
+    z-index: 6;
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.titan-summary {
+    position: relative;
+    z-index: 6;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.titan-footer {
+    position: relative;
+    z-index: 6;
+}
+
+
+/* =========================================================
+   SLIGHT TRANSPARENCY
+   Reference image allows background to subtly show
+   around/through the dashboard cards.
+========================================================= */
+
+.titan-kpi-card {
+    background: rgba(255, 255, 255, 0.91);
+}
+
+
+.titan-chart-card {
+    background: rgba(255, 255, 255, 0.92);
+}
+
+
+.titan-summary {
+    background: rgba(255, 255, 255, 0.93);
+}
+
+
+/* =========================================================
+   KEEP BORDERS CLEAN
+========================================================= */
+
+.titan-kpi-card,
+.titan-chart-card,
+.titan-summary {
+    border: 1px solid rgba(210, 226, 238, 0.90);
+
+    box-shadow:
+        0 4px 18px rgba(55, 95, 125, 0.045);
+}
+
+
+/* =========================================================
+   DESKTOP 1600+
+   Make background images slightly larger/stronger
+========================================================= */
+
+@media (min-width: 1600px) {
+
+    .titan-factory-watermark {
+        width: 50%;
+        opacity: 0.73;
+    }
+
+    .titan-logo-watermark {
+        width: 50%;
+        opacity: 0.73;
+
+        padding:
+            4%
+            4%;
+    }
+}
+
+
+/* =========================================================
+   1200 - 1599
+========================================================= */
+
+@media (min-width: 1200px) and (max-width: 1599px) {
+
+    .titan-factory-watermark {
+        width: 50%;
+        opacity: 0.73;
+    }
+
+    .titan-logo-watermark {
+        width: 50%;
+        opacity: 0.73;
+
+        padding:
+            5%
+            5%;
+    }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1199px) {
+
+    .titan-factory-watermark {
+        width: 50%;
+        opacity: 0.73;
+    }
+
+    .titan-logo-watermark {
+        width: 50%;
+        opacity: 0.73;
+
+        padding:
+            7%
+            7%;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .titan-factory-watermark {
+        width: 55%;
+        height: 100%;
+
+        opacity: 0.73;
+    }
+
+    .titan-logo-watermark {
+        width: 55%;
+        height: 100%;
+
+        opacity: 0.73;
+
+        padding: 8%;
+    }
+
+    .titan-background::before {
+        width: 60%;
+    }
+
+    .titan-background::after {
+        width: 60%;
+    }
+}/* =========================================================
+MAIN DASHBOARD BACKGROUND
+========================================================= */
+
+.titan-background {
+ position: fixed;
+ inset: 0;
+ width: 100%;
+ height: 100%;
+
+ overflow: hidden;
+ pointer-events: none;
+
+ background: #edf7fc;
+
+ z-index: 0;
+}
+
+/* FACTORY IMAGE */
+.titan-factory-watermark {
+    position: absolute !important;
+
+    left: 0 !important;
+    top: 0 !important;
+
+    width: 50% !important;
+    height: 100% !important;
+
+    object-fit: cover !important;
+    object-position: center center !important;
+
+    opacity: 0.73 !important;
+
+    filter:
+        grayscale(10%)
+        brightness(1.05)
+        contrast(0.95)
+        saturate(0.85) !important;
+
+    z-index: 1 !important;
+    display: block !important;
+}
+
+
+/* TITAN LOGO */
+.titan-logo-watermark {
+    position: absolute !important;
+
+    right: 0 !important;
+    top: 0 !important;
+
+    width: 50% !important;
+    height: 100% !important;
+
+    object-fit: contain !important;
+    object-position: center center !important;
+
+    padding: 3% !important;
+
+    opacity: 0.73 !important;
+
+    filter: none !important;
+
+    z-index: 1 !important;
+    display: block !important;
+}
+/* =========================================================
+SOFT BLEND BETWEEN FACTORY AND LOGO
+========================================================= */
+
+.titan-background::before {
+ content: "";
+
+ position: absolute;
+
+ left: 0;
+ top: 0;
+
+ width: 52%;
+ height: 100%;
+
+ background: linear-gradient(
+     90deg,
+     rgba(237, 247, 252, 0) 0%,
+     rgba(237, 247, 252, 0.02) 55%,
+     rgba(237, 247, 252, 0.18) 82%,
+     rgba(237, 247, 252, 0.45) 100%
+ );
+
+ z-index: 3;
+
+ pointer-events: none;
+}
+
+
+/*
+DO NOT put a white overlay over the right side.
+This was hiding the Titan logo.
+*/
+
+
+/* =========================================================
+DASHBOARD CONTENT ABOVE BACKGROUND
+========================================================= */
+
+.titan-dashboard-content {
+ position: relative;
+ z-index: 10;
+}
+
+
+/* =========================================================
+HEADER
+========================================================= */
+
+.titan-header {
+ position: relative;
+ z-index: 11;
+}
+
+
+/* =========================================================
+KPI CARDS
+========================================================= */
+
+.titan-kpi-grid {
+ position: relative;
+ z-index: 11;
+}
+
+
+/* =========================================================
+CHART GRID
+========================================================= */
+
+.titan-chart-grid {
+ position: relative;
+ z-index: 11;
+}
+
+
+/* =========================================================
+SUMMARY
+========================================================= */
+
+.titan-summary {
+ position: relative;
+ z-index: 11;
+}
+
+
+/* =========================================================
+FOOTER
+========================================================= */
+
+.titan-footer {
+ position: relative;
+ z-index: 20;
+}
+
+
+/* =========================================================
+KPI CARD TRANSPARENCY
+========================================================= */
+
+.titan-kpi-card {
+ background: rgba(255, 255, 255, 0.90);
+
+ border: 1px solid rgba(210, 226, 238, 0.92);
+
+ box-shadow:
+     0 4px 18px rgba(45, 85, 115, 0.05);
+}
+
+
+/* =========================================================
+CHART CARD TRANSPARENCY
+========================================================= */
+
+.titan-chart-card {
+ background: rgba(255, 255, 255, 0.91);
+
+ border: 1px solid rgba(210, 226, 238, 0.92);
+
+ box-shadow:
+     0 4px 18px rgba(45, 85, 115, 0.045);
+}
+
+
+/* =========================================================
+BOTTOM SUMMARY TRANSPARENCY
+========================================================= */
+
+.titan-summary {
+ background: rgba(255, 255, 255, 0.92);
+
+ border: 1px solid rgba(210, 226, 238, 0.92);
+
+ box-shadow:
+     0 4px 18px rgba(45, 85, 115, 0.04);
+}
+
+
+/* =========================================================
+FOOTER
+========================================================= */
+
+.titan-footer {
+ background: rgba(255, 255, 255, 0.90);
+
+ border-top: 1px solid rgba(190, 210, 225, 0.75);
+}
+
+
+/* =========================================================
+LARGE DESKTOP
+========================================================= */
+
+@media (min-width: 1600px) {
+
+ .titan-factory-watermark {
+     width: 50%;
+     opacity: 0.73;
+ }
+
+ .titan-logo-watermark {
+     width: 50%;
+     opacity: 0.73;
+
+     padding: 2%;
+ }
+}
+
+
+/* =========================================================
+1366 - 1599
+========================================================= */
+
+@media (min-width: 1366px) and (max-width: 1599px) {
+
+ .titan-factory-watermark {
+     width: 50%;
+     opacity: 0.73;
+ }
+
+ .titan-logo-watermark {
+     width: 50%;
+     opacity: 0.73;
+
+     padding: 3%;
+ }
+}
+
+
+/* =========================================================
+1200 - 1365
+========================================================= */
+
+@media (min-width: 1200px) and (max-width: 1365px) {
+
+ .titan-factory-watermark {
+     width: 50%;
+     opacity: 0.73;
+ }
+
+ .titan-logo-watermark {
+     width: 50%;
+     opacity: 0.73;
+
+     padding: 4%;
+ }
+}
+
+
+/* =========================================================
+TABLET
+========================================================= */
+
+@media (max-width: 1199px) {
+
+ .titan-factory-watermark {
+     width: 50%;
+     opacity: 0.73;
+ }
+
+ .titan-logo-watermark {
+     width: 50%;
+     opacity: 0.73;
+
+     padding: 6%;
+ }
+}
+
+
+/* =========================================================
+MOBILE
+========================================================= */
+
+@media (max-width: 800px) {
+
+ .titan-factory-watermark {
+     width: 55%;
+     opacity: 0.73;
+ }
+
+ .titan-logo-watermark {
+     width: 55%;
+     opacity: 0.73;
+
+     padding: 8%;
+ }
+}
+
+/* =========================================================
+   FINAL LAYOUT / BACKGROUND OVERRIDES
+   Requested:
+   - Increase chart-grid height
+   - Reduce chart/card opacity so background is visible
+   - Show factory + Titan background more clearly
+   - Make footer transparent
+   - Keep footer at the very bottom
+   - Remove unnecessary vertical spaces
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   PAGE
+--------------------------------------------------------- */
+
+html,
+body,
+#root {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    overflow: hidden;
+}
+
+.titan-dashboard {
+    position: relative !important;
+    width: 100% !important;
+    height: 100vh !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+}
+
+
+/* ---------------------------------------------------------
+   BACKGROUND
+   Do not add another colored overlay over the images.
+--------------------------------------------------------- */
+
+.titan-background {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+
+    z-index: 0 !important;
+
+    overflow: hidden !important;
+
+    /* Remove the blue background wash */
+    background: transparent !important;
+}
+
+/* Remove the two gradient overlays which were making the
+   factory and Titan logo look faded. */
+.titan-background::before,
+.titan-background::after {
+    content: none !important;
+    display: none !important;
+}
+
+
+/* ---------------------------------------------------------
+   FACTORY IMAGE - LEFT 50%
+   Keep the actual image visible.
+--------------------------------------------------------- */
+
+.titan-factory-watermark {
+    position: absolute !important;
+
+    left: 0 !important;
+    top: 0 !important;
+
+    width: 50% !important;
+    height: 100% !important;
+
+    object-fit: cover !important;
+    object-position: center center !important;
+
+    opacity: 0.73 !important;
+
+    /* Keep the original photo recognizable */
+    filter:
+        grayscale(10%)
+        brightness(1.05)
+        contrast(0.95)
+        saturate(0.85) !important;
+
+    z-index: 1 !important;
+
+    display: block !important;
+}
+
+
+/* ---------------------------------------------------------
+   TITAN LOGO - RIGHT 50%
+   Make the logo more visible.
+--------------------------------------------------------- */
+
+.titan-logo-watermark {
+    position: absolute !important;
+
+    right: 0 !important;
+    top: 0 !important;
+
+    width: 50% !important;
+    height: 100% !important;
+
+    object-fit: contain !important;
+    object-position: center center !important;
+
+    padding: 3% !important;
+
+    opacity: 0.73 !important;
+
+    filter: none !important;
+
+    z-index: 1 !important;
+
+    display: block !important;
+}
+
+
+/* ---------------------------------------------------------
+   MAIN CONTENT
+   Less top/bottom empty space gives the chart grid more room.
+--------------------------------------------------------- */
+
+.titan-dashboard-content {
+    position: relative !important;
+    z-index: 10 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    /* Footer is positioned at the bottom independently */
+    padding: 10px 34px 60px !important;
+
+    overflow: hidden !important;
+}
+
+
+/* ---------------------------------------------------------
+   HEADER - COMPACT
+--------------------------------------------------------- */
+
+.titan-header {
+    flex: 0 0 76px !important;
+    min-height: 76px !important;
+
+    margin-bottom: 6px !important;
+}
+
+
+/* ---------------------------------------------------------
+   KPI GRID - COMPACT
+--------------------------------------------------------- */
+
+.titan-kpi-grid {
+    flex: 0 0 96px !important;
+    min-height: 96px !important;
+
+    height: 96px !important;
+
+    gap: 10px !important;
+
+    margin-bottom: 8px !important;
+}
+
+.titan-kpi-card {
+    height: 96px !important;
+
+    /* More background visibility */
+    background: rgba(255, 255, 255, 0.90) !important;
+
+    border: 1px solid rgba(210, 226, 238, 0.82) !important;
+
+    box-shadow:
+        0 3px 12px rgba(45, 85, 115, 0.035) !important;
+}
+
+
+/* ---------------------------------------------------------
+   CHART GRID
+   MAIN HEIGHT INCREASE
+--------------------------------------------------------- */
+
+.titan-chart-grid {
+    position: relative !important;
+    z-index: 11 !important;
+
+    /*
+       Use all remaining viewport height.
+       Header + KPI + Summary are compact so the chart
+       section gets significantly more vertical space.
+    */
+    flex: 1 1 auto !important;
+
+    min-height: 0 !important;
+
+    width: 100% !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr) !important;
+
+    gap: 10px !important;
+
+    margin-bottom: 8px !important;
+
+    overflow: hidden !important;
+}
+
+
+/* ---------------------------------------------------------
+   CHART CARDS
+   Lower opacity = factory/logo can be seen behind them.
+--------------------------------------------------------- */
+
+.titan-chart-card {
+    position: relative !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    min-width: 0 !important;
+    min-height: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    padding: 16px 24px !important;
+
+    /*
+       IMPORTANT:
+       Reduced from ~0.91/0.97 to 0.74.
+       This lets the background image show through.
+    */
+    background: rgba(255, 255, 255, 0.86) !important;
+
+    border: 1px solid rgba(210, 226, 238, 0.78) !important;
+
+    box-shadow:
+        0 3px 12px rgba(45, 85, 115, 0.025) !important;
+
+    overflow: hidden !important;
+}
+
+
+/* Keep chart title readable */
+.titan-chart-card h2 {
+    position: relative;
+    z-index: 2;
+
+    margin: 0 0 2px 0 !important;
+}
+
+
+/* ---------------------------------------------------------
+   DONUT AREA
+--------------------------------------------------------- */
+
+.titan-distribution-body {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 26px !important;
+
+    overflow: visible !important;
+}
+
+.titan-donut-wrapper {
+    width: min(390px, 43vh) !important;
+    height: min(390px, 43vh) !important;
+
+    flex: 0 0 min(390px, 43vh) !important;
+
+    position: relative !important;
+
+    overflow: visible !important;
+}
+
+
+/* ---------------------------------------------------------
+   BAR CHART
+--------------------------------------------------------- */
+
+.titan-location-chart {
+    flex: 1 1 auto !important;
+
+    min-height: 0 !important;
+
+    width: 100% !important;
+
+    margin-top: 4px !important;
+
+    overflow: visible !important;
+}
+
+.titan-location-legend {
+    flex: 0 0 34px !important;
+    height: 34px !important;
+}
+
+
+/* ---------------------------------------------------------
+   SUMMARY - COMPACT
+   This gives additional height to the chart grid.
+--------------------------------------------------------- */
+
+.titan-summary {
+    flex: 0 0 78px !important;
+    min-height: 78px !important;
+    height: 78px !important;
+
+    padding: 4px 20px !important;
+
+    background: rgba(255, 255, 255, 0.90) !important;
+
+    border: 1px solid rgba(210, 226, 238, 0.78) !important;
+
+    box-shadow:
+        0 3px 12px rgba(45, 85, 115, 0.025) !important;
+}
+
+.titan-summary-item {
+    padding: 0 18px !important;
+    gap: 10px !important;
+}
+
+.titan-summary-icon {
+    width: 46px !important;
+    height: 46px !important;
+}
+
+.titan-summary-icon svg {
+    width: 42px !important;
+    height: 42px !important;
+}
+
+.titan-summary-item strong {
+    font-size: 28px !important;
+}
+
+.titan-progress-ring,
+.titan-progress-ring svg {
+    width: 52px !important;
+    height: 52px !important;
+}
+
+
+/* ---------------------------------------------------------
+   FOOTER
+   Transparent and always at the very bottom.
+--------------------------------------------------------- */
+
+.titan-footer {
+    position: absolute !important;
+
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+
+    z-index: 100 !important;
+
+    width: 100% !important;
+
+    height: 52px !important;
+    min-height: 52px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    padding: 0 42px !important;
+
+    /*
+       Completely transparent.
+       Factory/logo background remains visible behind it.
+    */
+    background: transparent !important;
+
+    border-top: 1px solid rgba(190, 210, 225, 0.35) !important;
+
+    box-shadow: none !important;
+
+    opacity: 0.73 !important;
+}
+
+.titan-footer-left,
+.titan-footer-right {
+    height: 100% !important;
+
+    display: flex !important;
+    align-items: center !important;
+}
+
+.footer-copy {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+
+    color: #637394 !important;
+
+    background: transparent !important;
+}
+
+.footer_logo {
+    object-fit: contain !important;
+}
+
+
+/* ---------------------------------------------------------
+   1600px+ - LARGE DESKTOP
+--------------------------------------------------------- */
+
+@media (min-width: 1600px) {
+
+    .titan-dashboard-content {
+        padding: 10px 36px 60px !important;
+    }
+
+    .titan-header {
+        flex-basis: 76px !important;
+        min-height: 76px !important;
+    }
+
+    .titan-kpi-grid {
+        flex-basis: 96px !important;
+        min-height: 96px !important;
+        height: 96px !important;
+    }
+
+    .titan-kpi-card {
+        height: 96px !important;
+    }
+
+    .titan-chart-card {
+        padding: 16px 26px !important;
+        background: rgba(255, 255, 255, 0.86) !important;
+    }
+
+    .titan-summary {
+        flex-basis: 78px !important;
+        min-height: 78px !important;
+        height: 78px !important;
+    }
+
+    .titan-footer {
+        height: 52px !important;
+        min-height: 52px !important;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   1366 - 1599
+--------------------------------------------------------- */
+
+@media (min-width: 1366px) and (max-width: 1599px) {
+
+    .titan-dashboard-content {
+        padding: 9px 30px 60px !important;
+    }
+
+    .titan-header {
+        flex-basis: 74px !important;
+        min-height: 74px !important;
+        margin-bottom: 6px !important;
+    }
+
+    .titan-kpi-grid {
+        flex-basis: 94px !important;
+        min-height: 94px !important;
+        height: 94px !important;
+    }
+
+    .titan-kpi-card {
+        height: 94px !important;
+    }
+
+    .titan-chart-card {
+        padding: 15px 21px !important;
+        background: rgba(255, 255, 255, 0.86) !important;
+    }
+
+    .titan-summary {
+        flex-basis: 76px !important;
+        min-height: 76px !important;
+        height: 76px !important;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   1200 - 1365
+--------------------------------------------------------- */
+
+@media (min-width: 1200px) and (max-width: 1365px) {
+
+    .titan-dashboard-content {
+        padding: 8px 24px 60px !important;
+    }
+
+    .titan-header {
+        flex-basis: 70px !important;
+        min-height: 70px !important;
+    }
+
+    .titan-kpi-grid {
+        flex-basis: 90px !important;
+        min-height: 90px !important;
+        height: 90px !important;
+    }
+
+    .titan-kpi-card {
+        height: 90px !important;
+    }
+
+    .titan-chart-card {
+        padding: 13px 17px !important;
+        background: rgba(255, 255, 255, 0.86) !important;
+    }
+
+    .titan-summary {
+        flex-basis: 74px !important;
+        min-height: 74px !important;
+        height: 74px !important;
+    }
+
+    .titan-summary-item {
+        padding: 0 12px !important;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   TABLET
+--------------------------------------------------------- */
+
+@media (max-width: 1199px) {
+
+    .titan-dashboard {
+        height: auto !important;
+        min-height: 100vh !important;
+        overflow: auto !important;
+    }
+
+    .titan-dashboard-content {
+        height: auto !important;
+        min-height: 100vh !important;
+        overflow: visible !important;
+        padding-bottom: 60px !important;
+    }
+
+    .titan-chart-grid {
+        flex: none !important;
+        height: 520px !important;
+        min-height: 520px !important;
+    }
+
+    .titan-chart-card {
+        height: 520px !important;
+        min-height: 520px !important;
+    }
+
+    .titan-footer {
+        position: fixed !important;
+        bottom: 0 !important;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   MOBILE
+--------------------------------------------------------- */
+
+@media (max-width: 800px) {
+
+    .titan-dashboard-content {
+        padding: 10px 14px 58px !important;
+    }
+
+    .titan-chart-grid {
+        grid-template-columns: 1fr !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+
+        overflow: visible !important;
+    }
+
+    .titan-chart-card {
+        height: 430px !important;
+        min-height: 430px !important;
+
+        background: rgba(255, 255, 255, 0.80) !important;
+    }
+
+    .titan-summary {
+        height: auto !important;
+        min-height: 100px !important;
+    }
+
+    .titan-footer {
+        position: fixed !important;
+
+        height: 52px !important;
+        min-height: 52px !important;
+
+        padding: 0 12px !important;
+    }
+}
+
+
+/* =========================================================
+   FINAL BACKGROUND OVERRIDE
+   FACTORY IMAGE ONLY - FULL SCREEN
+========================================================= */
+
+.titan-background {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+    background: transparent !important;
+    z-index: 0 !important;
+}
+
+/* Full-screen factory image */
+.titan-factory-watermark {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    opacity: 0.73 !important;
+    filter:
+        grayscale(10%)
+        brightness(1.05)
+        contrast(0.95)
+        saturate(0.85) !important;
+    z-index: 1 !important;
+    display: block !important;
+}
+
+/* Completely remove Titan logo background */
+.titan-logo-watermark {
+    display: none !important;
+}
+
+/* Remove all background fade/overlay layers */
+.titan-background::before,
+.titan-background::after {
+    display: none !important;
+    content: none !important;
+}

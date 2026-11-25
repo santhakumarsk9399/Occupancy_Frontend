@@ -1,0 +1,3648 @@
+.hrr-page {
+  --hrr-blue: #1769ff;
+
+  --hrr-ink: #10264a;
+
+  --hrr-muted: #647b9e;
+
+  --hrr-border: #dfe8f5;
+
+  --hrr-surface: #ffffff;
+
+  display: block;
+
+  width: 100%;
+
+  min-width: 0;
+
+  height: auto;
+
+  min-height: 0;
+
+  max-height: none;
+
+  margin: 0;
+
+  padding: 0 24px 100px;
+
+  color: var(--hrr-ink);
+
+  background: #f4f7fc;
+
+  font-family: Inter, Arial, sans-serif;
+
+  box-sizing: border-box;
+
+  overflow: visible;
+}
+
+.hrr-page *,
+.hrr-page *::before,
+.hrr-page *::after {
+  box-sizing: border-box;
+}
+
+/* =========================
+  
+  
+  
+  PAGE HEADER
+  
+  
+  
+  \\========================= */
+
+.hrr-heading {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  min-height: 72px;
+
+  margin: 0 -24px 18px;
+
+  padding: 12px 24px;
+
+  background: #fff;
+
+  border-bottom: 1px solid var(--hrr-border);
+}
+
+.hrr-heading h1 {
+  margin: 0;
+
+  font-size: 26px;
+
+  font-weight: 700;
+
+  letter-spacing: -0.35px;
+}
+
+.hrr-breadcrumb {
+  margin-top: 5px;
+
+  color: var(--hrr-muted);
+
+  font-size: 12px;
+}
+
+.hrr-breadcrumb span {
+  margin: 0 8px;
+
+  color: #9aa9bd;
+}
+
+.hrr-breadcrumb strong {
+  color: var(--hrr-blue);
+
+  font-weight: 600;
+}
+
+/* =========================
+  
+  
+  
+  COMMON PANELS
+  
+  
+  
+  \\========================= */
+
+.hrr-summary-panel,
+.hrr-panel,
+.hrr-kpi-card {
+  min-width: 0;
+
+  background: var(--hrr-surface);
+
+  border: 1px solid #e4ebf6;
+
+  border-radius: 12px;
+
+  box-shadow: 0 3px 12px rgba(28, 62, 110, 0.035);
+}
+
+.hrr-summary-panel,
+.hrr-kpi-grid,
+.hrr-chart-grid,
+.hrr-table-panel {
+  width: 100%;
+
+  min-width: 0;
+}
+
+/* =========================
+  
+  
+  
+  REPORT SUMMARY
+  
+  
+  
+  \\========================= */
+
+.hrr-summary-panel {
+  display: grid;
+
+  grid-template-columns:
+    minmax(140px, 0.8fr)
+    minmax(240px, 1.25fr)
+    minmax(220px, 1.15fr)
+    auto;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 16px 18px;
+
+  margin-bottom: 14px;
+}
+
+.hrr-summary-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 0;
+
+  min-height: 52px;
+
+  padding-right: 12px;
+
+  border-right: 1px solid #e8eef7;
+}
+
+.hrr-summary-item > div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+
+  min-width: 0;
+}
+
+.hrr-summary-item small,
+.hrr-kpi-card small {
+  color: var(--hrr-muted);
+
+  font-size: 12px;
+}
+
+.hrr-summary-item strong {
+  font-size: 13px;
+
+  line-height: 1.45;
+
+  overflow-wrap: anywhere;
+}
+
+.hrr-summary-icon {
+  display: grid;
+
+  place-items: center;
+
+  flex: 0 0 40px;
+
+  width: 40px;
+
+  height: 40px;
+
+  border-radius: 12px;
+
+  color: var(--hrr-blue);
+
+  background: #edf4ff;
+
+  font-size: 22px;
+}
+
+.hrr-summary-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+/* =========================
+  
+  
+  
+  BUTTONS
+  
+  
+  
+  \\========================= */
+
+.hrr-button {
+  display: inline-flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 6px;
+
+  min-height: 40px;
+
+  padding: 0 14px;
+
+  border: 1px solid #cbd9ed;
+
+  border-radius: 8px;
+
+  background: #fff;
+
+  color: #234166;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.hrr-button:hover {
+  background: #f5f8ff;
+
+  border-color: #b7cbea;
+}
+
+.hrr-button-primary {
+  border-color: var(--hrr-blue);
+
+  background: var(--hrr-blue);
+
+  color: #fff;
+}
+
+.hrr-button-primary:hover {
+  border-color: #0758e8;
+
+  background: #0758e8;
+
+  color: #fff;
+}
+
+/* =========================
+  
+  
+  
+  KPI CARDS
+  
+  
+  
+  \\========================= */
+
+.hrr-kpi-grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 14px;
+
+  margin-bottom: 14px;
+}
+
+.hrr-kpi-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  min-width: 0;
+
+  min-height: 86px;
+
+  padding: 16px 18px;
+}
+
+.hrr-kpi-card > div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+
+  min-width: 0;
+}
+
+.hrr-kpi-card strong {
+  font-size: 27px;
+
+  line-height: 1.1;
+
+  font-weight: 750;
+
+  letter-spacing: -0.5px;
+
+  overflow-wrap: anywhere;
+}
+
+.hrr-kpi-icon {
+  display: grid;
+
+  place-items: center;
+
+  flex: 0 0 44px;
+
+  width: 44px;
+
+  height: 44px;
+
+  border-radius: 14px;
+
+  font-size: 22px;
+
+  font-weight: 700;
+}
+
+.hrr-green {
+  color: #079455;
+
+  background: #ddf8e9;
+}
+
+.hrr-red {
+  color: #e53935;
+
+  background: #ffebeb;
+}
+
+.hrr-orange {
+  color: #c97700;
+
+  background: #fff0d4;
+}
+
+.hrr-blue {
+  color: var(--hrr-blue);
+
+  background: #e5efff;
+}
+
+/* =========================
+  
+  
+  
+  CHARTS
+  
+  
+  
+  \\========================= */
+
+.hrr-chart-grid {
+  display: grid;
+
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+
+  gap: 14px;
+
+  margin-bottom: 14px;
+}
+
+.hrr-panel {
+  min-width: 0;
+
+  padding: 18px;
+}
+
+.hrr-panel-title {
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  min-width: 0;
+}
+
+.hrr-panel-title > span:first-child {
+  color: var(--hrr-blue);
+
+  font-size: 21px;
+
+  line-height: 1;
+}
+
+.hrr-panel-title h2 {
+  margin: 0;
+
+  font-size: 15px;
+
+  font-weight: 700;
+}
+
+.hrr-chart {
+  width: 100%;
+
+  height: 260px;
+
+  min-width: 0;
+
+  margin-top: 12px;
+}
+
+.hrr-chart-empty {
+  display: grid;
+
+  place-items: center;
+
+  min-height: 230px;
+
+  margin: 0;
+
+  color: var(--hrr-muted);
+
+  font-size: 13px;
+}
+
+/* =========================
+  
+  
+  
+  REPORT DATA CARD
+  
+  
+  
+  \\========================= */
+
+.hrr-table-panel {
+  display: block;
+
+  width: 100%;
+
+  min-width: 0;
+
+  height: auto;
+
+  min-height: 0;
+
+  max-height: none;
+
+  padding: 18px 18px 12px;
+
+  margin-bottom: 12px;
+
+  overflow: visible;
+}
+
+.hrr-table-heading {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 14px;
+
+  margin-bottom: 14px;
+}
+
+.hrr-record-badge {
+  display: inline-block;
+
+  padding: 4px 8px;
+
+  border-radius: 20px;
+
+  color: #44648d;
+
+  background: #f0f5fd;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+/* =========================
+  
+  
+  
+  TABLE SEARCH AND PAGE SIZE
+  
+  
+  
+  \\========================= */
+
+.hrr-table-tools {
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 14px;
+
+  min-width: 0;
+}
+
+.hrr-table-tools input {
+  width: 245px;
+
+  max-width: 100%;
+
+  height: 38px;
+
+  padding: 0 12px;
+
+  border: 1px solid #d7e2f1;
+
+  border-radius: 7px;
+
+  outline: none;
+
+  color: var(--hrr-ink);
+
+  background: #fff;
+
+  font-family: inherit;
+
+  font-size: 12px;
+}
+
+.hrr-table-tools input:focus {
+  border-color: var(--hrr-blue);
+
+  box-shadow: 0 0 0 3px rgba(23, 105, 255, 0.1);
+}
+
+.hrr-table-tools label {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: var(--hrr-muted);
+
+  font-size: 12px;
+
+  white-space: nowrap;
+}
+
+.hrr-table-tools select {
+  height: 38px;
+
+  min-width: 78px;
+
+  padding: 0 28px 0 10px;
+
+  border: 1px solid #d7e2f1;
+
+  border-radius: 7px;
+
+  color: var(--hrr-ink);
+
+  background: #fff;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+/* =========================
+  
+  
+  
+  TABLE SCROLL CONTAINER
+  
+  
+  
+  Important:
+  
+  
+  
+  - Do not set height: 0
+  
+  
+  
+  - Do not set parent height: 0
+  
+  
+  
+  - Scroll only the grid when rows exceed 380px
+  
+  
+  
+  \\========================= */
+
+.hrr-table-scroll {
+  display: block;
+
+  position: relative;
+
+  width: 100%;
+
+  max-width: 100%;
+
+  min-width: 0;
+
+  height: auto;
+
+  max-height: 480px;
+
+  min-height: 0;
+
+  overflow-x: auto;
+
+  overflow-y: auto;
+
+  overscroll-behavior: contain;
+
+  scrollbar-gutter: stable;
+
+  -webkit-overflow-scrolling: touch;
+
+  border: 1px solid #e1e9f4;
+
+  border-radius: 8px;
+}
+
+/* =========================
+  
+  
+  
+  TABLE
+  
+  
+  
+  \\========================= */
+
+.hrr-table {
+  width: 100%;
+
+  min-width: 650px;
+
+  margin: 0;
+
+  border-collapse: separate;
+
+  border-spacing: 0;
+
+  color: var(--hrr-ink);
+
+  background: #fff;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  white-space: nowrap;
+}
+
+.hrr-table thead th {
+  position: sticky;
+
+  top: 0;
+
+  z-index: 2;
+
+  padding: 0;
+
+  text-align: left;
+
+  color: #2b466b;
+
+  background: #edf3fc;
+
+  border-bottom: 1px solid #dce6f4;
+}
+
+.hrr-table thead th button {
+  display: block;
+
+  width: 100%;
+
+  padding: 13px 14px;
+
+  border: 0;
+
+  text-align: left;
+
+  color: inherit;
+
+  background: transparent;
+
+  font-family: inherit;
+
+  font-size: inherit;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.hrr-table thead th button:hover {
+  color: var(--hrr-blue);
+}
+
+.hrr-table tbody tr {
+  background: #fff;
+  font-size: 13px;
+}
+
+.hrr-table tbody td,
+.hrr-table tfoot th {
+  padding: 14px 14px;
+
+  border-bottom: 1px solid #edf1f7;
+
+  text-align: left;
+}
+
+.hrr-table tbody tr:hover {
+  background: #f7faff;
+}
+
+.hrr-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.hrr-zone-name {
+  color: #284b7b;
+
+  font-weight: 600;
+}
+
+.hrr-table tfoot th {
+  color: #24436b;
+
+  background: #f4f8fe;
+
+  border-top: 1px solid #dfe8f5;
+
+  font-weight: 700;
+}
+
+.hrr-no-results {
+  padding: 28px !important;
+
+  text-align: center !important;
+
+  color: var(--hrr-muted);
+}
+
+/* =========================
+  
+  
+  
+  TABLE PAGINATION
+  
+  
+  
+  \\========================= */
+
+.hrr-pagination {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 12px;
+
+  position: relative;
+
+  padding-top: 13px;
+
+  margin-bottom: 4px;
+
+  color: var(--hrr-muted);
+
+  font-size: 12px;
+}
+
+.hrr-pagination > div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.hrr-pagination button {
+  display: grid;
+
+  place-items: center;
+
+  width: 32px;
+
+  height: 32px;
+
+  border: 1px solid #d9e3f0;
+
+  border-radius: 7px;
+
+  color: #28476e;
+
+  background: #fff;
+
+  font-size: 20px;
+
+  cursor: pointer;
+}
+
+.hrr-pagination button:hover:not(:disabled) {
+  background: #f0f5fd;
+
+  border-color: #b9cce7;
+}
+
+.hrr-pagination button:disabled {
+  opacity: 0.4;
+
+  cursor: not-allowed;
+}
+
+/* =========================
+  
+  
+  
+  EMPTY STATE
+  
+  
+  
+  \\========================= */
+
+.hrr-empty-state {
+  display: flex;
+
+  min-height: 55vh;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  color: var(--hrr-ink);
+}
+
+.hrr-empty-icon {
+  display: grid;
+
+  place-items: center;
+
+  width: 48px;
+
+  height: 48px;
+
+  border-radius: 50%;
+
+  color: var(--hrr-blue);
+
+  background: #eaf2ff;
+
+  font-size: 24px;
+
+  font-weight: 700;
+}
+
+.hrr-empty-state h2 {
+  margin: 16px 0 4px;
+
+  font-size: 20px;
+}
+
+.hrr-empty-state p {
+  margin: 0 0 18px;
+
+  color: var(--hrr-muted);
+
+  font-size: 13px;
+}
+
+/* =========================
+  
+  
+  
+  APPLICATION LAYOUT
+  
+  
+  
+  \\========================= */
+
+/*
+  
+  
+  
+  Keep the existing application layout intact.
+  
+  
+  
+  The report page remains in normal document flow.
+  
+  
+  
+  The table itself owns its internal vertical scrollbar.
+  
+  
+  
+  */
+
+.main-content:has(.hrr-page) {
+  min-width: 0;
+
+  min-height: 0;
+
+  overflow-x: hidden;
+
+  overflow-y: auto;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+.main-content-wrapper:has(.hrr-page) {
+  min-width: 0;
+
+  min-height: 0;
+}
+
+/* =========================
+  
+  
+  
+  LAPTOP / TABLET
+  
+  
+  
+  \\========================= */
+
+@media (max-width: 1200px) {
+  .hrr-summary-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hrr-summary-item:nth-child(2) {
+    border-right: 0;
+  }
+
+  .hrr-summary-actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 900px) {
+  .hrr-chart-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hrr-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hrr-summary-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hrr-summary-actions {
+    grid-column: 1 / -1;
+  }
+
+  .hrr-table-scroll {
+    max-height: 350px;
+  }
+}
+
+/* =========================
+  
+  
+  
+  MOBILE
+  
+  
+  
+  \\========================= */
+
+@media (max-width: 600px) {
+  .hrr-page {
+    padding: 0 12px 100px;
+  }
+
+  .hrr-heading {
+    margin: 0 -12px 12px;
+
+    padding: 12px;
+  }
+
+  .hrr-heading h1 {
+    font-size: 21px;
+  }
+
+  .hrr-summary-panel {
+    grid-template-columns: 1fr;
+
+    padding: 14px;
+  }
+
+  .hrr-summary-item {
+    border-right: 0;
+
+    border-bottom: 1px solid #edf1f7;
+
+    padding: 0 0 12px;
+  }
+
+  .hrr-summary-actions {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    grid-column: auto;
+  }
+
+  .hrr-button {
+    padding: 0 9px;
+
+    white-space: normal;
+  }
+
+  .hrr-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 9px;
+  }
+
+  .hrr-kpi-card {
+    gap: 9px;
+
+    min-height: 76px;
+
+    padding: 12px;
+  }
+
+  .hrr-kpi-icon {
+    flex-basis: 36px;
+
+    width: 36px;
+
+    height: 36px;
+
+    font-size: 18px;
+  }
+
+  .hrr-kpi-card strong {
+    font-size: 21px;
+  }
+
+  .hrr-panel {
+    padding: 13px;
+  }
+
+  .hrr-chart {
+    height: 230px;
+  }
+
+  .hrr-table-panel {
+    padding: 13px;
+  }
+
+  .hrr-table-heading {
+    align-items: flex-start;
+  }
+
+  .hrr-table-tools {
+    width: 100%;
+
+    align-items: stretch;
+  }
+
+  .hrr-table-tools input {
+    width: 100%;
+  }
+
+  .hrr-table-tools label {
+    justify-content: space-between;
+  }
+
+  .hrr-table-scroll {
+    max-height: 320px;
+  }
+
+  .hrr-pagination {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+}
+
+/* Add these styles to the end of HistoricalReportResults.css */
+
+.hrr-panel-title-with-action {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+.hrr-panel-title-label {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  min-width: 0;
+}
+
+.hrr-panel-title-label h2 {
+  margin: 0;
+}
+
+.hrr-expand-chart-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 6px;
+
+  flex-shrink: 0;
+
+  padding: 6px 10px;
+
+  border: 1px solid #cbdaf5;
+
+  border-radius: 8px;
+
+  background: #fff;
+
+  color: #1769ff;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.hrr-expand-chart-button:hover {
+  background: #eef5ff;
+
+  border-color: #1769ff;
+}
+
+.hrr-chart-modal-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(15, 23, 42, 0.62);
+
+  backdrop-filter: blur(3px);
+}
+
+.hrr-chart-modal {
+  display: flex;
+
+  flex-direction: column;
+
+  width: min(1200px, 96vw);
+
+  height: min(760px, 90vh);
+
+  min-height: 360px;
+
+  overflow: hidden;
+
+  border: 1px solid #dce6f5;
+
+  border-radius: 16px;
+
+  background: #fff;
+
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.3);
+}
+
+.hrr-chart-modal-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 16px;
+
+  padding: 18px 22px;
+
+  border-bottom: 1px solid #e6edf7;
+}
+
+.hrr-chart-modal-header h2 {
+  color: #102a56;
+
+  font-size: 18px;
+
+  font-weight: 700;
+}
+
+.hrr-chart-modal-close {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 36px;
+
+  height: 36px;
+
+  border: 1px solid #dbe5f3;
+
+  border-radius: 9px;
+
+  background: #fff;
+
+  color: #334155;
+
+  font-size: 27px;
+
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.hrr-chart-modal-close:hover {
+  background: #f1f5f9;
+}
+
+.hrr-chart-modal-content {
+  flex: 1;
+
+  min-height: 0;
+
+  padding: 20px 24px 28px;
+}
+
+.hrr-chart-modal-content .recharts-responsive-container {
+  min-height: 280px;
+}
+
+@media (max-width: 640px) {
+  .hrr-chart-modal-backdrop {
+    padding: 10px;
+  }
+
+  .hrr-chart-modal {
+    width: 100%;
+
+    height: 86vh;
+
+    min-height: 320px;
+
+    border-radius: 12px;
+  }
+
+  .hrr-chart-modal-header {
+    padding: 14px;
+  }
+
+  .hrr-chart-modal-content {
+    padding: 12px 8px 18px;
+  }
+
+  .hrr-expand-chart-button span {
+    display: none;
+  }
+}
+
+/* Add these styles to the end of HistoricalReportResults.css */
+
+.hrr-panel-title-with-action {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+.hrr-panel-title-label {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  min-width: 0;
+}
+
+.hrr-panel-title-label h2 {
+  margin: 0;
+}
+
+.hrr-expand-chart-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 6px;
+
+  flex-shrink: 0;
+
+  padding: 6px 10px;
+
+  border: 1px solid #cbdaf5;
+
+  border-radius: 8px;
+
+  background: #fff;
+
+  color: #1769ff;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.hrr-expand-chart-button:hover {
+  background: #eef5ff;
+
+  border-color: #1769ff;
+}
+
+.hrr-chart-modal-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(15, 23, 42, 0.62);
+
+  backdrop-filter: blur(3px);
+}
+
+.hrr-chart-modal {
+  display: flex;
+
+  flex-direction: column;
+
+  width: min(1200px, 96vw);
+
+  height: min(760px, 90vh);
+
+  min-height: 360px;
+
+  overflow: hidden;
+
+  border: 1px solid #dce6f5;
+
+  border-radius: 16px;
+
+  background: #fff;
+
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.3);
+}
+
+.hrr-chart-modal-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 16px;
+
+  padding: 18px 22px;
+
+  border-bottom: 1px solid #e6edf7;
+}
+
+.hrr-chart-modal-header h2 {
+  color: #102a56;
+
+  font-size: 18px;
+
+  font-weight: 700;
+}
+
+.hrr-chart-modal-close {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 36px;
+
+  height: 36px;
+
+  border: 1px solid #dbe5f3;
+
+  border-radius: 9px;
+
+  background: #fff;
+
+  color: #334155;
+
+  font-size: 27px;
+
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.hrr-chart-modal-close:hover {
+  background: #f1f5f9;
+}
+
+.hrr-chart-modal-content {
+  flex: 1;
+
+  min-height: 0;
+
+  padding: 20px 24px 28px;
+}
+
+.hrr-chart-modal-content .recharts-responsive-container {
+  min-height: 280px;
+}
+
+@media (max-width: 640px) {
+  .hrr-chart-modal-backdrop {
+    padding: 10px;
+  }
+
+  .hrr-chart-modal {
+    width: 100%;
+
+    height: 86vh;
+
+    min-height: 320px;
+
+    border-radius: 12px;
+  }
+
+  .hrr-chart-modal-header {
+    padding: 14px;
+  }
+
+  .hrr-chart-modal-content {
+    padding: 12px 8px 18px;
+  }
+
+  .hrr-expand-chart-button span {
+    display: none;
+  }
+}
+
+/* =========================================================
+  
+  
+  
+  SHARP SECTION ICONS + CHART LEGEND CONTROLS
+  
+  
+  
+  \\========================================================= */
+
+.hrr-summary-icon,
+.hrr-section-icon {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  color: #1769ff;
+}
+
+.hrr-summary-icon {
+  width: 40px;
+
+  height: 40px;
+
+  border-radius: 12px;
+
+  background: #edf4ff;
+}
+
+.hrr-section-icon {
+  width: 22px;
+
+  height: 22px;
+
+  line-height: 1;
+}
+
+.hrr-panel-title-label {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  min-width: 0;
+}
+
+.hrr-panel-title-label h2 {
+  margin: 0;
+
+  color: #10264a;
+
+  font-size: 15px;
+
+  line-height: 1.35;
+
+  font-weight: 700;
+}
+
+.hrr-panel-title-with-action {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+.hrr-expand-chart-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  min-height: 34px;
+
+  flex: 0 0 auto;
+
+  padding: 0 11px;
+
+  border: 1px solid #bfd2ff;
+
+  border-radius: 8px;
+
+  background: #fff;
+
+  color: #1769ff;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 650;
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.hrr-expand-chart-button:hover {
+  background: #edf4ff;
+
+  border-color: #1769ff;
+
+  box-shadow: 0 2px 7px rgba(23, 105, 255, 0.1);
+}
+
+.hrr-expand-chart-button:focus-visible,
+.hrr-chart-modal-close:focus-visible,
+.hrr-chart-legend-option input:focus-visible {
+  outline: 2px solid #1769ff;
+
+  outline-offset: 3px;
+}
+
+/* Chart series show/hide controls */
+
+.hrr-chart-legend-controls {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 12px 22px;
+
+  padding: 10px 8px 1px;
+
+  color: #52627a;
+
+  font-size: 12px;
+}
+
+.hrr-chart-legend-option {
+  --hrr-series-color: #1769ff;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  margin: 0;
+
+  color: #52627a;
+
+  font-size: 12px;
+
+  font-weight: 500;
+
+  line-height: 1.4;
+
+  cursor: pointer;
+
+  user-select: none;
+}
+
+.hrr-chart-legend-in {
+  --hrr-series-color: #1769ff;
+}
+
+.hrr-chart-legend-out {
+  --hrr-series-color: #ff7a45;
+}
+
+.hrr-chart-legend-option input[type="checkbox"] {
+  appearance: none;
+
+  -webkit-appearance: none;
+
+  display: inline-grid;
+
+  place-content: center;
+
+  width: 18px;
+
+  height: 18px;
+
+  flex: 0 0 18px;
+
+  margin: 0;
+
+  border: 1.5px solid #a8b5c8;
+
+  border-radius: 4px;
+
+  background: #fff;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.hrr-chart-legend-option input[type="checkbox"]::before {
+  content: "";
+
+  width: 9px;
+
+  height: 5px;
+
+  border-left: 2px solid #fff;
+
+  border-bottom: 2px solid #fff;
+
+  transform: rotate(-45deg) scale(0);
+
+  transform-origin: center;
+
+  margin-top: -2px;
+}
+
+.hrr-chart-legend-option input[type="checkbox"]:checked {
+  border-color: var(--hrr-series-color);
+
+  background: var(--hrr-series-color);
+}
+
+.hrr-chart-legend-option input[type="checkbox"]:checked::before {
+  transform: rotate(-45deg) scale(1);
+}
+
+.hrr-legend-dot {
+  display: inline-block;
+
+  width: 10px;
+
+  height: 10px;
+
+  flex: 0 0 10px;
+
+  border-radius: 50%;
+
+  background: var(--hrr-series-color);
+}
+
+.hrr-chart-legend-option:has(input:not(:checked)) .hrr-legend-dot {
+  opacity: 0.35;
+}
+
+.hrr-chart-legend-option:has(input:not(:checked)) .hrr-legend-label {
+  color: #8794a8;
+}
+
+.hrr-chart-modal-content {
+  display: flex;
+
+  flex-direction: column;
+
+  min-height: 0;
+}
+
+.hrr-chart-modal-content > .recharts-responsive-container {
+  flex: 1 1 auto;
+
+  min-height: 0;
+
+  width: 100% !important;
+}
+
+.hrr-chart-modal-content .hrr-chart-legend-controls {
+  flex: 0 0 auto;
+
+  padding-top: 14px;
+}
+
+.hrr-chart-modal-close {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 38px;
+
+  height: 38px;
+
+  flex: 0 0 38px;
+
+  border: 1px solid #dbe5f3;
+
+  border-radius: 9px;
+
+  background: #fff;
+
+  color: #334155;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.hrr-chart-modal-close:hover {
+  background: #f1f5f9;
+
+  border-color: #c5d2e3;
+}
+
+.hrr-table-heading .hrr-panel-title > .hrr-section-icon {
+  color: #1769ff;
+}
+
+@media (max-width: 640px) {
+  .hrr-expand-chart-button {
+    width: 36px;
+
+    min-width: 36px;
+
+    padding: 0;
+  }
+
+  .hrr-expand-chart-button span {
+    display: none;
+  }
+
+  .hrr-chart-legend-controls {
+    gap: 10px 16px;
+  }
+}
+
+/* ===== Historical chart tooltip and metric colors ===== */
+
+.hrr-chart-legend-in {
+  --hrr-series-color: #16a34a;
+}
+
+.hrr-chart-legend-out {
+  --hrr-series-color: #ef4444;
+}
+
+.hrr-chart-legend-occupancy {
+  --hrr-series-color: #2563eb;
+}
+
+.hrr-custom-tooltip {
+  min-width: 190px;
+
+  max-width: 280px;
+
+  padding: 13px 14px 10px;
+
+  color: #25344d;
+
+  background: rgba(255, 255, 255, 0.98);
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 12px;
+
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.16);
+
+  font-family: Inter, Arial, sans-serif;
+
+  font-size: 12px;
+
+  pointer-events: none;
+}
+
+.hrr-tooltip-heading {
+  margin: 0 0 9px;
+
+  padding: 0 0 9px;
+
+  color: #10264a;
+
+  border-bottom: 1px solid #e8edf5;
+
+  font-size: 13px;
+
+  font-weight: 750;
+
+  line-height: 1.35;
+
+  white-space: nowrap;
+}
+
+.hrr-tooltip-metrics {
+  display: grid;
+
+  gap: 8px;
+}
+
+.hrr-tooltip-row {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 18px;
+
+  min-width: 0;
+
+  line-height: 1.35;
+}
+
+.hrr-tooltip-label {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #52627a;
+
+  white-space: nowrap;
+}
+
+.hrr-tooltip-label i {
+  display: inline-block;
+
+  width: 9px;
+
+  height: 9px;
+
+  flex: 0 0 9px;
+
+  border-radius: 50%;
+}
+
+.hrr-tooltip-row strong {
+  color: #17243a;
+
+  font-size: 12px;
+
+  font-weight: 750;
+
+  font-variant-numeric: tabular-nums;
+}
+
+.hrr-tooltip-zone-name {
+  overflow: hidden;
+
+  margin-top: 10px;
+
+  padding-top: 9px;
+
+  color: #1769ff;
+
+  border-top: 1px solid #e8edf5;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.hrr-tooltip-bottom-border {
+  height: 2px;
+
+  margin-top: 10px;
+
+  border-radius: 2px;
+
+  background: #cbdcf7;
+}
+
+.recharts-tooltip-wrapper {
+  outline: none;
+}
+
+.recharts-default-tooltip {
+  display: none !important;
+}
+
+@media (max-width: 640px) {
+  .hrr-custom-tooltip {
+    min-width: 175px;
+
+    padding: 11px 12px 9px;
+  }
+
+  .hrr-tooltip-heading {
+    font-size: 12px;
+  }
+}
+
+/* Updated summary truncation and soft chart colors */
+
+.hrr-selected-zones-text {
+  display: block;
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  color: #102a56;
+}
+
+.hrr-chart-legend-in .hrr-legend-dot {
+  background: #36a879;
+}
+
+.hrr-chart-legend-out .hrr-legend-dot {
+  background: #e87979;
+}
+
+.hrr-chart-legend-occupancy .hrr-legend-dot {
+  background: #6c8fe8;
+}
+
+.hrr-chart-modal-content {
+  flex: 1;
+
+  min-height: 0;
+
+  padding: 16px 22px 22px;
+
+  overflow: auto;
+}
+
+@media (max-width: 1200px) {
+  .hrr-summary-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hrr-summary-item:nth-child(2) {
+    border-right: 0;
+  }
+
+  .hrr-summary-actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 900px) {
+  .hrr-chart-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hrr-summary-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .hrr-page {
+    padding: 0 12px 48px;
+  }
+
+  .hrr-heading {
+    margin: 0 -12px 12px;
+
+    padding: 12px;
+  }
+
+  .hrr-heading h1 {
+    font-size: 21px;
+  }
+
+  .hrr-summary-panel {
+    grid-template-columns: 1fr;
+
+    padding: 14px;
+  }
+
+  .hrr-summary-item {
+    border-right: 0;
+
+    border-bottom: 1px solid #edf1f7;
+
+    padding: 0 0 12px;
+  }
+
+  .hrr-panel,
+  .hrr-table-panel {
+    padding: 13px;
+  }
+
+  .hrr-chart {
+    height: 230px;
+  }
+
+  .hrr-table-tools {
+    width: 100%;
+
+    align-items: stretch;
+  }
+
+  .hrr-table-tools input {
+    width: 100%;
+  }
+
+  .hrr-table-scroll {
+    max-height: 320px;
+  }
+
+  .hrr-pagination {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+}
+
+/* =========================================================
+  
+  
+  
+  UPDATED REPORT TABLE FOOTER / PAGINATION
+  
+  
+  
+  Rows per page appears at the bottom before page navigation.
+  
+  
+  
+  \\========================================================= */
+
+.hrr-pagination-info {
+  display: inline-block;
+
+  padding: 4px 4px;
+
+  color: #647b9e;
+
+  font-size: 12px;
+
+  font-weight: 400;
+
+  line-height: 1.6;
+
+  letter-spacing: 0.15px;
+
+  white-space: nowrap;
+}
+
+.hrr-pagination {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 16px;
+
+  padding: 14px 4px 6px;
+}
+
+@media (max-width: 600px) {
+  .hrr-pagination {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 12px;
+  }
+}
+
+.hrr-pagination-controls {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  min-width: 0;
+}
+
+.hrr-rows-per-page {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin: 0;
+
+  color: var(--hrr-muted, #647b9e);
+
+  font-size: 12px;
+
+  white-space: nowrap;
+}
+
+.hrr-rows-per-page select {
+  min-width: 80px;
+
+  height: 38px;
+
+  padding: 0 28px 0 10px;
+
+  border: 1px solid #d7e2f1;
+
+  border-radius: 7px;
+
+  outline: none;
+
+  color: var(--hrr-ink, #10264a);
+
+  background-color: #fff;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+.hrr-rows-per-page select:focus-visible {
+  border-color: var(--hrr-blue, #1769ff);
+
+  box-shadow: 0 0 0 3px rgba(23, 105, 255, 0.1);
+}
+
+.hrr-pagination-controls > span {
+  white-space: nowrap;
+
+  line-height: 1.5;
+}
+
+.hrr-pagination-controls button {
+  display: grid;
+
+  place-items: center;
+
+  flex: 0 0 32px;
+
+  width: 32px;
+
+  height: 32px;
+
+  padding: 0;
+
+  border: 1px solid #d9e3f0;
+
+  border-radius: 7px;
+
+  color: #28476e;
+
+  background: #fff;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.hrr-pagination-controls button:hover:not(:disabled) {
+  background: #f0f5fd;
+
+  border-color: #b9cce7;
+}
+
+.hrr-pagination-controls button:disabled {
+  opacity: 0.4;
+
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  /* .hrr-pagination {
+  
+  
+  
+  align-items: flex-start;
+  
+  
+  
+  flex-direction: column;
+  
+  
+  
+  } */
+
+  .hrr-pagination-info {
+    min-width: 0;
+
+    width: 100%;
+  }
+
+  .hrr-pagination-controls {
+    width: 100%;
+
+    justify-content: flex-start;
+
+    gap: 8px;
+  }
+
+  .hrr-rows-per-page {
+    margin-right: auto;
+  }
+}
+
+/* Zone chart: horizontal scrolling and top-N controls */
+
+.hrr-zone-chart-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+.hrr-zone-limit-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #647b9e;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.hrr-zone-limit-control select {
+  height: 34px;
+  min-width: 96px;
+  padding: 0 28px 0 10px;
+  border: 1px solid #d7e2f1;
+  border-radius: 7px;
+  background: #fff;
+  color: #234166;
+  font: inherit;
+  cursor: pointer;
+}
+
+.hrr-zone-chart-scroll {
+  width: 100%;
+  max-width: 100%;
+  height: 190px;
+  margin-top: 8px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  border-radius: 8px;
+}
+.hrr-zone-chart-canvas {
+  width: 100%;
+  min-width: 0;
+}
+.hrr-zone-chart-scroll-compact {
+  height: 190px;
+  overflow: hidden;
+}
+.hrr-zone-chart-scroll-expanded {
+  height: min(58vh, 520px);
+  min-height: 280px;
+  margin-top: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #b9cbe5 #f0f5fc;
+}
+.hrr-zone-chart-scroll-expanded .hrr-zone-chart-canvas {
+  width: 100%;
+  min-width: 0;
+}
+
+.hrr-zone-chart-caption {
+  margin: 8px 0 0;
+  color: #7185a3;
+  font-size: 11px;
+}
+
+.hrr-modal-zone-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.hrr-modal-zone-tools .hrr-zone-chart-caption {
+  margin: 0;
+}
+
+.hrr-chart-legend-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.hrr-export-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hrr-export-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid #cbd9ed;
+  border-radius: 8px;
+  background: #fff;
+  color: #234166;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.hrr-export-button:hover {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  color: #2563eb;
+}
+
+.hrr-export-button-pdf {
+  border-color: #f0caca;
+  color: #b42318;
+}
+
+.hrr-export-button-pdf:hover {
+  background: #fff1f0;
+  border-color: #e87979;
+  color: #b42318;
+}
+
+@media (max-width: 900px) {
+  .hrr-zone-chart-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .hrr-table-tools {
+    width: 100%;
+  }
+  .hrr-export-actions {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .hrr-zone-chart-actions {
+    justify-content: space-between;
+  }
+  .hrr-zone-limit-control {
+    font-size: 11px;
+  }
+  .hrr-export-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .hrr-export-button {
+    width: 100%;
+  }
+  .hrr-modal-zone-tools {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .hrr-zone-chart-scroll-expanded {
+    height: 50vh;
+    min-height: 250px;
+  }
+}
+
+.hrr-zone-chart-scroll {
+  width: 100%;
+  max-width: 100%;
+  height: 218px;
+  min-height: 0;
+  margin-top: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #b9cbe5 #f0f5fc;
+  border-radius: 7px;
+}
+
+.hrr-zone-chart-scroll-compact {
+  overflow-x: hidden;
+}
+
+.hrr-zone-chart-canvas {
+  height: 100%;
+  min-width: 100%;
+}
+
+.hrr-zone-chart-scroll-expanded {
+  height: 350px;
+  min-height: 0;
+  margin-top: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.hrr-zone-chart-caption {
+  margin: 6px 0 0;
+  color: #7185a3;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.hrr-chart-legend-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.hrr-panel:has(.hrr-zone-chart-scroll) .hrr-chart-legend-controls {
+  margin-top: 7px;
+}
+
+.hrr-panel:has(.hrr-zone-chart-scroll) .hrr-zone-chart-caption {
+  margin-top: 5px;
+}
+
+.hrr-chart-modal {
+  height: min(620px, 84vh);
+  min-height: 340px;
+}
+
+.hrr-chart-modal-content {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding: 12px 20px 16px;
+}
+
+.hrr-chart-modal-content:has(.hrr-modal-zone-tools) {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hrr-chart-modal-content .hrr-zone-chart-scroll-expanded {
+  flex: 0 0 350px;
+  height: 350px;
+  min-height: 0;
+}
+
+.hrr-modal-zone-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+.hrr-modal-zone-tools .hrr-zone-chart-caption {
+  margin: 0;
+}
+
+.hrr-zone-chart-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.hrr-zone-limit-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #7185a3;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.hrr-zone-limit-control select {
+  height: 36px;
+  min-width: 108px;
+  padding: 0 28px 0 10px;
+  border: 1px solid #d7e2f1;
+  border-radius: 8px;
+  background: #fff;
+  color: #234166;
+  font: inherit;
+  cursor: pointer;
+}
+
+.hrr-table-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.hrr-table-tools {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  gap: 10px;
+  min-width: 0;
+}
+
+.hrr-table-tools input {
+  order: 2;
+  width: 245px;
+  max-width: 100%;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid #d7e2f1;
+  border-radius: 8px;
+  outline: none;
+  color: var(--hrr-ink);
+  background: #fff;
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.hrr-export-actions {
+  order: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.hrr-export-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 0 13px;
+  border: 1px solid #b9d8c5;
+  border-radius: 8px;
+  background: #fff;
+  color: #168044;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.hrr-export-button:hover {
+  background: #f0fbf4;
+  border-color: #27965a;
+  color: #126c38;
+}
+
+.hrr-export-button-pdf {
+  border-color: #f1c4c4;
+  color: #c62828;
+}
+
+.hrr-export-button-pdf:hover {
+  background: #fff3f3;
+  border-color: #df5555;
+  color: #a91f1f;
+}
+
+@media (max-width: 900px) {
+  .hrr-zone-chart-scroll-compact {
+    overflow-x: auto;
+  }
+  .hrr-table-tools {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  .hrr-table-tools input {
+    order: 2;
+    width: min(100%, 320px);
+  }
+  .hrr-export-actions {
+    order: 1;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .hrr-zone-chart-scroll {
+    height: 210px;
+  }
+  .hrr-zone-chart-scroll-expanded {
+    height: 300px;
+    flex-basis: 300px;
+  }
+  .hrr-chart-modal {
+    height: 88vh;
+    min-height: 320px;
+  }
+  .hrr-chart-modal-content {
+    padding: 10px;
+  }
+  .hrr-table-tools {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+  }
+  .hrr-export-actions {
+    width: auto;
+    display: flex;
+  }
+  .hrr-table-tools input {
+    width: 100%;
+    flex: 1;
+    min-width: 130px;
+  }
+  .hrr-export-button {
+    padding: 0 9px;
+    min-height: 36px;
+  }
+}
+
+.hrr-chart-grid {
+  align-items: start;
+}
+
+.hrr-panel:has(.hrr-zone-chart-scroll-compact) {
+  align-self: start;
+  height: auto;
+  min-height: 0;
+  padding-bottom: 12px;
+}
+
+.hrr-zone-chart-scroll-compact {
+  height: 166px;
+  min-height: 0;
+  margin-top: 6px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.hrr-zone-chart-scroll-compact .hrr-zone-chart-canvas {
+  height: 158px;
+}
+
+.hrr-panel:has(.hrr-zone-chart-scroll-compact) .hrr-chart-legend-controls {
+  margin-top: 2px;
+  gap: 14px;
+}
+
+.hrr-panel:has(.hrr-zone-chart-scroll-compact) .hrr-zone-chart-caption {
+  margin-top: 3px;
+}
+
+@media (max-width: 900px) {
+  .hrr-zone-chart-scroll-compact {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .hrr-zone-chart-scroll-compact {
+    height: 166px;
+  }
+  .hrr-zone-chart-scroll-compact .hrr-zone-chart-canvas {
+    height: 158px;
+  }
+}
+
+.hrr-zone-chart-scroll {
+  width: 100% !important;
+  max-width: 100%;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+}
+.hrr-zone-chart-canvas {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+.hrr-zone-chart-scroll-compact {
+  height: 190px !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+.hrr-zone-chart-scroll-compact .hrr-zone-chart-canvas {
+  height: auto !important;
+}
+.hrr-zone-chart-scroll-expanded {
+  height: min(58vh, 520px) !important;
+  min-height: 280px !important;
+  flex: 1 1 auto !important;
+  margin-top: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior-y: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #b9cbe5 #f0f5fc;
+}
+.hrr-zone-chart-scroll-expanded .hrr-zone-chart-canvas {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+.hrr-chart-modal-content .hrr-zone-chart-scroll-expanded {
+  height: min(58vh, 520px) !important;
+  min-height: 280px !important;
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+@media (max-width: 600px) {
+  .hrr-zone-chart-scroll-compact {
+    height: 190px !important;
+  }
+  .hrr-zone-chart-scroll-expanded {
+    height: 50vh !important;
+    min-height: 250px !important;
+  }
+  .hrr-chart-modal-content .hrr-zone-chart-scroll-expanded {
+    height: 50vh !important;
+    min-height: 250px !important;
+  }
+}
+
+/* FINAL CHART LAYOUT FIX: equal front-page cards, taller zone bars, no unused vertical space */
+
+.hrr-chart-grid {
+  align-items: stretch !important;
+}
+
+.hrr-chart-grid > .hrr-panel {
+  display: flex !important;
+  flex-direction: column !important;
+  align-self: stretch !important;
+  height: 380px !important;
+  min-height: 380px !important;
+  max-height: 380px !important;
+  min-width: 0 !important;
+  overflow: hidden;
+}
+
+.hrr-chart-grid > .hrr-panel .hrr-panel-title {
+  flex: 0 0 auto;
+}
+
+.hrr-chart-grid > .hrr-panel .hrr-chart {
+  flex: 1 1 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin-top: 8px;
+}
+
+.hrr-chart-grid > .hrr-panel:has(.hrr-zone-chart-scroll-compact) {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 380px !important;
+  min-height: 380px !important;
+  max-height: 380px !important;
+  padding-bottom: 10px !important;
+}
+
+.hrr-chart-grid > .hrr-panel .hrr-zone-chart-scroll-compact {
+  display: block !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin-top: 6px !important;
+  overflow: hidden !important;
+}
+
+.hrr-chart-grid
+  > .hrr-panel
+  .hrr-zone-chart-scroll-compact
+  .hrr-zone-chart-canvas {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+}
+
+.hrr-chart-grid
+  > .hrr-panel:has(.hrr-zone-chart-scroll-compact)
+  .hrr-chart-legend-controls {
+  flex: 0 0 auto !important;
+  margin-top: 5px !important;
+  padding: 3px 0 0 !important;
+  gap: 12px 16px !important;
+}
+
+.hrr-chart-grid
+  > .hrr-panel:has(.hrr-zone-chart-scroll-compact)
+  .hrr-zone-chart-caption {
+  flex: 0 0 auto !important;
+  margin: 4px 0 0 !important;
+  line-height: 1.35;
+}
+
+.hrr-chart-modal-content:has(.hrr-zone-chart-scroll-expanded) {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  overflow: hidden !important;
+}
+
+.hrr-chart-modal-content .hrr-zone-chart-scroll-expanded {
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+}
+
+.hrr-chart-modal-content
+  .hrr-zone-chart-scroll-expanded
+  .hrr-zone-chart-canvas {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+@media (max-width: 900px) {
+  .hrr-chart-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .hrr-chart-grid > .hrr-panel,
+  .hrr-chart-grid > .hrr-panel:has(.hrr-zone-chart-scroll-compact) {
+    height: 360px !important;
+    min-height: 360px !important;
+    max-height: 360px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .hrr-chart-grid > .hrr-panel,
+  .hrr-chart-grid > .hrr-panel:has(.hrr-zone-chart-scroll-compact) {
+    height: 330px !important;
+    min-height: 330px !important;
+    max-height: 330px !important;
+  }
+  .hrr-chart-grid > .hrr-panel .hrr-zone-chart-scroll-compact {
+    overflow-x: auto !important;
+  }
+  .hrr-chart-grid
+    > .hrr-panel
+    .hrr-zone-chart-scroll-compact
+    .hrr-zone-chart-canvas {
+    min-width: 100% !important;
+  }
+}
+
+/* FINAL FIX: keep the zone chart content tight and remove the unused area */
+
+.hrr-chart-grid {
+  align-items: stretch !important;
+}
+
+.hrr-chart-grid > .hrr-panel {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 380px !important;
+  min-height: 380px !important;
+  max-height: 380px !important;
+  min-width: 0 !important;
+  overflow: hidden;
+}
+
+.hrr-chart-grid > .hrr-panel .hrr-panel-title {
+  flex: 0 0 auto;
+}
+
+.hrr-chart-grid > .hrr-panel .hrr-chart {
+  flex: 1 1 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin-top: 8px;
+}
+
+.hrr-chart-grid > .hrr-panel:has(.hrr-zone-chart-scroll-compact) {
+  padding: 18px 18px 10px !important;
+}
+
+.hrr-chart-grid > .hrr-panel .hrr-zone-chart-scroll-compact {
+  display: block !important;
+  flex: 0 0 260px !important;
+  width: 100% !important;
+  height: 260px !important;
+  min-height: 260px !important;
+  max-height: 260px !important;
+  margin-top: 6px !important;
+  overflow: hidden !important;
+}
+
+.hrr-chart-grid
+  > .hrr-panel
+  .hrr-zone-chart-scroll-compact
+  .hrr-zone-chart-canvas {
+  display: block !important;
+  width: 100% !important;
+  height: 260px !important;
+  min-width: 0 !important;
+  min-height: 260px !important;
+}
+
+.hrr-chart-grid
+  > .hrr-panel:has(.hrr-zone-chart-scroll-compact)
+  .hrr-chart-legend-controls {
+  flex: 0 0 auto !important;
+  margin-top: 4px !important;
+  padding: 0 !important;
+  gap: 12px 16px !important;
+}
+
+.hrr-chart-grid
+  > .hrr-panel:has(.hrr-zone-chart-scroll-compact)
+  .hrr-zone-chart-caption {
+  flex: 0 0 auto !important;
+  margin: 4px 0 0 !important;
+  line-height: 1.35;
+}
+
+.hrr-chart-modal-content:has(.hrr-zone-chart-scroll-expanded) {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  overflow: hidden !important;
+}
+
+.hrr-chart-modal-content .hrr-zone-chart-scroll-expanded {
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin-top: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+}
+
+.hrr-chart-modal-content
+  .hrr-zone-chart-scroll-expanded
+  .hrr-zone-chart-canvas {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.hrr-chart-modal-content:has(.hrr-zone-chart-scroll-expanded)
+  .hrr-chart-legend-controls {
+  flex: 0 0 auto !important;
+  margin-top: 4px !important;
+}
+
+@media (max-width: 900px) {
+  .hrr-chart-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .hrr-chart-grid > .hrr-panel,
+  .hrr-chart-grid > .hrr-panel:has(.hrr-zone-chart-scroll-compact) {
+    height: 360px !important;
+    min-height: 360px !important;
+    max-height: 360px !important;
+  }
+  .hrr-chart-grid > .hrr-panel .hrr-zone-chart-scroll-compact {
+    flex-basis: 240px !important;
+    height: 240px !important;
+    min-height: 240px !important;
+    max-height: 240px !important;
+  }
+  .hrr-chart-grid
+    > .hrr-panel
+    .hrr-zone-chart-scroll-compact
+    .hrr-zone-chart-canvas {
+    height: 240px !important;
+    min-height: 240px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .hrr-chart-grid > .hrr-panel,
+  .hrr-chart-grid > .hrr-panel:has(.hrr-zone-chart-scroll-compact) {
+    height: 340px !important;
+    min-height: 340px !important;
+    max-height: 340px !important;
+    padding: 13px !important;
+  }
+  .hrr-chart-grid > .hrr-panel .hrr-zone-chart-scroll-compact {
+    flex-basis: 225px !important;
+    height: 225px !important;
+    min-height: 225px !important;
+    max-height: 225px !important;
+  }
+  .hrr-chart-grid
+    > .hrr-panel
+    .hrr-zone-chart-scroll-compact
+    .hrr-zone-chart-canvas {
+    height: 225px !important;
+    min-height: 225px !important;
+  }
+  .hrr-chart-modal-content .hrr-zone-chart-scroll-expanded {
+    height: 50vh !important;
+    min-height: 220px !important;
+  }
+}
+
+/* Summary panel: balanced spacing */
+
+.hrr-summary-panel {
+  display: grid !important;
+
+  grid-template-columns:
+    150px
+    minmax(180px, 1fr)
+    minmax(280px, 1.4fr)
+    minmax(220px, 1fr) !important;
+
+  align-items: center;
+
+  gap: 0 !important;
+
+  padding: 12px 18px !important;
+}
+
+/* Button section: remove excess empty space */
+
+.hrr-summary-actions {
+  display: flex !important;
+
+  align-items: center;
+
+  justify-content: flex-start !important;
+
+  flex-wrap: nowrap !important;
+
+  min-width: 0;
+
+  padding: 0 14px 0 0 !important;
+
+  margin: 0 12px 0 0 !important;
+
+  border-right: 1px solid #dfe8f5;
+}
+
+/* Compact Back to Filters button */
+
+.hrr-summary-actions .hrr-button {
+  width: 128px !important;
+
+  min-width: 128px !important;
+
+  max-width: 128px !important;
+
+  height: 40px !important;
+
+  min-height: 40px !important;
+
+  max-height: 40px !important;
+
+  flex: 0 0 128px !important;
+
+  padding: 0 6px !important;
+
+  display: inline-flex !important;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 4px;
+
+  border: 1px solid #75a5ff;
+
+  border-radius: 10px;
+
+  background: #fff;
+
+  color: #0866f5;
+
+  font-family: inherit;
+
+  font-size: 12px !important;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+/* Other summary items */
+
+.hrr-summary-panel > .hrr-summary-item {
+  min-width: 0;
+
+  padding: 8px 14px !important;
+
+  margin: 0;
+
+  gap: 10px;
+}
+
+.hrr-summary-item > div,
+.hrr-summary-content {
+  min-width: 0;
+
+  flex: 1;
+}
+
+.hrr-summary-period strong,
+.hrr-selected-zones-text {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+/* Tablet */
+
+@media (max-width: 1100px) {
+  .hrr-summary-panel {
+    grid-template-columns: 150px minmax(0, 1fr) !important;
+
+    row-gap: 8px;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .hrr-summary-panel {
+    grid-template-columns: minmax(0, 1fr) !important;
+
+    gap: 8px !important;
+  }
+
+  .hrr-summary-actions {
+    padding: 0 0 10px !important;
+
+    margin: 0 !important;
+
+    border-right: 0;
+
+    border-bottom: 1px solid #dfe8f5;
+  }
+
+  .hrr-summary-panel > .hrr-summary-item {
+    padding: 8px 0 !important;
+  }
+}
+
+/* =========================================================
+  
+     FINAL SUMMARY ROW ORDER FIX
+  
+     Desktop order: Report Type | Selected Period | Selected Zones | Back to Filters
+  
+     Works with the existing JSX where the Back button may be the first DOM child.
+  
+     ========================================================= */
+
+.hrr-page .hrr-summary-panel {
+  display: grid !important;
+
+  grid-template-columns:
+    minmax(150px, 0.85fr)
+    minmax(250px, 1.25fr)
+    minmax(220px, 1.15fr)
+    minmax(175px, auto) !important;
+
+  align-items: center !important;
+
+  gap: 0 !important;
+
+  width: 100%;
+
+  min-width: 0;
+
+  padding: 12px 18px !important;
+}
+
+/* Back to Filters is placed in the fourth grid column, regardless of DOM order. */
+
+.hrr-page .hrr-summary-panel > .hrr-summary-actions {
+  grid-column: 4 !important;
+
+  grid-row: 1 !important;
+
+  display: flex !important;
+
+  justify-content: flex-end !important;
+
+  align-items: center !important;
+
+  min-width: 0 !important;
+
+  padding: 0 0 0 16px !important;
+
+  margin: 0 !important;
+
+  border: 0 !important;
+}
+
+/* Report Type is the summary item that is neither Period nor Zones. */
+
+.hrr-page
+  .hrr-summary-panel
+  > .hrr-summary-item:not(.hrr-summary-period):not(.hrr-summary-zones) {
+  grid-column: 1 !important;
+
+  grid-row: 1 !important;
+}
+
+.hrr-page .hrr-summary-panel > .hrr-summary-period {
+  grid-column: 2 !important;
+
+  grid-row: 1 !important;
+}
+
+.hrr-page .hrr-summary-panel > .hrr-summary-zones {
+  grid-column: 3 !important;
+
+  grid-row: 1 !important;
+
+  border-right: 0 !important;
+}
+
+.hrr-page .hrr-summary-panel > .hrr-summary-item {
+  min-width: 0 !important;
+
+  padding: 0 14px !important;
+
+  border-right: 1px solid #e3ebf7;
+}
+
+.hrr-page
+  .hrr-summary-panel
+  > .hrr-summary-item:not(.hrr-summary-period):not(.hrr-summary-zones) {
+  padding-left: 0 !important;
+}
+
+.hrr-page .hrr-summary-panel .hrr-summary-item > div,
+.hrr-page .hrr-summary-panel .hrr-summary-content {
+  min-width: 0;
+
+  flex: 1 1 auto;
+}
+
+.hrr-page .hrr-summary-panel .hrr-summary-item strong,
+.hrr-page .hrr-summary-panel .hrr-selected-zones-text {
+  display: block;
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  overflow-wrap: normal;
+}
+
+.hrr-page .hrr-summary-panel .hrr-back-filters-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  width: 100%;
+
+  max-width: 190px;
+
+  min-height: 40px;
+
+  padding: 0 12px;
+
+  white-space: nowrap;
+}
+
+/* Tablet: keep all four items in the requested order where space permits. */
+
+@media (max-width: 1100px) and (min-width: 701px) {
+  .hrr-page .hrr-summary-panel {
+    grid-template-columns:
+      minmax(120px, 0.8fr)
+      minmax(180px, 1.15fr)
+      minmax(160px, 1fr)
+      minmax(150px, auto) !important;
+
+    padding: 12px !important;
+  }
+
+  .hrr-page .hrr-summary-panel > .hrr-summary-item {
+    gap: 8px;
+
+    padding: 0 9px !important;
+  }
+
+  .hrr-page .hrr-summary-panel .hrr-summary-icon {
+    flex-basis: 34px;
+
+    width: 34px;
+
+    height: 34px;
+  }
+
+  .hrr-page .hrr-summary-panel .hrr-summary-item strong {
+    font-size: 11px;
+  }
+
+  .hrr-page .hrr-summary-panel > .hrr-summary-actions {
+    padding-left: 10px !important;
+  }
+}
+
+/* Mobile: stack items cleanly instead of squeezing the row. */
+
+@media (max-width: 700px) {
+  .hrr-page .hrr-summary-panel {
+    grid-template-columns: minmax(0, 1fr) !important;
+
+    gap: 8px !important;
+
+    padding: 12px !important;
+  }
+
+  .hrr-page
+    .hrr-summary-panel
+    > .hrr-summary-item:not(.hrr-summary-period):not(.hrr-summary-zones),
+  .hrr-page .hrr-summary-panel > .hrr-summary-period,
+  .hrr-page .hrr-summary-panel > .hrr-summary-zones,
+  .hrr-page .hrr-summary-panel > .hrr-summary-actions {
+    grid-column: 1 !important;
+
+    grid-row: auto !important;
+  }
+
+  .hrr-page .hrr-summary-panel > .hrr-summary-item {
+    padding: 8px 0 !important;
+
+    border-right: 0 !important;
+
+    border-bottom: 1px solid #edf1f7 !important;
+  }
+
+  .hrr-page .hrr-summary-panel > .hrr-summary-zones {
+    border-bottom: 1px solid #edf1f7 !important;
+  }
+
+  .hrr-page .hrr-summary-panel > .hrr-summary-actions {
+    justify-content: flex-start !important;
+
+    padding: 6px 0 0 !important;
+  }
+
+  .hrr-page .hrr-summary-panel .hrr-back-filters-button {
+    width: auto;
+
+    max-width: 100%;
+  }
+}
+
+/* FINAL FIX: separator after Selected Zones */
+
+.hrr-page .hrr-summary-panel .hrr-summary-item:nth-child(3) {
+  border-right: 1px solid #dfe8f5 !important;
+
+  box-shadow: inset -1px 0 0 #dfe8f5 !important;
+
+  padding-right: 14px !important;
+}
+
+/* Keep separator visible at the end of Selected Zones */
+
+.hrr-page .hrr-summary-panel .hrr-summary-item:nth-child(3)::after {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+
+  right: 0;
+
+  width: 1px;
+
+  height: 100%;
+
+  background: #dfe8f5;
+
+  pointer-events: none;
+}
+
+.hrr-page .hrr-summary-panel .hrr-summary-item:nth-child(3) {
+  position: relative;
+}
+
+/* Do not add a border to the Back to Filters area */
+
+.hrr-page .hrr-summary-panel .hrr-summary-actions {
+  border: none !important;
+
+  box-shadow: none !important;
+}
+
+/* Historical report summary typography */
+.hrr-page .hrr-summary-panel .hrr-summary-item .hrr-summary-label {
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 500;
+}
+
+.hrr-page .hrr-summary-panel .hrr-summary-item .hrr-summary-value {
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .hrr-page .hrr-summary-panel .hrr-summary-item .hrr-summary-label {
+    font-size: 13px;
+  }
+
+  .hrr-page .hrr-summary-panel .hrr-summary-item .hrr-summary-value {
+    font-size: 15px;
+  }
+}
+
+/* =========================================================
+     REPORT SUMMARY TYPOGRAPHY
+     Labels: 13px | Values: 14px
+     Scoped to the summary panel so KPI labels remain unchanged.
+     ========================================================= */
+
+.hrr-page .hrr-summary-item small {
+  font-size: 13px;
+}
+
+.hrr-page .hrr-summary-item strong,
+.hrr-page .hrr-summary-item .hrr-selected-zones-text {
+  font-size: 14px;
+}
+
+/* Final override: Historical Report summary typography */
+.hrr-page .hrr-summary-panel .hrr-summary-item .hrr-summary-label {
+  font-size: 13px !important;
+}
+
+.hrr-page .hrr-summary-panel .hrr-summary-item .hrr-summary-value {
+  font-size: 14px !important;
+}
+
+@media (max-width: 600px) {
+  .hrr-page .hrr-summary-panel .hrr-summary-item .hrr-summary-label {
+    font-size: 13px !important;
+  }
+
+  .hrr-page .hrr-summary-panel .hrr-summary-item .hrr-summary-value {
+    font-size: 14px !important;
+  }
+}

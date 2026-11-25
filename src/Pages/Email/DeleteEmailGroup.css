@@ -1,0 +1,138 @@
+/* DeleteEmailGroup.css */
+
+.delete-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 12px;
+  padding: 40px 30px 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  width: 400px;
+  max-width: 90vw;
+  text-align: center;
+}
+
+.delete-dialog::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: -1;
+}
+
+.delete-dialog .icon {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.delete-dialog .trash-icon {
+  position: relative;
+  display: inline-block;
+}
+
+.delete-dialog .trash-icon img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+
+.delete-dialog h3 {
+  color: #333;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 20px 0 30px;
+  line-height: 1.4;
+}
+
+.delete-dialog .button-group {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.delete-dialog .cancel-btn,
+.delete-dialog .delete-btn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  min-width: 80px;
+  transition: all 0.2s ease;
+}
+
+.delete-dialog .cancel-btn {
+  background: #f8f9fa;
+  color: #6c757d;
+  border: 1px solid #dee2e6;
+}
+
+.delete-dialog .cancel-btn:hover {
+  background: #e9ecef;
+  color: #495057;
+}
+
+.delete-dialog .delete-btn {
+  background: #dc3545;
+  color: white;
+}
+
+.delete-dialog .delete-btn:hover {
+  background: #c82333;
+}
+
+/* Close button (X) */
+.delete-dialog .close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-dialog .close-btn:hover {
+  color: #333;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .delete-dialog {
+    width: 350px;
+    padding: 30px 20px 25px;
+  }
+  
+  .delete-dialog .trash-icon img {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .delete-dialog h3 {
+    font-size: 16px;
+  }
+  
+  .delete-dialog .button-group {
+    flex-direction: column;
+  }
+  
+  .delete-dialog .cancel-btn,
+  .delete-dialog .delete-btn {
+    width: 100%;
+  }
+}

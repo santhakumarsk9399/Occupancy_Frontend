@@ -1,0 +1,29 @@
+.custom-card {
+  /* background-color: #ffffff !important; */
+  /* border: 1px solid #dee2e6; */
+  border-radius: 12px;
+  padding: 10px;
+  /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); */
+  /* box-shadow: 0px 0px 3px 3px rgba(0,0,0,0.03); */
+  /* margin-bottom: 1rem; */
+}
+
+.custom-card-title {
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #343a40;
+}
+
+/* Size modifiers */
+.custom-card-sm {
+  padding: 0.5rem;
+}
+
+.custom-card-md {
+  padding: 8px;
+}
+
+.custom-card-lg {
+  padding: 8px;
+}

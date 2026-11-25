@@ -1,0 +1,81 @@
+/* ==========================
+   TV FOOTER
+========================== */
+
+.tv-footer{
+    height:54px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 24px;
+    background:#F8FAFC;
+    border-top:1px solid #E5E7EB;
+    flex-shrink:0;
+}
+.tv-footer-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#475569;
+    font-size:15px;
+    font-weight:500;
+}
+
+.tv-footer-icon{
+    font-size:18px;
+    color:#94A3B8;
+}
+
+.tv-footer-right{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.tv-footer-copy{
+    color:#64748B;
+    font-size:14px;
+}
+
+.tv-footer-logo{
+    height:28px;
+    object-fit:contain;
+}
+
+.jk-logo{
+    height:34px;
+}
+
+/* Center Info */
+
+.tv-footer-center{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    padding:6px 18px;
+
+    background:#EEF6FF;
+    border:1px solid #3B82F6;
+    border-radius:18px;
+
+    color:#1E3A8A;
+    font-size:13px;
+    font-weight:600;
+
+    white-space:nowrap;
+}
+
+.tv-footer-info-icon{
+    font-size:15px;
+    color:#2563EB;
+}
+
+/* Required because center is absolute */
+.tv-footer{
+    position:relative;
+}

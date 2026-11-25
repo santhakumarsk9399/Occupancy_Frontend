@@ -1,0 +1,14 @@
+/* src/pages/UnderDevelopment.css */
+.under-development {
+  background: linear-gradient(135deg, #343a40, #212529);
+  height: 60vh;
+}
+
+.icon-spin {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

@@ -1,0 +1,33 @@
+.threshold-page .main-layout {
+  padding: 24px;
+}
+.threshold-page .main-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+}
+.threshold-page .chip {
+  background: #eef2ff;
+  color: #3b82f6;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 14px;
+}
+.threshold-page .actions { display: flex; gap: 12px; margin-left: auto; }
+.threshold-page .main-btn {
+  background: #fff;
+  color: #2563eb;
+  border: 1px solid #2563eb;
+  border-radius: 8px;
+  padding: 8px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.threshold-page .main-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.threshold-page .main-content { margin-top: 8px; }

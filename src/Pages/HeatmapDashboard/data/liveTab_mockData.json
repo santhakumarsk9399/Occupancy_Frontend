@@ -1,0 +1,143 @@
+{
+  "success": true,
+  "message": "Live dashboard data fetched successfully",
+  "summaryCards": {
+    "totalVisitors": 24831,
+    "visitorsInside": 3205,
+    "peakHour": "14:00",
+    "avgDwellTime": "47min",
+    "activeAlerts": 3
+  },
+  "malls": [
+    {
+      "mallId": 1,
+      "mallName": "Nexus Mall - BLR",
+      "totalVisitors": 32962,
+      "occupancy": 72,
+
+      "floors": [
+        {
+          "floorId": 1,
+          "floorName": "Ground Floor",
+          "visitors": 14067,
+          "imageW": 5467,
+          "imageH": 3164,
+          "floorImage": "/images/nexus-ground.png",
+          "zones": [
+            {
+              "zoneId": 1,
+              "zoneName": "Fashion Zone",
+              "occupancy": 400,
+              "capacity": 1000,
+              "occupancyPercentage": 40
+            },
+            {
+              "zoneId": 2,
+              "zoneName": "Retail Zone",
+              "occupancy": 700,
+              "capacity": 2000,
+              "occupancyPercentage": 35
+            },
+            {
+              "zoneId": 3,
+              "zoneName": "Gaming Zone",
+              "occupancy": 1500,
+              "capacity": 2000,
+              "occupancyPercentage": 75
+            }
+          ]
+        },
+        {
+          "floorId": 2,
+          "floorName": "First Floor",
+          "visitors": 10245,
+          "imageW": 5467,
+          "imageH": 3164,
+          "floorImage": "/images/nexus-first.png",
+
+          "zones": [
+            {
+              "zoneId": 4,
+              "zoneName": "Food Court",
+              "occupancy": 2400,
+              "capacity": 5000,
+              "occupancyPercentage": 48
+            },
+            {
+              "zoneId": 5,
+              "zoneName": "Kids Area",
+              "occupancy": 850,
+              "capacity": 1000,
+              "occupancyPercentage": 85
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "mallId": 2,
+      "mallName": "Phoenix Mall - CHN",
+      "floors": [
+        {
+          "floorId": 12,
+          "floorName": "Ground Floor",
+          "visitors": 18500,
+          "imageW": 5467,
+          "imageH": 3164,
+          "floorImage": "/images/nexus-first.png",
+
+          "zones": [
+            {
+              "zoneId": 8,
+              "zoneName": "Luxury Zone",
+              "occupancy": 5400,
+              "capacity": 12000,
+              "occupancyPercentage": 45
+            },
+            {
+              "zoneId": 9,
+              "zoneName": "Entertainment",
+              "occupancy": 4100,
+              "capacity": 5000,
+              "occupancyPercentage": 82
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "mallId": 3,
+      "mallName": "Forum Mall - HYD",
+
+      "floors": [
+        {
+          "floorId": 15,
+          "floorName": "Ground Floor",
+          "visitors": 9600,
+          "imageW": 5467,
+          "imageH": 3164,
+          "floorImage": "/images/nexus-ground.png",
+
+          "zones": [
+            {
+              "zoneId": 12,
+              "zoneName": "Sports Zone",
+              "occupancy": 1800,
+              "capacity": 10000,
+              "occupancyPercentage": 18
+            },
+            {
+              "zoneId": 13,
+              "zoneName": "Cafe Street",
+              "occupancy": 950,
+              "capacity": 4000,
+              "occupancyPercentage": 24
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

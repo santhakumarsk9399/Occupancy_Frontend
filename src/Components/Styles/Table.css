@@ -1,0 +1,27 @@
+html {
+    font-size: 14px;
+}
+.Mainapp {
+    display: flex;
+    flex-direction: row;
+}
+.card {
+    background: var(--surface-card);
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+.Header_app
+ {
+    width: -webkit-fill-available;
+}
+.rdt_Table
+{
+    border: 1px solid rgb(196, 190, 190);
+}
+.rdt_TableHeadRow
+{
+    font-size: 16px;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 500;
+}

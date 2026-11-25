@@ -1,0 +1,65 @@
+.tv-summary-grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 18px;
+
+  margin: 20px 0;
+}
+
+.tv-summary-card {
+  background: #1e293b;
+
+  border-radius: 18px;
+
+  padding: 20px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+.tv-card-icon {
+  width: 70px;
+
+  height: 70px;
+
+  border-radius: 50%;
+
+  background: #f8fafc;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  font-size: 34px;
+}
+
+.tv-card-info {
+  flex: 1;
+}
+
+.tv-card-info h3 {
+  margin: 0;
+
+  color: white;
+
+  font-size: 40px;
+
+  font-weight: 700;
+}
+
+.tv-card-info p {
+  margin-top: 8px;
+
+  color: #cbd5e1;
+
+  font-size: 18px;
+}

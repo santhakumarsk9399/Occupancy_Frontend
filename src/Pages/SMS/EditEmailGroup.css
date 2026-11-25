@@ -1,0 +1,118 @@
+.edit-email-modal {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 32px 28px 24px 28px;
+  max-width: 420px;
+  margin: auto;
+  position: relative;
+}
+
+.edit-email-modal .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.edit-email-modal .modal-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.edit-email-modal .modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #888;
+  cursor: pointer;
+}
+
+.edit-email-modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.edit-email-modal label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #444;
+}
+
+.edit-email-modal input,
+.edit-email-modal .react-select__control {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+  background: #f9f9f9;
+}
+
+.edit-email-modal .email-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.edit-email-modal .email-chip {
+  background: #e0e7ff;
+  color: #3730a3;
+  border-radius: 12px;
+  padding: 4px 10px;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.edit-email-modal .email-chip .remove-btn {
+  background: none;
+  border: none;
+  color: #a1a1aa;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.edit-email-modal .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.edit-email-modal .save-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.edit-email-modal .save-btn:disabled {
+  background: #a5b4fc;
+  cursor: not-allowed;
+}
+
+.edit-email-modal .cancel-btn {
+  background: #f3f4f6;
+  color: #374151;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.edit-email-modal .error {
+  color: #dc2626;
+  font-size: 0.95rem;
+  margin-top: 2px;
+}

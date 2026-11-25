@@ -1,0 +1,4100 @@
+/* =========================================================
+   TITAN DASHBOARD
+   PREMIUM FACTORY OCCUPANCY OVERVIEW
+========================================================= */
+/* =========================================================
+   GLOBAL FONT - INTER
+========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif !important;
+}
+
+html,
+body,
+#root {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
+    font-family: "Inter", sans-serif !important;
+}
+
+body {
+    font-family: "Inter", sans-serif !important;
+    color: #10204a;
+    background: #eaf3fb;
+}
+
+button,
+input,
+textarea,
+select,
+option {
+    font-family: "Inter", sans-serif !important;
+}
+
+svg,
+svg text,
+svg tspan {
+    font-family: "Inter", sans-serif !important;
+}
+
+.titan-dashboard,
+.titan-dashboard * {
+    font-family: "Inter", sans-serif !important;
+}
+/* * {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  color: #10204a;
+  background: #eaf3fb;
+} */
+
+/* =========================================================
+   PAGE + BACKGROUND
+========================================================= */
+
+.titan-dashboard {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 700px;
+  overflow: hidden;
+  background: #eaf3fb;
+}
+
+.titan-background {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  background: #eaf3fb;
+}
+
+.titan-factory-watermark {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.93;
+  filter:
+    brightness(1.18)
+    contrast(0.78)
+    saturate(0.48);
+}
+
+.titan-background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(247, 251, 254, 0.22) 0%,
+      rgba(247, 251, 254, 0.10) 42%,
+      rgba(239, 247, 252, 0.22) 100%
+    );
+}
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.titan-dashboard-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 38px 74px;
+  overflow: hidden;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.titan-header {
+  flex: 0 0 96px;
+  min-height: 96px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+.titan-header-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 22px;
+  min-width: 0;
+}
+
+/* =========================================================
+   HEADER BRAND LOGOS - LARGE / CLEAR
+========================================================= */
+
+.titan-header-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    min-width: 0;
+}
+
+/* Tanishq + Titan Company wrapper */
+.titan-brand-logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 82px;
+
+    flex-shrink: 0;
+}
+
+/* Individual logo containers */
+.titan-brand-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   TANISHQ LOGO
+========================================================= */
+
+/* =========================================================
+   TANISHQ LOGO - LARGER & CLEARER
+========================================================= */
+
+.tanishq-brand {
+    width: 125px;
+    height: 82px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tanishq-brand img {
+    width: 118px;
+    height: 78px;
+
+    object-fit: contain;
+    object-position: center;
+
+    display: block;
+
+    transform: scale(1.12);
+}
+
+/* =========================================================
+   TITAN COMPANY LOGO
+========================================================= */
+
+.titan-company-brand {
+    width: 120px;
+    height: 78px;
+}
+
+/* Both logos */
+.titan-brand-item img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+    object-position: center;
+
+    /* Makes the logo visually stronger */
+    transform: scale(1.08);
+}
+
+/* =========================================================
+   VERTICAL DIVIDER
+========================================================= */
+
+.titan-brand-divider {
+    width: 1px;
+    height: 58px;
+
+    margin: 0 14px;
+
+    background: rgba(23, 43, 77, 0.45);
+
+    flex-shrink: 0;
+}
+
+.titan-title-block {
+  padding-top: 1px;
+}
+
+.titan-header h1 {
+  margin: 0;
+  color: #0b1b46;
+  font-size: 36px;
+  line-height: 1.08;
+  font-weight: 760;
+  letter-spacing: -0.9px;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.95),
+    0 2px 6px rgba(25, 48, 80, 0.10);
+}
+
+.titan-header p {
+  margin: 7px 0 0;
+  color: #46638d;
+  font-size: 15px;
+  line-height: 1.2;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.95);
+}
+
+/* =========================================================
+   HEADER STATUS
+========================================================= */
+
+.titan-header-right {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 1px;
+  padding: 10px 11px 10px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow:
+    0 8px 24px rgba(30, 58, 92, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.titan-live {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 13px;
+  border-radius: 20px;
+  background: #e5faf1;
+  border: 1px solid rgba(20, 182, 125, 0.15);
+  color: #079b68;
+  font-size: 13px;
+  font-weight: 750;
+  box-shadow: 0 3px 9px rgba(20, 182, 125, 0.10);
+}
+
+.titan-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #16b77e;
+  box-shadow: 0 0 0 3px rgba(22, 183, 126, 0.11);
+}
+
+.titan-header-line {
+  width: 1px;
+  height: 19px;
+  background: #c3cfdd;
+}
+
+.titan-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #304a72;
+  font-size: 15px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.titan-header-meta svg {
+  color: #516b91;
+}
+
+/* =========================================================
+   KPI CARDS
+========================================================= */
+
+.titan-kpi-grid {
+  flex: 0 0 100px;
+  min-height: 100px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 11px;
+}
+
+.titan-kpi-card {
+  position: relative;
+  height: 100px;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px 14px 20px;
+  overflow: hidden;
+  border-radius: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.96);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.95),
+      rgba(247, 251, 254, 0.87)
+    );
+  box-shadow:
+    0 10px 28px rgba(37, 67, 103, 0.10),
+    0 2px 6px rgba(37, 67, 103, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.titan-kpi-card::after {
+  content: "";
+  position: absolute;
+  width: 160px;
+  height: 112px;
+  right: -16px;
+  bottom: -62px;
+  border-radius: 50%;
+  opacity: 0.92;
+}
+
+.titan-kpi-new::after {
+  background: #fff0d0;
+}
+
+.titan-kpi-old::after {
+  background: #e8ddff;
+}
+
+.titan-kpi-cbc::after {
+  background: #d2f4ef;
+}
+
+.titan-kpi-warehouse::after {
+  background: #ffe0d5;
+}
+
+.titan-kpi-icon {
+  position: relative;
+  z-index: 2;
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  box-shadow: 0 5px 12px rgba(40, 65, 100, 0.06);
+}
+
+.titan-kpi-new .titan-kpi-icon {
+  background: #fff1d2;
+  color: #c27a08;
+}
+
+.titan-kpi-old .titan-kpi-icon {
+  background: #e9ddff;
+  color: #6520df;
+}
+
+.titan-kpi-cbc .titan-kpi-icon {
+  background: #d5f5f1;
+  color: #08aa99;
+}
+
+.titan-kpi-warehouse .titan-kpi-icon {
+  background: #ffe2d8;
+  color: #f15b25;
+}
+
+.titan-kpi-info {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+}
+
+.titan-kpi-label {
+  display: block;
+  margin-bottom: 5px;
+  color: #1d3159;
+  font-size: 13px;
+  font-weight: 550;
+}
+
+.titan-kpi-value {
+  color: #0d1d49;
+  font-size: 29px;
+  line-height: 1;
+  font-weight: 760;
+  letter-spacing: -0.5px;
+}
+
+/* =========================================================
+   CHART GRID
+========================================================= */
+
+.titan-chart-grid {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.titan-chart-card {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 17px 26px 14px;
+  overflow: hidden;
+  border-radius: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.97);
+  background:#ffffff;
+    /* linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.95),
+      rgba(248, 251, 254, 0.88)
+    ); */
+  box-shadow:
+    0 12px 32px rgba(37, 67, 103, 0.09),
+    0 2px 7px rgba(37, 67, 103, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.titan-chart-heading {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.titan-chart-heading h2 {
+  margin: 0;
+  color: #0d1d49;
+  font-size:20px;
+  line-height: 1.2;
+  font-weight: 720;
+  letter-spacing: -0.2px;
+}
+
+.titan-chart-heading h2 span {
+  color: #5b7093;
+  font-size: 12px;
+  font-weight: 450;
+}
+
+.titan-chart-heading p {
+  margin: 4px 0 0;
+  color: #8392a8;
+  font-size: 13px;
+  font-weight: 450;
+}
+
+.titan-more-button {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(238, 245, 251, 0.75);
+  cursor: default;
+}
+
+.titan-more-button span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #5c78a1;
+}
+
+/* =========================================================
+   DONUT
+========================================================= */
+
+.titan-distribution-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+}
+
+.titan-donut-wrapper {
+  position: relative;
+  width: 340px;
+  height: 340px;
+  flex: 0 0 340px;
+}
+
+.titan-donut-wrapper svg {
+  overflow: visible;
+}
+
+.titan-donut-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  pointer-events: none;
+}
+
+.titan-donut-center strong {
+  color: #0d1d49;
+  font-size: 40px;
+  line-height: 1;
+  font-weight: 760;
+}
+
+.titan-donut-center span {
+  margin-top: 6px;
+  color: #617595;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.titan-distribution-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  flex-shrink: 0;
+  padding-left: 20px;
+}
+
+.titan-distribution-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #1c2d50;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.titan-distribution-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+
+.titan-distribution-zone {
+  min-width: 42px;
+  font-weight: 550;
+}
+
+.titan-distribution-percent {
+  color: #607596;
+}
+
+/* =========================================================
+   LOCATION BAR CHART
+========================================================= */
+
+.titan-location-chart {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.titan-location-chart svg {
+  overflow: visible;
+}
+
+.titan-location-legend {
+  flex: 0 0 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  color: #5b7093;
+  font-size: 13px;
+}
+
+.titan-location-legend div {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.titan-gents-dot,
+.titan-ladies-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.titan-gents-dot {
+  background: #6652d9;
+}
+
+.titan-ladies-dot {
+  background: #2cc398;
+}
+
+/* =========================================================
+   SUMMARY - TWO ITEMS ONLY
+========================================================= */
+.titan-summary {
+    width: 100%;
+    min-height: 82px;
+
+    display: grid;
+
+    /* 4 equal KPI columns + 3 dividers */
+    grid-template-columns:
+        minmax(0, 1fr) 1px
+        minmax(0, 1fr) 1px
+        minmax(0, 1fr) 1px
+        minmax(0, 1fr);
+
+    align-items: center;
+
+    padding: 10px 12px;
+
+    background: rgba(255, 255, 255, 0.94);
+
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 16px;
+
+    box-shadow:
+        0 8px 25px rgba(31, 55, 90, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   EACH KPI ITEM - EXACTLY EQUAL AREA
+========================================================= */
+
+.titan-summary-item {
+    min-width: 0;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 0 22px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   DIVIDERS
+========================================================= */
+
+.titan-summary-divider {
+    width: 1px;
+    height: 42px;
+
+    background: #dce3ed;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.titan-summary-icon {
+    width: 48px;
+    height: 48px;
+
+    flex: 0 0 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.titan-summary-content {
+    min-width: 0;
+    flex: 1 1 auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.titan-summary-content span {
+    font-size: 12px;
+    font-weight: 500;
+
+    color: #637493;
+
+    white-space: nowrap;
+}
+
+
+.titan-summary-content strong {
+    margin-top: 2px;
+
+    font-size: 27px;
+    line-height: 1;
+
+    font-weight: 700;
+
+    color: #152653;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   OVERALL OCCUPANCY
+========================================================= */
+
+.titan-overall {
+    padding-left: 22px;
+    padding-right: 22px;
+}
+
+.titan-overall .titan-summary-content strong {
+    color: #10a982;
+}
+/* =========================================================
+   FOOTER
+========================================================= */
+
+/* .titan-dashboard-footer {
+  position: fixed;
+  right: 28px;
+  bottom: 9px;
+  z-index: 50;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.titan-dashboard-footer-right {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.titan-dashboard-footer-copyright {
+  color: rgba(50, 71, 101, 0.78);
+  font-size: 11px;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.90);
+}
+
+.titan-dashboard-footer-logo {
+  width: 112px;
+  height: 28px;
+  object-fit: contain;
+  opacity: 0.88;
+  filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.65));
+} */
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.titan-dashboard-footer {
+    width: 100%;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 22px;
+
+    border-top: 1px solid rgba(74, 105, 145, 0.25);
+
+    background: rgba(255, 255, 255, 0.08);
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   LEFT NOTE
+========================================================= */
+
+.titan-dashboard-footer-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #58708f;
+    font-size: 14px;
+    font-weight: 500;
+
+    white-space: nowrap;
+}
+
+
+/* Information Icon */
+
+.titan-dashboard-footer-note-icon {
+    width: 17px;
+    height: 17px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #304f7a;
+    color: #ffffff;
+
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+
+/* Note Text */
+
+.titan-dashboard-footer-note-text {
+    color: #58708f;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   RIGHT SIDE
+========================================================= */
+
+.titan-dashboard-footer-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    white-space: nowrap;
+}
+
+
+/* Copyright */
+
+.titan-dashboard-footer-copyright {
+    color: #58708f;
+
+    font-size: 11px;
+    font-weight: 500;
+
+    letter-spacing: 0.1px;
+}
+
+
+/* Footer Logo */
+
+.titan-dashboard-footer-logo {
+    width: 72px;
+    height: auto;
+
+    object-fit: contain;
+
+    display: block;
+}
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+
+@media (min-width: 1601px) {
+  .titan-dashboard-content {
+    padding: 20px 42px 76px;
+  }
+
+  .titan-header {
+    flex-basis: 98px;
+    min-height: 98px;
+  }
+
+  .titan-header h1 {
+    font-size: 38px;
+  }
+
+  .titan-donut-wrapper {
+    width: 370px;
+    height: 370px;
+    flex-basis: 370px;
+  }
+}
+
+/* =========================================================
+   1200 - 1600
+========================================================= */
+
+@media (min-width: 1200px) and (max-width: 1600px) {
+  .titan-dashboard-content {
+    padding: 16px 34px 70px;
+  }
+
+  .titan-header {
+    flex-basis: 88px;
+    min-height: 88px;
+  }
+
+  .titan-brand-logos {
+    height: 68px;
+  }
+
+  .tanishq-brand {
+    width: 92px;
+    height: 62px;
+  }
+
+  .titan-company-brand {
+    width: 92px;
+    height: 62px;
+  }
+
+  .titan-brand-divider {
+    height: 48px;
+    margin: 0 11px;
+  }
+
+  .titan-header h1 {
+    font-size: 32px;
+  }
+
+  .titan-header p {
+    font-size: 13px;
+  }
+
+  .titan-header-right {
+    gap: 9px;
+    padding: 6px 9px 6px 7px;
+  }
+
+  .titan-live {
+    padding: 7px 11px;
+  }
+
+  .titan-header-meta {
+    font-size: 11px;
+  }
+
+  .titan-kpi-grid {
+    flex-basis: 98px;
+    min-height: 98px;
+  }
+
+  .titan-kpi-card {
+    height: 98px;
+  }
+
+  .titan-chart-card {
+    padding: 15px 20px 12px;
+  }
+
+  .titan-donut-wrapper {
+    width: 300px;
+    height: 300px;
+    flex-basis: 300px;
+  }
+
+  .titan-donut-center strong {
+    font-size: 35px;
+  }
+
+  .titan-distribution-body {
+    gap: 15px;
+  }
+
+  .titan-distribution-item {
+    font-size: 13px;
+  }
+
+  .titan-summary {
+    flex-basis: 80px;
+    min-height: 80px;
+    height: 80px;
+  }
+
+  .titan-summary-item strong {
+    font-size: 28px;
+  }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1199px) {
+  .titan-dashboard {
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
+  }
+
+  .titan-dashboard-content {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+    padding: 18px 24px 65px;
+  }
+
+  .titan-header {
+    flex: none;
+    min-height: 80px;
+    height: auto;
+  }
+
+  .titan-chart-grid {
+    flex: none;
+    height: 500px;
+    min-height: 500px;
+  }
+
+  .titan-chart-card {
+    height: 500px;
+    min-height: 500px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 800px) {
+  .titan-dashboard-content {
+    padding: 14px 14px 58px;
+  }
+
+  .titan-header {
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 13px;
+  }
+
+  .titan-header-left {
+    gap: 11px;
+  }
+
+  .titan-brand-logos {
+    height: 54px;
+  }
+
+  .tanishq-brand,
+  .titan-company-brand {
+    width: 68px;
+    height: 50px;
+  }
+
+  .titan-brand-divider {
+    height: 38px;
+    margin: 0 7px;
+  }
+
+  .titan-title-block {
+    padding-top: 0;
+  }
+
+  .titan-header h1 {
+    font-size: 23px;
+  }
+
+  .titan-header p {
+    font-size: 12px;
+  }
+
+  .titan-header-right {
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .titan-kpi-grid {
+    flex: none;
+    min-height: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    height: auto;
+  }
+
+  .titan-kpi-card {
+    height: 92px;
+    padding: 12px;
+  }
+
+  .titan-kpi-value {
+    font-size: 25px;
+  }
+
+  .titan-chart-grid {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow: visible;
+  }
+
+  .titan-chart-card {
+    height: 430px;
+    min-height: 430px;
+  }
+
+  .titan-summary {
+    grid-template-columns: 1fr 1px 1fr;
+    min-height: 88px;
+    height: 88px;
+    padding: 6px 10px;
+  }
+
+  .titan-summary-item {
+    padding: 0 10px;
+  }
+
+  .titan-overall {
+    padding-left: 14px;
+  }
+
+  .titan-dashboard-footer {
+    right: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .titan-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .titan-distribution-body {
+    flex-direction: column;
+  }
+
+  .titan-donut-wrapper {
+    width: 220px;
+    height: 220px;
+    flex-basis: 220px;
+  }
+
+  .titan-distribution-legend {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 9px 13px;
+  }
+
+  .titan-summary {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 150px;
+  }
+
+  .titan-summary-divider {
+    display: none;
+  }
+
+  .titan-overall {
+    padding-left: 10px;
+  }
+
+  .titan-header-right {
+    flex-wrap: wrap;
+  }
+}
+
+
+/* =========================================================
+   FINAL MATCH + PREMIUM KPI + HOVER TOOLTIP
+========================================================= */
+
+/* KPI cards: richer premium treatment without changing the
+   reference layout */
+.titan-kpi-card {
+  min-height: 100px;
+  cursor: default;
+  isolation: isolate;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.titan-kpi-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 4px;
+  height: calc(100% - 24px);
+  z-index: 3;
+  opacity: 1;
+  border-radius: 0 4px 4px 0;
+}
+
+.titan-kpi-new::before {
+  background: linear-gradient(180deg, #e6a72c, #ffc95e);
+}
+
+.titan-kpi-old::before {
+  background: linear-gradient(180deg, #7049df, #9d7af0);
+}
+
+.titan-kpi-cbc::before {
+  background: linear-gradient(180deg, #0bb9a5, #43d5c5);
+}
+
+.titan-kpi-warehouse::before {
+  background: linear-gradient(180deg, #f26935, #ff9270);
+}
+
+.titan-kpi-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow:
+    0 15px 34px rgba(28, 58, 91, 0.14),
+    0 3px 8px rgba(28, 58, 91, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.titan-kpi-card:hover .titan-kpi-icon {
+  transform: scale(1.045);
+}
+
+.titan-kpi-icon {
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.titan-kpi-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.titan-kpi-label {
+  letter-spacing: -0.05px;
+}
+
+.titan-kpi-value {
+  margin-bottom: 4px;
+}
+
+.titan-kpi-status {
+  display: block;
+  color: #91a0b5;
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+
+/* Keep decorative KPI circles crisp */
+.titan-kpi-card::after {
+  z-index: -1;
+  opacity: 0.95;
+}
+
+/* =========================================================
+   CHART HOVER TOOLTIP
+========================================================= */
+
+.titan-chart-tooltip {
+  min-width: 145px;
+  padding: 11px 13px;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  background: rgba(18, 31, 67, 0.94);
+  box-shadow:
+    0 10px 28px rgba(22, 42, 75, 0.22),
+    0 2px 6px rgba(22, 42, 75, 0.10);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  pointer-events: none;
+}
+
+.titan-tooltip-title {
+  margin-bottom: 8px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 1.1;
+  font-weight: 750;
+}
+
+.titan-tooltip-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 11px;
+  line-height: 1.1;
+}
+
+.titan-tooltip-row strong {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.titan-tooltip-row span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.titan-tooltip-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 9px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
+}
+
+.titan-tooltip-total strong {
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.titan-tooltip-dot {
+  width: 7px;
+  height: 7px;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.titan-tooltip-gents {
+  background: #6652d9;
+}
+
+.titan-tooltip-ladies {
+  background: #2cc398;
+}
+
+/* Slightly clearer chart hover state */
+.titan-location-chart .recharts-bar-rectangle {
+  transition: opacity 160ms ease;
+}
+
+.titan-location-chart:hover .recharts-bar-rectangle {
+  opacity: 0.90;
+}
+
+.titan-location-chart .recharts-bar-rectangle:hover {
+  opacity: 1;
+}
+
+/* Donut slices also feel interactive */
+.titan-donut-wrapper .recharts-pie-sector {
+  transition:
+    transform 160ms ease,
+    opacity 160ms ease;
+  transform-origin: center;
+}
+
+.titan-donut-wrapper .recharts-pie-sector:hover {
+  opacity: 0.92;
+  filter: brightness(1.04);
+}
+
+/* =========================================================
+   REFERENCE-SIZE REFINEMENTS
+========================================================= */
+
+.titan-chart-heading p {
+  margin-top: 5px;
+}
+
+.titan-chart-card {
+  padding-top: 16px;
+}
+
+.titan-distribution-body {
+  padding-top: 2px;
+}
+
+.titan-location-chart {
+  margin-top: 3px;
+}
+
+.titan-location-legend {
+  padding-bottom: 2px;
+}
+
+@media (min-width: 1200px) {
+  .titan-kpi-card {
+    height: 100px;
+  }
+
+  .titan-kpi-status {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 800px) {
+  .titan-kpi-status {
+    display: none;
+  }
+}
+
+
+/* =========================================================
+   FINAL KPI CARD DESIGN
+   Matched card tint + icon color + decorative shape
+========================================================= */
+
+.titan-kpi-card {
+    position: relative !important;
+    overflow: hidden !important;
+    isolation: isolate !important;
+
+    border-radius: 13px !important;
+
+    border: 1px solid rgba(255, 255, 255, 0.96) !important;
+
+    box-shadow:
+        0 8px 22px rgba(40, 65, 95, 0.08),
+        0 2px 5px rgba(40, 65, 95, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.96) !important;
+
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+
+    transition:
+        transform 180ms ease,
+        box-shadow 180ms ease,
+        border-color 180ms ease !important;
+}
+
+/* ---------------------------------------------------------
+   CARD BACKGROUND TINT
+--------------------------------------------------------- */
+
+.titan-kpi-new {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 249, 235, 0.97) 0%,
+            rgba(255, 252, 245, 0.95) 55%,
+            rgba(255, 245, 220, 0.91) 100%
+        ) !important;
+}
+
+.titan-kpi-old {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(248, 245, 255, 0.97) 0%,
+            rgba(250, 248, 255, 0.95) 55%,
+            rgba(239, 232, 255, 0.91) 100%
+        ) !important;
+}
+
+.titan-kpi-cbc {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(240, 252, 250, 0.97) 0%,
+            rgba(245, 253, 252, 0.95) 55%,
+            rgba(225, 248, 244, 0.91) 100%
+        ) !important;
+}
+
+.titan-kpi-warehouse {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 247, 244, 0.97) 0%,
+            rgba(255, 250, 248, 0.95) 55%,
+            rgba(255, 235, 228, 0.91) 100%
+        ) !important;
+}
+
+/* ---------------------------------------------------------
+   LEFT COLOR ACCENT
+--------------------------------------------------------- */
+
+.titan-kpi-card::before {
+    content: "" !important;
+    position: absolute !important;
+
+    left: 0 !important;
+    top: 10px !important;
+
+    width: 4px !important;
+    height: calc(100% - 20px) !important;
+
+    z-index: 6 !important;
+
+    border-radius: 0 5px 5px 0 !important;
+
+    opacity: 1 !important;
+}
+
+.titan-kpi-new::before {
+    background: #e49a16 !important;
+    box-shadow: 0 0 7px rgba(228, 154, 22, 0.22) !important;
+}
+
+.titan-kpi-old::before {
+    background: #6848d8 !important;
+    box-shadow: 0 0 7px rgba(104, 72, 216, 0.20) !important;
+}
+
+.titan-kpi-cbc::before {
+    background: #08b5a4 !important;
+    box-shadow: 0 0 7px rgba(8, 181, 164, 0.20) !important;
+}
+
+.titan-kpi-warehouse::before {
+    background: #f2673b !important;
+    box-shadow: 0 0 7px rgba(242, 103, 59, 0.20) !important;
+}
+
+/* ---------------------------------------------------------
+   BOTTOM-RIGHT DECORATIVE SHAPE
+--------------------------------------------------------- */
+
+.titan-kpi-card::after {
+    content: "" !important;
+
+    position: absolute !important;
+
+    width: 190px !important;
+    height: 135px !important;
+
+    right: -35px !important;
+    bottom: -78px !important;
+
+    border-radius: 100% 0 0 0 !important;
+
+    z-index: 1 !important;
+
+    opacity: 1 !important;
+
+    pointer-events: none !important;
+}
+
+/* New Building */
+.titan-kpi-new::after {
+    background: #ffe8b6 !important;
+}
+
+/* Old Building */
+.titan-kpi-old::after {
+    background: #dfd3ff !important;
+}
+
+/* CBC */
+.titan-kpi-cbc::after {
+    background: #c8f0eb !important;
+}
+
+/* Warehouse */
+.titan-kpi-warehouse::after {
+    background: #ffd8cc !important;
+}
+
+/* ---------------------------------------------------------
+   KPI ICON CIRCLES
+--------------------------------------------------------- */
+
+.titan-kpi-icon {
+    position: relative !important;
+    z-index: 7 !important;
+
+    width: 50px !important;
+    height: 50px !important;
+
+    flex-shrink: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius: 50% !important;
+
+    box-shadow:
+        0 3px 8px rgba(30, 50, 80, 0.06),
+        inset 0 1px 2px rgba(255, 255, 255, 0.82) !important;
+
+    transition:
+        transform 180ms ease,
+        box-shadow 180ms ease !important;
+}
+
+.titan-kpi-new .titan-kpi-icon {
+    background: #fff0d0 !important;
+    color: #d18a00 !important;
+}
+
+.titan-kpi-old .titan-kpi-icon {
+    background: #e7dcff !important;
+    color: #6636dc !important;
+}
+
+.titan-kpi-cbc .titan-kpi-icon {
+    background: #d2f4ef !important;
+    color: #08aa98 !important;
+}
+
+.titan-kpi-warehouse .titan-kpi-icon {
+    background: #ffe1d7 !important;
+    color: #f06438 !important;
+}
+
+/* ---------------------------------------------------------
+   KPI TEXT
+--------------------------------------------------------- */
+
+.titan-kpi-info {
+    position: relative !important;
+    z-index: 7 !important;
+}
+
+.titan-kpi-label {
+    color: #1b2d51 !important;
+    font-weight: 600 !important;
+}
+
+.titan-kpi-value {
+    color: #10204a !important;
+    font-weight: 760 !important;
+}
+
+.titan-kpi-status {
+    color: #8292aa !important;
+}
+
+/* ---------------------------------------------------------
+   HOVER
+--------------------------------------------------------- */
+
+.titan-kpi-card:hover {
+    transform: translateY(-2px) !important;
+
+    box-shadow:
+        0 13px 28px rgba(40, 65, 95, 0.12),
+        0 3px 7px rgba(40, 65, 95, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+}
+
+.titan-kpi-card:hover .titan-kpi-icon {
+    transform: scale(1.045);
+}
+
+/* ---------------------------------------------------------
+   KEEP SHAPE VISIBLE AT DIFFERENT SCREEN SIZES
+--------------------------------------------------------- */
+
+@media (min-width: 1200px) {
+    .titan-kpi-card::after {
+        width: 190px !important;
+        height: 135px !important;
+        right: -35px !important;
+        bottom: -78px !important;
+    }
+}
+
+@media (max-width: 1199px) {
+    .titan-kpi-card::after {
+        width: 165px !important;
+        height: 120px !important;
+        right: -28px !important;
+        bottom: -68px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .titan-kpi-card::after {
+        width: 145px !important;
+        height: 105px !important;
+        right: -25px !important;
+        bottom: -60px !important;
+    }
+}
+
+
+/* =========================================================
+   KPI CARDS - EXACT REFERENCE STYLE
+   Based on the provided second reference image
+========================================================= */
+
+/* Remove the previous left accent and restore the clean
+   white KPI card treatment from the reference. */
+.titan-kpi-card {
+    position: relative !important;
+    overflow: hidden !important;
+    isolation: isolate !important;
+
+    height: 82px !important;
+    min-height: 82px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+
+    padding: 10px 14px !important;
+
+    border-radius: 8px !important;
+    border: 1px solid #e8edf3 !important;
+
+    background: #ffffff !important;
+
+    box-shadow:
+        0 3px 12px rgba(37, 58, 86, 0.055),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+
+    transform: none !important;
+}
+
+/* Remove left-side colored strip */
+.titan-kpi-card::before {
+    content: none !important;
+    display: none !important;
+}
+
+/* Reference-style soft bottom-right curved shape */
+.titan-kpi-card::after {
+    content: "" !important;
+
+    position: absolute !important;
+
+    width: 118px !important;
+    height: 72px !important;
+
+    right: -14px !important;
+    bottom: -43px !important;
+
+    border-radius: 70px 0 0 0 !important;
+
+    z-index: 0 !important;
+
+    opacity: 1 !important;
+
+    pointer-events: none !important;
+}
+
+/* New Building - soft amber */
+.titan-kpi-new::after {
+    background: #fff0d2 !important;
+}
+
+/* Old Building - soft lavender */
+.titan-kpi-old::after {
+    background: #eee7ff !important;
+}
+
+/* CBC - soft mint */
+.titan-kpi-cbc::after {
+    background: #dff7f3 !important;
+}
+
+/* Warehouse - soft coral */
+.titan-kpi-warehouse::after {
+    background: #ffe9e2 !important;
+}
+
+/* =========================================================
+   REFERENCE ICON CIRCLE
+========================================================= */
+
+.titan-kpi-icon {
+    position: relative !important;
+    z-index: 3 !important;
+
+    width: 48px !important;
+    height: 48px !important;
+
+    flex: 0 0 48px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius: 50% !important;
+
+    border: 0 !important;
+
+    box-shadow: none !important;
+
+    transform: none !important;
+}
+
+/* Amber */
+.titan-kpi-new .titan-kpi-icon {
+    background: #fff3d9 !important;
+    color: #d28a08 !important;
+}
+
+/* Purple */
+.titan-kpi-old .titan-kpi-icon {
+    background: #eee7ff !important;
+    color: #6638d8 !important;
+}
+
+/* Teal */
+.titan-kpi-cbc .titan-kpi-icon {
+    background: #dff7f3 !important;
+    color: #06aa98 !important;
+}
+
+/* Coral */
+.titan-kpi-warehouse .titan-kpi-icon {
+    background: #ffe8df !important;
+    color: #f15e36 !important;
+}
+
+/* =========================================================
+   REFERENCE TEXT
+========================================================= */
+
+.titan-kpi-info {
+    position: relative !important;
+    z-index: 3 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+
+    min-width: 0 !important;
+}
+
+.titan-kpi-label {
+    margin: 0 0 3px !important;
+
+    color: #18294e !important;
+
+    font-size: 11px !important;
+    line-height: 1.1 !important;
+
+    font-weight: 600 !important;
+
+    white-space: nowrap !important;
+}
+
+.titan-kpi-value {
+    margin: 0 !important;
+
+    color: #10204a !important;
+
+    font-size: 25px !important;
+    line-height: 1 !important;
+
+    font-weight: 750 !important;
+    letter-spacing: -0.4px !important;
+}
+
+.titan-kpi-status {
+    display: none !important;
+}
+
+/* =========================================================
+   REFERENCE HOVER
+========================================================= */
+
+.titan-kpi-card:hover {
+    transform: translateY(-1px) !important;
+
+    box-shadow:
+        0 6px 16px rgba(37, 58, 86, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+}
+
+.titan-kpi-card:hover .titan-kpi-icon {
+    transform: none !important;
+}
+
+/* =========================================================
+   KPI GRID SPACING
+========================================================= */
+
+.titan-kpi-grid {
+    gap: 10px !important;
+}
+
+/* Desktop sizing closer to reference */
+@media (min-width: 1200px) {
+    .titan-kpi-card {
+        height: 82px !important;
+        min-height: 82px !important;
+    }
+
+    .titan-kpi-icon {
+        width: 48px !important;
+        height: 48px !important;
+        flex-basis: 48px !important;
+    }
+
+    .titan-kpi-label {
+        font-size: 11px !important;
+    }
+
+    .titan-kpi-value {
+        font-size: 25px !important;
+    }
+
+    .titan-kpi-card::after {
+        width: 118px !important;
+        height: 72px !important;
+        right: -14px !important;
+        bottom: -43px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .titan-kpi-card {
+        height: 78px !important;
+        min-height: 78px !important;
+        padding: 8px 11px !important;
+    }
+
+    .titan-kpi-icon {
+        width: 44px !important;
+        height: 44px !important;
+        flex-basis: 44px !important;
+    }
+
+    .titan-kpi-value {
+        font-size: 23px !important;
+    }
+
+    .titan-kpi-card::after {
+        width: 105px !important;
+        height: 65px !important;
+    }
+}
+
+
+/* =========================================================
+   FINAL KPI CARD UPDATE ONLY
+   Clean Corporate Reference Design
+   NOTE: Only KPI card styles are overridden below.
+   Header, charts, summary, footer and background are untouched.
+========================================================= */
+
+/* KPI GRID */
+.titan-kpi-grid {
+  flex: 0 0 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+  margin-bottom: 16px !important;
+}
+
+/* CARD */
+.titan-kpi-card {
+  position: relative !important;
+  isolation: isolate !important;
+  overflow: hidden !important;
+
+  height: 148px !important;
+  min-height: 148px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  gap: 24px !important;
+
+  padding: 24px 30px !important;
+
+  border: 1px solid #dfe8f1 !important;
+  border-radius: 14px !important;
+
+  background: #ffffff !important;
+
+  box-shadow:
+    0 5px 18px rgba(38, 66, 100, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  transform: none !important;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease !important;
+}
+
+/* Remove old left color strip */
+.titan-kpi-card::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* Large soft curved shape */
+.titan-kpi-card::after {
+  content: "" !important;
+  position: absolute !important;
+
+  width: 220px !important;
+  height: 135px !important;
+
+  right: -28px !important;
+  bottom: -82px !important;
+
+  border-radius: 70% 0 0 0 !important;
+
+  z-index: 0 !important;
+  opacity: 1 !important;
+
+  pointer-events: none !important;
+}
+
+/* Individual card backgrounds */
+.titan-kpi-new {
+  background: linear-gradient(
+    135deg,
+    #fffdf8 0%,
+    #fffaf0 100%
+  ) !important;
+}
+
+.titan-kpi-old {
+  background: linear-gradient(
+    135deg,
+    #fdfbff 0%,
+    #f9f6ff 100%
+  ) !important;
+}
+
+.titan-kpi-cbc {
+  background: linear-gradient(
+    135deg,
+    #fbfffe 0%,
+    #f2fcfa 100%
+  ) !important;
+}
+
+.titan-kpi-warehouse {
+  background: linear-gradient(
+    135deg,
+    #fffdfc 0%,
+    #fff6f2 100%
+  ) !important;
+}
+
+/* Soft shape colors */
+.titan-kpi-new::after {
+  background: #ffedc9 !important;
+}
+
+.titan-kpi-old::after {
+  background: #e7ddff !important;
+}
+
+.titan-kpi-cbc::after {
+  background: #d2f3ee !important;
+}
+
+.titan-kpi-warehouse::after {
+  background: #ffddd3 !important;
+}
+
+/* ICON CIRCLE */
+.titan-kpi-icon {
+  position: relative !important;
+  z-index: 3 !important;
+
+  width: 72px !important;
+  height: 72px !important;
+  flex: 0 0 72px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  border: 0 !important;
+  border-radius: 50% !important;
+
+  box-shadow: none !important;
+  transform: none !important;
+
+  transition: transform 180ms ease !important;
+}
+
+.titan-kpi-icon svg {
+  width: 38px !important;
+  height: 38px !important;
+}
+
+/* Icon colors */
+.titan-kpi-new .titan-kpi-icon {
+  background: #fff0d2 !important;
+  color: #c9870a !important;
+}
+
+.titan-kpi-old .titan-kpi-icon {
+  background: #ebe2ff !important;
+  color: #6434dd !important;
+}
+
+.titan-kpi-cbc .titan-kpi-icon {
+  background: #d7f4ef !important;
+  color: #08ad9c !important;
+}
+
+.titan-kpi-warehouse .titan-kpi-icon {
+  background: #ffe4db !important;
+  color: #f1643b !important;
+}
+
+/* TEXT */
+.titan-kpi-info {
+  position: relative !important;
+  z-index: 3 !important;
+
+  min-width: 0 !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+
+  margin-left: 0 !important;
+}
+
+.titan-kpi-label {
+  margin: 0 0 7px !important;
+
+  color: #18294e !important;
+
+  font-size: 18px !important;
+  line-height: 1.15 !important;
+  font-weight: 600 !important;
+
+  white-space: nowrap !important;
+}
+
+.titan-kpi-value {
+  margin: 0 !important;
+
+  color: #10204a !important;
+
+  font-size: 35px !important;
+  line-height: 1 !important;
+  font-weight: 750 !important;
+  letter-spacing: -0.7px !important;
+}
+
+/* Hide subtitle for clean reference appearance */
+.titan-kpi-status {
+  display: none !important;
+}
+
+/* Hover */
+.titan-kpi-card:hover {
+  transform: translateY(-2px) !important;
+
+  box-shadow:
+    0 10px 24px rgba(38, 66, 100, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+}
+
+.titan-kpi-card:hover .titan-kpi-icon {
+  transform: scale(1.035) !important;
+}
+
+/* 1920x1080 / large TV */
+@media (min-width: 1601px) {
+  .titan-kpi-grid {
+    gap: 18px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .titan-kpi-card {
+    height: 120px !important;
+    min-height: 120px !important;
+    padding: 24px 30px !important;
+    gap: 24px !important;
+  }
+
+  .titan-kpi-icon {
+    width: 72px !important;
+    height: 72px !important;
+    flex-basis: 72px !important;
+  }
+
+  .titan-kpi-icon svg {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  .titan-kpi-label {
+    font-size: 18px !important;
+  }
+
+  .titan-kpi-value {
+    font-size: 35px !important;
+  }
+
+  .titan-kpi-card::after {
+    width: 220px !important;
+    height: 135px !important;
+    right: -28px !important;
+    bottom: -82px !important;
+  }
+}
+
+/* 1200-1600 */
+@media (min-width: 1200px) and (max-width: 1600px) {
+  .titan-kpi-grid {
+    gap: 14px !important;
+  }
+
+  .titan-kpi-card {
+    height: 118px !important;
+    min-height: 118px !important;
+    padding: 19px 24px !important;
+    gap: 18px !important;
+  }
+
+  .titan-kpi-icon {
+    width: 60px !important;
+    height: 60px !important;
+    flex-basis: 60px !important;
+  }
+
+  .titan-kpi-icon svg {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .titan-kpi-label {
+    font-size: 15px !important;
+  }
+
+  .titan-kpi-value {
+    font-size: 29px !important;
+  }
+
+  .titan-kpi-card::after {
+    width: 180px !important;
+    height: 115px !important;
+    right: -25px !important;
+    bottom: -70px !important;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1199px) {
+  .titan-kpi-grid {
+    gap: 12px !important;
+  }
+
+  .titan-kpi-card {
+    height: 108px !important;
+    min-height: 108px !important;
+    padding: 16px 19px !important;
+    gap: 15px !important;
+  }
+
+  .titan-kpi-icon {
+    width: 54px !important;
+    height: 54px !important;
+    flex-basis: 54px !important;
+  }
+
+  .titan-kpi-icon svg {
+    width: 29px !important;
+    height: 29px !important;
+  }
+
+  .titan-kpi-label {
+    font-size: 13px !important;
+  }
+
+  .titan-kpi-value {
+    font-size: 26px !important;
+  }
+
+  .titan-kpi-card::after {
+    width: 160px !important;
+    height: 105px !important;
+    right: -22px !important;
+    bottom: -62px !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 800px) {
+  .titan-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .titan-kpi-card {
+    height: 94px !important;
+    min-height: 94px !important;
+    padding: 12px 14px !important;
+    gap: 11px !important;
+    border-radius: 11px !important;
+  }
+
+  .titan-kpi-icon {
+    width: 48px !important;
+    height: 48px !important;
+    flex-basis: 48px !important;
+  }
+
+  .titan-kpi-icon svg {
+    width: 26px !important;
+    height: 26px !important;
+  }
+
+  .titan-kpi-label {
+    font-size: 12px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .titan-kpi-value {
+    font-size: 24px !important;
+  }
+
+  .titan-kpi-card::after {
+    width: 135px !important;
+    height: 90px !important;
+    right: -22px !important;
+    bottom: -54px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .titan-kpi-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+.titan-donut-tooltip {
+  min-width: 145px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #17234d;
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  pointer-events: none;
+}
+
+/* =========================================================
+   FINAL LAYOUT - DISTRIBUTION LEFT / LOCATION + SUMMARY RIGHT
+========================================================= */
+
+.titan-main-grid {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: grid;
+    /* grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); */
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: 12px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    align-items: stretch;
+}
+.titan-main-grid > .titan-distribution-card {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.titan-right-column {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.titan-right-column .titan-location-card {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.titan-right-column .titan-location-chart {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.titan-right-column .titan-location-legend {
+    flex: 0 0 35px;
+}
+
+/* Bottom summary stays under the right chart only */
+.titan-right-column .titan-summary {
+    flex: 0 0 82px;
+    width: 100%;
+    min-height: 82px;
+    height: 82px;
+    margin: 0;
+}
+
+/* Make the bottom summary slightly more compact and visual */
+.titan-right-column .titan-summary-item {
+    gap: 12px;
+}
+
+.titan-right-column .titan-summary-icon {
+    width: 48px;
+    height: 48px;
+}
+
+.titan-right-column .titan-summary-icon.orange {
+    color: #f26320;
+}
+
+.titan-right-column .titan-summary-content {
+    min-width: 0;
+}
+
+.titan-right-column .titan-summary-content span {
+    margin-bottom: 3px;
+}
+
+.titan-right-column .titan-summary-content strong {
+    font-size: 29px;
+}
+
+.titan-right-column .titan-overall {
+    justify-content: space-between;
+    padding-left: 28px;
+    padding-right: 12px;
+}
+
+.titan-right-column .titan-progress-ring {
+    position: relative;
+    width: 58px;
+    height: 58px;
+}
+
+.titan-right-column .titan-progress-ring svg {
+    width: 58px;
+    height: 58px;
+}
+
+.titan-right-column .titan-ring-bg,
+.titan-right-column .titan-ring-progress {
+    stroke-width: 5.5;
+}
+
+.titan-right-column .titan-ring-progress {
+    transition: stroke-dashoffset 0.45s ease;
+}
+
+.titan-ring-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #16ad7b;
+    font-size: 11px;
+    line-height: 1;
+    font-weight: 750;
+    pointer-events: none;
+}
+
+/* Keep the left donut and legend vertically balanced */
+.titan-distribution-card .titan-distribution-body {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+/* The existing chart-grid is no longer used by the JSX */
+.titan-chart-grid {
+    display: none !important;
+}
+
+/* =========================================================
+   RESPONSIVE - TABLET
+========================================================= */
+
+@media (max-width: 1199px) and (min-width: 801px) {
+    .titan-main-grid {
+        flex: none;
+        height: 500px;
+        min-height: 500px;
+    }
+
+    .titan-main-grid > .titan-distribution-card,
+    .titan-right-column .titan-location-card {
+        min-height: 0;
+    }
+
+    .titan-right-column .titan-summary {
+        flex-basis: 80px;
+        height: 80px;
+        min-height: 80px;
+    }
+}
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+========================================================= */
+
+@media (max-width: 800px) {
+    .titan-main-grid {
+        grid-template-columns: 1fr;
+        flex: none;
+        height: auto;
+        min-height: 0;
+        overflow: visible;
+    }
+
+    .titan-main-grid > .titan-distribution-card {
+        height: 430px;
+        min-height: 430px;
+    }
+
+    .titan-right-column {
+        height: auto;
+        min-height: 0;
+    }
+
+    .titan-right-column .titan-location-card {
+        flex: none;
+        height: 430px;
+        min-height: 430px;
+    }
+
+    .titan-right-column .titan-summary {
+        flex: none;
+        height: 88px;
+        min-height: 88px;
+    }
+}
+
+@media (max-width: 600px) {
+    .titan-main-grid > .titan-distribution-card {
+        height: auto;
+        min-height: 560px;
+    }
+
+    .titan-right-column .titan-location-card {
+        height: 430px;
+        min-height: 430px;
+    }
+
+    .titan-right-column .titan-summary {
+        height: auto;
+        min-height: 150px;
+    }
+
+    .titan-right-column .titan-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .titan-right-column .titan-summary-divider {
+        display: none;
+    }
+
+    .titan-right-column .titan-overall {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+}
+
+/* =========================================================
+   FINAL LAYOUT - FULL HEIGHT BAR / DONUT + SUMMARY LEFT
+   Summary is a separate card below the donut.
+========================================================= */
+.titan-main-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: 12px;
+    align-items: stretch;
+}
+
+.titan-left-column {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.titan-left-column .titan-distribution-card {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+}
+
+.titan-left-column .titan-summary {
+    flex: 0 0 96px;
+    width: 100%;
+    height: 96px;
+    min-height: 96px;
+    margin: 0;
+}
+
+.titan-right-column {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.titan-right-column .titan-location-card {
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+}
+
+/* Keep the four summary items evenly distributed */
+.titan-left-column .titan-summary {
+    grid-template-columns:
+        minmax(0, 1fr) 1px
+        minmax(0, 1fr) 1px
+        minmax(0, 1fr) 1px
+        minmax(0, 1.15fr);
+    padding: 10px 18px;
+}
+
+.titan-left-column .titan-summary-item {
+    padding: 0 18px;
+    gap: 12px;
+}
+
+.titan-left-column .titan-summary-icon {
+    width: 50px;
+    height: 50px;
+    flex: 0 0 50px;
+}
+
+.titan-left-column .titan-summary-content strong {
+    font-size: 28px;
+}
+
+.titan-left-column .titan-summary-divider {
+    height: 48px;
+}
+
+.titan-left-column .titan-overall {
+    padding-left: 18px;
+    padding-right: 10px;
+}
+
+/* The bar chart fills the complete right-side card */
+.titan-right-column .titan-location-chart {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+/* =========================================================
+   RESPONSIVE OVERRIDES
+========================================================= */
+@media (max-width: 1199px) and (min-width: 801px) {
+    .titan-main-grid {
+        height: 500px;
+        min-height: 500px;
+        flex: none;
+    }
+
+    .titan-left-column .titan-summary {
+        flex-basis: 90px;
+        height: 90px;
+        min-height: 90px;
+    }
+}
+
+@media (max-width: 800px) {
+    .titan-main-grid {
+        grid-template-columns: 1fr;
+        height: auto;
+        min-height: 0;
+        overflow: visible;
+    }
+
+    .titan-left-column {
+        height: auto;
+    }
+
+    .titan-left-column .titan-distribution-card {
+        flex: none;
+        height: 430px;
+        min-height: 430px;
+    }
+
+    .titan-left-column .titan-summary {
+        flex: none;
+        height: 96px;
+        min-height: 96px;
+    }
+
+    .titan-right-column {
+        height: 430px;
+        min-height: 430px;
+    }
+}
+
+@media (max-width: 600px) {
+    .titan-left-column .titan-distribution-card {
+        height: auto;
+        min-height: 560px;
+    }
+
+    .titan-left-column .titan-summary {
+        height: auto;
+        min-height: 190px;
+        grid-template-columns: 1fr;
+    }
+
+    .titan-left-column .titan-summary-divider {
+        display: none;
+    }
+
+    .titan-left-column .titan-summary-item {
+        min-height: 46px;
+    }
+
+    .titan-right-column {
+        height: 430px;
+        min-height: 430px;
+    }
+}
+/* =========================================================
+   HEADER
+========================================================= */
+
+.titan-header {
+    flex: 0 0 96px;
+    min-height: 96px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 24px;
+    margin-bottom: 10px;
+}
+
+
+/* =========================================================
+   LEFT HEADER
+========================================================= */
+
+.titan-header-left {
+    display: flex;
+    align-items: center;
+
+    gap: 26px;
+
+    min-width: 0;
+}
+
+
+/* =========================================================
+   BRAND LOGOS
+========================================================= */
+
+.titan-brand-logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 78px;
+
+    flex-shrink: 0;
+}
+
+
+/* Individual logo containers */
+
+.titan-brand-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+
+/* Tanishq */
+
+.tanishq-brand {
+    width: 105px;
+    height: 72px;
+}
+
+
+/* Titan Company */
+
+.titan-company-brand {
+    width: 105px;
+    height: 72px;
+}
+
+
+/* Logo images */
+
+.titan-brand-item img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+    object-position: center;
+}
+
+
+/* =========================================================
+   LOGO DIVIDER
+========================================================= */
+
+.titan-brand-divider {
+    width: 1px;
+    height: 52px;
+
+    margin: 0 14px;
+
+    background: rgba(23, 43, 77, 0.38);
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   TITLE BLOCK
+========================================================= */
+
+.titan-title-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding-top: 0;
+
+    min-width: 0;
+}
+
+
+/* Main title */
+
+.titan-header h1 {
+    margin: 0;
+
+    color: #0b1b46;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 32px;
+    line-height: 1.12;
+
+    font-weight: 700;
+
+    letter-spacing: -0.75px;
+
+    white-space: nowrap;
+
+    text-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.95),
+        0 2px 5px rgba(25, 48, 80, 0.08);
+}
+
+
+/* Subtitle */
+
+.titan-header p {
+    margin: 6px 0 0;
+
+    color: #46638d;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 13px;
+    line-height: 1.3;
+
+    font-weight: 500;
+
+    letter-spacing: 0.05px;
+
+    white-space: nowrap;
+
+    text-shadow:
+        0 1px 2px rgba(255, 255, 255, 0.9);
+}
+
+/* =========================================================
+   FINAL LOGO + FOOTER VISIBILITY OVERRIDES
+   Larger, sharper branding for the dashboard header/footer
+========================================================= */
+
+/* Header brand group */
+.titan-brand-logos {
+    height: 88px !important;
+    display: flex !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+}
+
+.titan-brand-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    overflow: visible !important;
+}
+
+/* Tanishq - intentionally larger because the source image has transparent space */
+.tanishq-brand {
+    width: 132px !important;
+    height: 86px !important;
+}
+
+.tanishq-brand img {
+    width: 128px !important;
+    height: 84px !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    transform: scale(1.10) !important;
+    transform-origin: center !important;
+    display: block !important;
+    opacity: 1 !important;
+    filter: contrast(1.08) drop-shadow(0 1px 2px rgba(255,255,255,.85)) !important;
+}
+
+/* Titan Company */
+.titan-company-brand {
+    width: 116px !important;
+    height: 82px !important;
+}
+
+.titan-company-brand img {
+    width: 112px !important;
+    height: 80px !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    transform: scale(1.06) !important;
+    transform-origin: center !important;
+    display: block !important;
+    opacity: 1 !important;
+    filter: contrast(1.08) drop-shadow(0 1px 2px rgba(255,255,255,.85)) !important;
+}
+
+.titan-brand-divider {
+    height: 62px !important;
+    margin: 0 12px !important;
+    background: rgba(23, 43, 77, 0.42) !important;
+}
+
+/* Keep title balanced after increasing the logos */
+.titan-header-left {
+    gap: 20px !important;
+    align-items: center !important;
+}
+
+.titan-title-block {
+    padding-top: 0 !important;
+}
+
+/* Footer */
+.titan-dashboard-footer {
+    min-height: 48px !important;
+    height: 48px !important;
+    padding: 0 22px !important;
+}
+
+.titan-dashboard-footer-right {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 14px !important;
+    min-width: 0 !important;
+}
+
+.titan-dashboard-footer-copyright {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: #506a8f !important;
+    text-shadow: 0 1px 2px rgba(255,255,255,.95) !important;
+    white-space: nowrap !important;
+}
+
+.titan-dashboard-footer-logo {
+    width: 100px !important;
+    height: 34px !important;
+    max-width: 100px !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    display: block !important;
+    opacity: 1 !important;
+    filter: contrast(1.12) drop-shadow(0 1px 2px rgba(255,255,255,.85)) !important;
+}
+
+/* 1200-1600px: retain larger logos instead of shrinking them */
+@media (min-width: 1200px) and (max-width: 1600px) {
+    .titan-brand-logos {
+        height: 82px !important;
+    }
+
+    .tanishq-brand {
+        width: 116px !important;
+        height: 78px !important;
+    }
+
+    .tanishq-brand img {
+        width: 114px !important;
+        height: 76px !important;
+        transform: scale(1.08) !important;
+    }
+
+    .titan-company-brand {
+        width: 104px !important;
+        height: 76px !important;
+    }
+
+    .titan-company-brand img {
+        width: 102px !important;
+        height: 74px !important;
+    }
+
+    .titan-brand-divider {
+        height: 56px !important;
+        margin: 0 10px !important;
+    }
+
+    .titan-dashboard-footer-logo {
+        width: 94px !important;
+        height: 32px !important;
+        max-width: 94px !important;
+    }
+}
+
+/* Mobile */
+@media (max-width: 800px) {
+    .titan-brand-logos {
+        height: 58px !important;
+    }
+
+    .tanishq-brand,
+    .titan-company-brand {
+        width: 72px !important;
+        height: 54px !important;
+    }
+
+    .tanishq-brand img,
+    .titan-company-brand img {
+        width: 70px !important;
+        height: 52px !important;
+        transform: none !important;
+    }
+
+    .titan-brand-divider {
+        height: 40px !important;
+        margin: 0 6px !important;
+    }
+
+    .titan-dashboard-footer {
+        padding: 0 12px !important;
+    }
+
+    .titan-dashboard-footer-copyright {
+        font-size: 9px !important;
+    }
+
+    .titan-dashboard-footer-logo {
+        width: 78px !important;
+        height: 28px !important;
+        max-width: 78px !important;
+    }
+}
+/* =========================================================
+   NO DATA AVAILABLE
+========================================================= */
+
+.titan-no-data {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 30px 20px;
+
+    color: #17234d;
+
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    gap: 8px;
+
+    box-sizing: border-box;
+}
+
+
+/* Icon container */
+
+.titan-no-data-icon {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f1f4f9;
+
+    color: #66758f;
+
+    margin-bottom: 5px;
+}
+
+
+/* Main title */
+
+.titan-no-data strong {
+    display: block;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    line-height: 1.4;
+
+    color: #17234d;
+}
+
+
+/* Description */
+
+.titan-no-data span {
+    display: block;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    line-height: 1.5;
+
+    color: #7b89a5;
+
+    max-width: 320px;
+}
+.titan-distribution-body {
+  flex: 1;
+  min-height: 0;
+}
+
+.titan-distribution-body > .titan-no-data {
+  min-height: 340px;
+}
+.titan-location-card > .titan-no-data {
+  min-height: 390px;
+}
+
+/* =========================================================
+   FINAL SUMMARY DESIGN - LEFT DONUT COLUMN / TWO KPIs ONLY
+   ========================================================= */
+
+.titan-left-column .titan-summary {
+    flex: 0 0 92px;
+    width: 100%;
+    height: 92px;
+    min-height: 92px;
+    margin: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+    align-items: center;
+    gap: 0;
+    padding: 8px 16px;
+    overflow: hidden;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    box-shadow:
+        0 8px 24px rgba(31, 55, 90, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.titan-left-column .titan-summary-item {
+    min-width: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 0 16px;
+    overflow: hidden;
+}
+
+.titan-left-column .titan-summary-item:first-child {
+    padding-left: 10px;
+}
+
+.titan-left-column .titan-summary-icon {
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    border-radius: 50%;
+}
+
+.titan-left-column .titan-summary-icon svg {
+    width: 29px;
+    height: 29px;
+}
+
+.titan-left-column .titan-summary-content {
+    min-width: 0;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.titan-left-column .titan-summary-content span {
+    color: #637493;
+    font-size: 11px;
+    line-height: 1.1;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.titan-left-column .titan-summary-content strong {
+    margin-top: 3px;
+    color: #152653;
+    font-size: 28px;
+    line-height: 1;
+    font-weight: 760;
+    letter-spacing: -0.6px;
+}
+
+.titan-left-column .titan-summary-content small {
+    margin-top: 4px;
+    color: #8492a8;
+    font-size: 9.5px;
+    line-height: 1.1;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.titan-left-column .titan-summary-divider {
+    width: 1px;
+    height: 48px;
+    background: #dce3ed;
+}
+
+.titan-left-column .titan-overall {
+    padding-left: 18px;
+    padding-right: 8px;
+}
+
+.titan-left-column .titan-overall .titan-summary-content strong {
+    color: #10a982;
+}
+
+.titan-summary-progress {
+    width: 100%;
+    max-width: 190px;
+    height: 6px;
+    margin-top: 6px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #e8f1ee;
+}
+
+.titan-summary-progress-fill {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #18b889 0%, #10a982 100%);
+    transition: width 0.45s ease;
+}
+
+.titan-summary-progress-value {
+    flex: 0 0 auto;
+    margin-left: 8px;
+    color: #10a982;
+    font-size: 11px;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+/* Keep summary below the donut only; right chart remains untouched. */
+.titan-right-column .titan-summary {
+    display: none;
+}
+
+@media (max-width: 1199px) and (min-width: 801px) {
+    .titan-left-column .titan-summary {
+        flex-basis: 88px;
+        height: 88px;
+        min-height: 88px;
+    }
+
+    .titan-left-column .titan-summary-item {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .titan-left-column .titan-summary-progress {
+        max-width: 140px;
+    }
+}
+
+@media (max-width: 600px) {
+    .titan-left-column .titan-summary {
+        height: auto;
+        min-height: 166px;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1px 1fr;
+        padding: 8px 12px;
+    }
+
+    .titan-left-column .titan-summary-divider {
+        width: 100%;
+        height: 1px;
+    }
+
+    .titan-left-column .titan-summary-item,
+    .titan-left-column .titan-summary-item:first-child {
+        min-height: 70px;
+        padding: 8px 6px;
+    }
+
+    .titan-left-column .titan-summary-progress {
+        max-width: 150px;
+    }
+}
+
+
+
+/* =========================================================
+   TITAN DASHBOARD FOOTER - FULLY SCOPED
+   This footer belongs ONLY to .titan-dashboard.
+   It will not affect common/shared application footers.
+========================================================= */
+
+.titan-dashboard .titan-dashboard-footer {
+  width: 100%;
+  height: 42px;
+  min-height: 42px;
+  flex: 0 0 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 18px;
+
+  border-top: 1px solid rgba(74, 105, 145, 0.20);
+  background: rgba(255, 255, 255, 0.08);
+
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.titan-dashboard .titan-dashboard-footer-note {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: #58708f;
+  white-space: nowrap;
+}
+
+.titan-dashboard .titan-dashboard-footer-note-icon {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #304f7a;
+  color: #ffffff;
+
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.titan-dashboard .titan-dashboard-footer-note-text {
+  color: #58708f;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.titan-dashboard .titan-dashboard-footer-right {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+
+  white-space: nowrap;
+}
+
+.titan-dashboard .titan-dashboard-footer-copyright {
+  color: #58708f;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.05px;
+  white-space: nowrap;
+}
+
+.titan-dashboard .titan-dashboard-footer-logo {
+  width: 72px;
+  height: 24px;
+  max-width: 72px;
+
+  display: block;
+  object-fit: contain;
+  object-position: center;
+
+  opacity: 0.95;
+}
+
+/* 1200–1600px */
+@media (min-width: 1200px) and (max-width: 1600px) {
+  .titan-dashboard .titan-dashboard-footer {
+    height: 40px;
+    min-height: 40px;
+    flex-basis: 40px;
+    padding: 0 16px;
+  }
+
+  .titan-dashboard .titan-dashboard-footer-note-text {
+    font-size: 10px;
+  }
+
+  .titan-dashboard .titan-dashboard-footer-copyright {
+    font-size: 9px;
+  }
+
+  .titan-dashboard .titan-dashboard-footer-logo {
+    width: 68px;
+    height: 22px;
+    max-width: 68px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 800px) {
+  .titan-dashboard .titan-dashboard-footer {
+    height: auto;
+    min-height: 38px;
+    flex-basis: 38px;
+    padding: 5px 10px;
+    gap: 8px;
+  }
+
+  .titan-dashboard .titan-dashboard-footer-note-text {
+    font-size: 8px;
+  }
+
+  .titan-dashboard .titan-dashboard-footer-copyright {
+    font-size: 8px;
+  }
+
+  .titan-dashboard .titan-dashboard-footer-logo {
+    width: 58px;
+    height: 20px;
+    max-width: 58px;
+  }
+}
+
+
+/* =========================================================
+   DONUT OUTSIDE PERCENTAGE LABELS
+   Scoped only to Titan Dashboard
+========================================================= */
+
+.titan-dashboard .titan-donut-outside-label {
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 2px;
+  stroke-linejoin: round;
+}
+
+.titan-dashboard .titan-distribution-percent {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.titan-dashboard .titan-donut-tooltip {
+  z-index: 99999;
+  min-width: 145px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #17234D;
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(17, 31, 64, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.titan-dashboard .titan-tooltip-title {
+  margin-bottom: 8px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.titan-dashboard .titan-tooltip-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  color: #D9E2F2;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.titan-dashboard .titan-tooltip-row strong {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+/* =========================================================
+   FINAL LAYOUT
+   FULL WIDTH SUMMARY BELOW BOTH CHARTS
+========================================================= */
+
+/* Main chart row */
+.titan-main-grid {
+    flex: 1 1 auto;
+    min-height: 0;
+
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+
+    gap: 12px;
+
+    margin-bottom: 12px;
+
+    overflow: hidden;
+    align-items: stretch;
+}
+
+
+/* =========================================================
+   LEFT - DONUT
+========================================================= */
+
+.titan-left-column {
+    min-width: 0;
+    min-height: 0;
+
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.titan-left-column .titan-distribution-card {
+    flex: 1 1 auto;
+
+    width: 100%;
+    height: 100%;
+
+    min-width: 0;
+    min-height: 0;
+}
+
+
+/* =========================================================
+   RIGHT - BAR CHART
+========================================================= */
+
+.titan-right-column {
+    min-width: 0;
+    min-height: 0;
+
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.titan-right-column .titan-location-card {
+    flex: 1 1 auto;
+
+    width: 100%;
+    height: 100%;
+
+    min-width: 0;
+    min-height: 0;
+}
+
+
+/* =========================================================
+   FULL WIDTH SUMMARY
+========================================================= */
+
+.titan-full-width-summary {
+    width: 100%;
+
+    height: 86px;
+    min-height: 86px;
+
+    flex: 0 0 86px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        1px
+        minmax(0, 1fr);
+
+    align-items: center;
+
+    gap: 0;
+
+    margin: 0 0 12px;
+
+    padding: 8px 28px;
+
+    overflow: hidden;
+
+    border-radius: 14px;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    border: 1px solid rgba(255, 255, 255, 0.90);
+
+    box-shadow:
+        0 8px 24px rgba(31, 55, 90, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+
+/* =========================================================
+   SUMMARY ITEM
+========================================================= */
+
+.titan-full-width-summary .titan-summary-item {
+    min-width: 0;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 0 26px;
+}
+
+
+/* First item */
+.titan-full-width-summary .titan-summary-item:first-child {
+    padding-left: 8px;
+}
+
+
+/* =========================================================
+   SUMMARY ICON
+========================================================= */
+
+.titan-full-width-summary .titan-summary-icon {
+    width: 50px;
+    height: 50px;
+
+    flex: 0 0 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+}
+
+
+/* Orange - Total Occupancy */
+
+.titan-full-width-summary .titan-summary-icon.orange {
+    color: #f97316;
+    background: #fff1e8;
+}
+
+
+/* Green - Overall Occupancy */
+
+.titan-full-width-summary .titan-summary-icon.green {
+    color: #10b981;
+    background: #e7faf3;
+}
+
+
+/* =========================================================
+   SUMMARY CONTENT
+========================================================= */
+
+.titan-full-width-summary .titan-summary-content {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.titan-full-width-summary .titan-summary-content span {
+    color: #637493;
+
+    font-size: 11px;
+    line-height: 1.1;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+.titan-full-width-summary .titan-summary-content strong {
+    margin-top: 3px;
+
+    color: #152653;
+
+    font-size: 27px;
+    line-height: 1;
+
+    font-weight: 760;
+
+    letter-spacing: -0.5px;
+}
+
+
+.titan-full-width-summary .titan-summary-content small {
+    margin-top: 4px;
+
+    color: #8492a8;
+
+    font-size: 9.5px;
+    line-height: 1.1;
+
+    font-weight: 500;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.titan-full-width-summary .titan-summary-divider {
+    width: 1px;
+    height: 48px;
+
+    background: #dce3ed;
+}
+
+
+/* =========================================================
+   OVERALL OCCUPANCY
+========================================================= */
+
+.titan-full-width-summary .titan-overall {
+    padding-left: 26px;
+    padding-right: 8px;
+}
+
+
+.titan-full-width-summary .titan-overall
+.titan-summary-content strong {
+    color: #10a982;
+}
+
+
+/* =========================================================
+   DESKTOP - BALANCED SPACING
+========================================================= */
+
+@media (min-width: 1200px) {
+
+    .titan-full-width-summary {
+        height: 88px;
+        min-height: 88px;
+        flex-basis: 88px;
+
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+
+    .titan-full-width-summary .titan-summary-item {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .titan-full-width-summary .titan-summary-item:first-child {
+        padding-left: 10px;
+    }
+
+    .titan-full-width-summary .titan-summary-icon {
+        width: 52px;
+        height: 52px;
+
+        flex-basis: 52px;
+    }
+
+    .titan-full-width-summary .titan-summary-content strong {
+        font-size: 29px;
+    }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1199px) and (min-width: 801px) {
+
+    .titan-main-grid {
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+
+    .titan-full-width-summary {
+        height: 82px;
+        min-height: 82px;
+        flex-basis: 82px;
+
+        padding: 7px 18px;
+    }
+
+    .titan-full-width-summary .titan-summary-item {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .titan-full-width-summary .titan-summary-icon {
+        width: 46px;
+        height: 46px;
+
+        flex-basis: 46px;
+    }
+
+    .titan-full-width-summary .titan-summary-content strong {
+        font-size: 25px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .titan-main-grid {
+        grid-template-columns: 1fr;
+
+        height: auto;
+        min-height: 0;
+
+        overflow: visible;
+    }
+
+    .titan-left-column {
+        height: 430px;
+        min-height: 430px;
+    }
+
+    .titan-right-column {
+        height: 430px;
+        min-height: 430px;
+    }
+
+    .titan-full-width-summary {
+        height: auto;
+        min-height: 96px;
+        flex: 0 0 auto;
+
+        grid-template-columns: 1fr 1px 1fr;
+
+        padding: 8px 12px;
+    }
+
+    .titan-full-width-summary .titan-summary-item {
+        padding: 0 10px;
+        gap: 9px;
+    }
+
+    .titan-full-width-summary .titan-summary-item:first-child {
+        padding-left: 4px;
+    }
+
+    .titan-full-width-summary .titan-summary-icon {
+        width: 42px;
+        height: 42px;
+
+        flex-basis: 42px;
+    }
+
+    .titan-full-width-summary .titan-summary-icon svg {
+        width: 26px;
+        height: 26px;
+    }
+
+    .titan-full-width-summary .titan-summary-content strong {
+        font-size: 23px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .titan-full-width-summary {
+        grid-template-columns: 1fr;
+
+        min-height: 150px;
+
+        padding: 8px 12px;
+    }
+
+    .titan-full-width-summary .titan-summary-divider {
+        width: 100%;
+        height: 1px;
+    }
+
+    .titan-full-width-summary .titan-summary-item,
+    .titan-full-width-summary .titan-summary-item:first-child {
+        min-height: 62px;
+
+        padding: 6px 4px;
+    }
+}
+
+/* =========================================================
+   SUMMARY ICON COLORS
+========================================================= */
+
+/* Total Occupancy - ORANGE */
+.titan-summary-icon.orange {
+    color: #F97316;
+    background: #FFF1E8;
+    border: 1px solid #FFE1D0;
+}
+
+
+/* Overall Occupancy - GREEN */
+.titan-summary-icon.green {
+    color: #10B981;
+    background: #E7FAF3;
+    border: 1px solid #C9F0E2;
+}
+
+
+/* Employee Entry - BLUE */
+.titan-summary-icon.employee {
+    color: #2563EB;
+    background: #EAF2FF;
+    border: 1px solid #D5E4FF;
+}
+
+
+/* Contract Employee Entry - PURPLE */
+.titan-summary-icon.contract {
+    color: #7C3AED;
+    background: #F0E9FF;
+    border: 1px solid #E3D7FF;
+}
+.titan-kpi-others::after {
+  background: #dbeafe;
+}
+
+.titan-kpi-others .titan-kpi-icon {
+  background: #dff3ff;
+  color: #1687c7;
+}
